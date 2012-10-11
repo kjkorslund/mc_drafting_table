@@ -1,0 +1,29 @@
+.toolpanel {
+	border-bottom: 1px solid silver;
+}
+.toolbox {
+	margin: 0.5em 0.5em;
+}
+.gwt-ToggleButton-toolpanel {
+	display:inline-block;
+}
+
+.palettepanel {
+	border-right: 1px solid silver;
+}
+
+.mouseCoords {
+	padding-left: 1em;
+}
+
+#noscript {
+	width: 22em;
+	position: absolute;
+	left: 50%;
+	margin-left: -11em;
+	color: red;
+	background-color: white;
+	border: 1px solid red;
+	padding: 4px;
+	font-family: sans-serif
+}

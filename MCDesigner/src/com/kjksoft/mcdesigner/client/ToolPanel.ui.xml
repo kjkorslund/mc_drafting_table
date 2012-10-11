@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m='urn:import:com.kjksoft.mcdesigner.client.module' >
+	
+	<g:HTMLPanel>
+		<g:Button ui:field="clearButton" text="Clear Layer" />
+		<g:Button ui:field="clearAllButton" text="Clear All" />
+		<g:Button ui:field="materialsButton" text="Count" />
+		<g:Button ui:field="materialsAllButton" text="Count All" />
+		<m:ToolBox ui:field="toolBox" />
+		<g:Button ui:field="prevLayerButton" text="&lt;&lt;"/>
+		<span ui:field="currentLayer">Layer 0</span>
+		<g:Button ui:field="nextLayerButton" text="&gt;&gt;"/>
+	</g:HTMLPanel>
+</ui:UiBinder> 

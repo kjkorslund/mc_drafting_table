@@ -1,0 +1,17 @@
+.materialsList h1 {
+	font-size: medium;
+	font-weight: bold;
+}
+
+.materialsList ul {
+	padding-left: 1em;
+	list-style-type: none;
+}
+
+.materialsList li {
+	margin: 0.25em 0em;
+}
+
+.materialsList li img {
+	vertical-align: middle;
+}

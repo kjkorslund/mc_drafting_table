@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:mcd='urn:import:com.kjksoft.mcdesigner.client' >
+	<ui:style src="Palette.css" />
+	<g:DockLayoutPanel unit='EM'>
+		<g:north size='5'>
+			<g:HTMLPanel>
+				Selected:
+				<div class="{style.PaletteSelections}">
+					<img ui:field="primaryBlock" />
+					<img ui:field="secondaryBlock" />
+				</div>
+			</g:HTMLPanel>
+		</g:north>
+		<g:center>
+			<g:StackLayoutPanel unit='EM' ui:field="materialTypesPanel" addStyleNames="{style.PaletteSwatches}" >
+				<g:stack>
+					<g:header size='2.5'>Other</g:header>
+					<g:HTMLPanel ui:field="paletteSwatches">
+					</g:HTMLPanel>
+				</g:stack>
+			</g:StackLayoutPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

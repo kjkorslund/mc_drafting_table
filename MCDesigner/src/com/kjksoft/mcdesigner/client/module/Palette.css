@@ -1,0 +1,15 @@
+.PaletteSelections img {
+	border: 1px solid black;
+	margin: 0.5em;
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+}
+
+.PaletteSwatches img {
+	border: 1px solid silver;
+	margin: 0.1em;
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+}
