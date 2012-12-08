@@ -80,9 +80,11 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 	}
 
 	public void setModel(ITileModel tileModel) {
-		this.model.removeTileListener(tileListener);
-		this.model = tileModel;
-		this.model.addTileListener(tileListener);
+		if (model != null) {
+			model.removeTileListener(tileListener);
+		}
+		model = tileModel;
+		model.addTileListener(tileListener);
 	}
 
 	public int getTileSize() {
