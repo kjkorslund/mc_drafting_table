@@ -29,11 +29,19 @@ public class LayerMap3D<T> {
 	HashMap<Integer, HashMap<Point,T>> yMap = new HashMap<Integer, HashMap<Point,T>>();
 	HashMap<Integer, HashMap<Point,T>> zMap = new HashMap<Integer, HashMap<Point,T>>();
 	
-	private Integer xMin, xMax;
-	private Integer yMin, yMax;
-	private Integer zMin, zMax;
+	Integer xMin, xMax;
+	Integer yMin, yMax;
+	Integer zMin, zMax;
 	
-	public T get(Point3 p, T val) {
+	public boolean contains(Point3 p) {
+		HashMap<Point,T> xLayer = xMap.get(p.x);
+		if (xLayer != null) {
+			return xLayer.containsKey(new Point(p.y,p.z));
+		}
+		return false;
+	}
+	
+	public T get(Point3 p) {
 		HashMap<Point,T> xLayer = xMap.get(p.x);
 		if (xLayer != null) {
 			return xLayer.get(new Point(p.y,p.z));
@@ -65,10 +73,31 @@ public class LayerMap3D<T> {
 		return putZ(p,val);
 	}
 	
-	public T clear(Point3 p, T val) {
+	public T remove(Point3 p) {
 		clearX(p);
 		clearY(p);
 		return clearZ(p);
+	}
+	
+	public void clear() {
+		xMap.clear();
+		yMap.clear();
+		zMap.clear();
+		xMin = xMax = null;
+		yMin = yMax = null;
+		zMin = zMax = null;
+	}
+	
+	public void clearXLayer(int layer) {
+		xMap.remove(layer);
+	}
+	
+	public void clearYLayer(int layer) {
+		yMap.remove(layer);
+	}
+	
+	public void clearZLayer(int layer) {
+		zMap.remove(layer);
 	}
 	
 	public Integer getXMin() {
