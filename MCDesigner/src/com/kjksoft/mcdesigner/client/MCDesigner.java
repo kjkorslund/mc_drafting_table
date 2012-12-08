@@ -136,12 +136,16 @@ public class MCDesigner implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				tileModel.setCurrentLayer(tileModel.getCurrentLayer()-1);
+				toolPanel.currentLayer.setInnerText("Layer " + 
+						Integer.toString(tileModel.getCurrentLayer()));
 			}
 		});
 		toolPanel.nextLayerButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				tileModel.setCurrentLayer(tileModel.getCurrentLayer()+1);
+				toolPanel.currentLayer.setInnerText("Layer " + 
+						Integer.toString(tileModel.getCurrentLayer()));
 			}
 		});
 		

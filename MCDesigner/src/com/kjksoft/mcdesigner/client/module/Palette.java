@@ -44,7 +44,7 @@ public class Palette extends Composite {
 
 	public void setPrimaryMaterial(Material primaryMaterial) {
 		this.primaryMaterial = primaryMaterial;
-		this.primaryBlock.setSrc(primaryMaterial.imgSrc);
+		this.primaryBlock.setSrc((primaryMaterial == null) ? null : primaryMaterial.imgSrc);
 	}
 
 	public Material getSecondaryMaterial() {

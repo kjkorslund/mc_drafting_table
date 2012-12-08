@@ -166,17 +166,33 @@ public class TileModel3D extends AbstractTileModel {
 	}
 	
 	void recalcAllLayers() {
+		HashSet<Point> points = new HashSet<Point>(currentLayerMap.keySet());
+		points.addAll(prevLayerMap.keySet());
+		points.addAll(lowerLayersMap.keySet());
+		
 		currentLayerMap.clear();
-		currentLayerMap.putAll(getMapLayer(currentLayer));
+		populateMap(currentLayerMap,currentLayer);
 		prevLayerMap.clear();
-		prevLayerMap.putAll(getMapLayer(currentLayer));
+		populateMap(prevLayerMap,currentLayer-1);
 		recalcLowerLayers();
+		
+		points.addAll(currentLayerMap.keySet());
+		points.addAll(prevLayerMap.keySet());
+		points.addAll(lowerLayersMap.keySet());
+		onTilesUpdate(points);
 	}
 	
 	void recalcLowerLayers() {
 		lowerLayersMap.clear();
 		for(int layer=mapLayerMin(); layer<currentLayer-1; layer++) {
-			lowerLayersMap.putAll(getMapLayer(layer));
+			populateMap(lowerLayersMap,layer);
+		}
+	}
+	
+	void populateMap(Map<Point,Material> map, int layer) {
+		Map<Point, Material> mapLayer = getMapLayer(layer);
+		if (mapLayer != null) {
+			map.putAll(mapLayer);
 		}
 	}
 	
@@ -284,10 +300,13 @@ public class TileModel3D extends AbstractTileModel {
 		switch(currentAxis) {
 		case X:
 			materialMap.clearXLayer(currentLayer);
+			return;
 		case Y:
 			materialMap.clearYLayer(currentLayer);
+			return;
 		case Z:
 			materialMap.clearZLayer(currentLayer);
+			return;
 		}
 		throw new IllegalArgumentException("current axis is invalid");
 	}
