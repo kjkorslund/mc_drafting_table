@@ -1,6 +1,7 @@
 package com.kjksoft.mcdesigner.client;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -92,14 +93,10 @@ public class MCDesigner implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				materialsList.clearMaterials();
-//				HashMap<String,Integer> tileCounts = tileView.countTiles();
-//				for(Entry<String,Integer> tileCount : tileCounts.entrySet()) {
-//					for(Material m : Material.values()) {
-//						if (tileCount.getKey().endsWith(m.imgSrc)) {
-//							materialsList.addMaterial(m, tileCount.getValue());
-//						}
-//					}
-//				}
+				Map<Material,Integer> materialCounts = tileModel.getCurrentLayerMaterialCount();
+				for(Entry<Material,Integer> entry : materialCounts.entrySet()) {
+					materialsList.addMaterial(entry.getKey(), entry.getValue());
+				}
 				materialsPanel.center();
 			}
 		});
@@ -107,20 +104,10 @@ public class MCDesigner implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				materialsList.clearMaterials();
-				
-//				HashMap<String,Integer> tileCounts = tileView.countTiles();
-//				for(Entry<Integer,HashMap<Point,String>> entry : layerMap.entrySet()) {
-//					if (entry.getKey() == currentLayer) continue;
-//					countLayerTiles(entry.getValue(), tileCounts);
-//				}
-//				
-//				for(Entry<String,Integer> tileCount : tileCounts.entrySet()) {
-//					for(Material m : Material.values()) {
-//						if (tileCount.getKey().endsWith(m.imgSrc)) {
-//							materialsList.addMaterial(m, tileCount.getValue());
-//						}
-//					}
-//				}
+				Map<Material,Integer> materialCounts = tileModel.getTotalMaterialCount();
+				for(Entry<Material,Integer> entry : materialCounts.entrySet()) {
+					materialsList.addMaterial(entry.getKey(), entry.getValue());
+				}
 				materialsPanel.center();
 			}
 			

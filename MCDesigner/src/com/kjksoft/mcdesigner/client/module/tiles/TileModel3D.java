@@ -6,10 +6,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.kjksoft.mcdesigner.client.Material;
 
 public class TileModel3D extends AbstractTileModel {
+	// TODO consider rewriting this class to use GWT Lightweight Collections,
+	// for performance purposes
 	Axis currentAxis = Axis.Z;
 	int currentLayer = 0;
 	
@@ -143,6 +146,34 @@ public class TileModel3D extends AbstractTileModel {
 		onTilesUpdate(points);
 	}
 	
+	public Map<Material,Integer> getCurrentLayerMaterialCount() {
+		Map<Material,Integer> materialCounts = new HashMap<Material, Integer>();
+		addLayerMaterialCounts(materialCounts, currentAxis, currentLayer);
+		return materialCounts;
+	}
+	
+	public Map<Material,Integer> getTotalMaterialCount() {
+		Map<Material,Integer> materialCounts = new HashMap<Material, Integer>();
+		for(Entry<Integer,HashMap<Point,Material>> entry : materialMap.xMap.entrySet()) {
+			addLayerMaterialCounts(materialCounts, Axis.X, entry.getKey());
+		}
+		return materialCounts;
+	}
+	
+	void addLayerMaterialCounts(Map<Material,Integer> map, Axis axis, int layer) {
+		Map<Point, Material> currentMapLayer = getMapLayer(axis,layer);
+		if (currentMapLayer != null) {
+			for(Entry<Point,Material> entry : currentMapLayer.entrySet()) {
+				Material m = entry.getValue();
+				if (map.containsKey(m)) {
+					map.put(m, map.get(m)+1);
+					continue;
+				}
+				map.put(m,1);
+			}
+		}
+	}
+	
 	public int getCurrentLayer() {
 		return currentLayer;
 	}
@@ -190,7 +221,7 @@ public class TileModel3D extends AbstractTileModel {
 	}
 	
 	void populateMap(Map<Point,Material> map, int layer) {
-		Map<Point, Material> mapLayer = getMapLayer(layer);
+		Map<Point, Material> mapLayer = getMapLayer(currentAxis,layer);
 		if (mapLayer != null) {
 			map.putAll(mapLayer);
 		}
@@ -284,8 +315,8 @@ public class TileModel3D extends AbstractTileModel {
 		throw new IllegalArgumentException("current axis is invalid");
 	}
 	
-	Map<Point,Material> getMapLayer(int layer) {
-		switch(currentAxis) {
+	Map<Point,Material> getMapLayer(Axis axis, int layer) {
+		switch(axis) {
 		case X:
 			return materialMap.getXLayer(layer);
 		case Y:
