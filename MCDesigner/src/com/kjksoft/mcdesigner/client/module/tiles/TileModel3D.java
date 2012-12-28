@@ -215,8 +215,11 @@ public class TileModel3D extends AbstractTileModel {
 	
 	void recalcLowerLayers() {
 		lowerLayersMap.clear();
-		for(int layer=mapLayerMin(); layer<currentLayer-1; layer++) {
-			populateMap(lowerLayersMap,layer);
+		Integer layerMin = mapLayerMin();
+		if (layerMin != null) {
+			for(int layer = layerMin; layer<currentLayer-1; layer++) {
+				populateMap(lowerLayersMap,layer);
+			}
 		}
 	}
 	
@@ -303,7 +306,7 @@ public class TileModel3D extends AbstractTileModel {
 		throw new IllegalArgumentException("current axis is invalid");
 	}
 	
-	int mapLayerMin() {
+	Integer mapLayerMin() {
 		switch(currentAxis) {
 		case X:
 			return materialMap.getXMin();
