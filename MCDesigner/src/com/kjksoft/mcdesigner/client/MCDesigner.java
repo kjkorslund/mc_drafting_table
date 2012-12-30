@@ -1,6 +1,5 @@
 package com.kjksoft.mcdesigner.client;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -24,6 +23,8 @@ import com.kjksoft.mcdesigner.client.module.Palette;
 import com.kjksoft.mcdesigner.client.module.tiles.Point;
 import com.kjksoft.mcdesigner.client.module.tiles.TileModel3D;
 import com.kjksoft.mcdesigner.client.module.tiles.TileView;
+import com.kjksoft.mcdesigner.client.tool.PaintMouseHandler;
+import com.kjksoft.mcdesigner.client.tool.ToolMouseHandler;
 
 public class MCDesigner implements EntryPoint {
 	
@@ -37,6 +38,48 @@ public class MCDesigner implements EntryPoint {
 	private final Label mouseCoords = new Label("x: ; z:");
 	private final PopupPanel materialsPanel = new PopupPanel(true,true);
 	private final MaterialsList materialsList = new MaterialsList();
+	
+	// TODO replace existing mouse handler with tool-specific handler logic
+	private final PaintMouseHandler pencilMouseHandler = new PaintMouseHandler() {
+		@Override
+		protected void onTilePaint(TileView tileView, Point p) {
+			drawTile(p,palette.getPrimaryMaterial());
+		}
+	};
+	
+	private final PaintMouseHandler eraserMouseHandler = new PaintMouseHandler() {
+		@Override
+		protected void onTilePaint(TileView tileView, Point p) {
+			drawTile(p,null);
+		}
+	};
+	
+	private ToolMouseHandler scrollMouseHandler = new ToolMouseHandler() {
+		@Override
+		protected void onMouseUp(TileView tileView, MouseUpEvent event) {
+			// Do nothing
+		}
+		
+		@Override
+		protected void onMouseMove(TileView tileView, MouseMoveEvent event) {
+			if (isMouseDown()) {
+				Point p = tileView.getCoordsFromMouseEvent(event);
+				if (!p.equals(getMouseDownPoint())) {
+					Point pScroll = tileView.getScrollOffset();
+					pScroll = new Point(
+							pScroll.x + p.x - getMouseDownPoint().x,
+							pScroll.y + p.y - getMouseDownPoint().y
+					);
+					tileView.setScrollOffset(pScroll);
+				}
+			}
+		}
+		
+		@Override
+		protected void onMouseDown(TileView tileView, MouseDownEvent event) {
+			// Do nothing
+		}
+	};
 	
 	@Override
 	public void onModuleLoad() {
@@ -110,14 +153,6 @@ public class MCDesigner implements EntryPoint {
 				}
 				materialsPanel.center();
 			}
-			
-			void countLayerTiles(HashMap<Point,String> layer, HashMap<String,Integer> result) {
-				for(Entry<Point,String> entry : layer.entrySet()) {
-					String imgSrc = entry.getValue();
-					Integer count = result.get(imgSrc);
-					result.put(imgSrc, count == null ? 1 : count+1);
-				}
-			}
 		});
 		toolPanel.prevLayerButton.addClickHandler(new ClickHandler() {
 			@Override
@@ -153,7 +188,7 @@ public class MCDesigner implements EntryPoint {
 	private void onTilePaint(Point p) {
 		switch(toolPanel.getSelectedTool()) {
 		case PENCIL:
-			drawTile(p,palette.getPrimaryMaterial());
+			
 			break;
 		case ERASER:
 			drawTile(p,null);
@@ -186,10 +221,9 @@ public class MCDesigner implements EntryPoint {
 		}
 	}
 	
-	private void drawTiles(HashMap<Point,Material> tileMap) {
-		tileModel.putTiles(tileModel.getCurrentLayer(),tileMap);
-	}
-	
+	// TODO figure out how to make this abstract and create different
+	// implementations per tool (since selection tool is going to be implemented
+	// very differently than pencil tool, for example)
 	private class TileMouseHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler {
 
 		private boolean isMouseDown = false;
