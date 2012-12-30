@@ -34,6 +34,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class TileView extends Widget implements HasAllMouseHandlers, HasClickHandlers {
 	private final HashMap<Point,ImageElement> tileMap = new HashMap<Point, ImageElement>();
 	private final DivElement tileContainer;
+	private Point scrollOffset = new Point(0,0);
 	
 	private ITileModel model;
 	private int tileSize;
@@ -123,6 +124,17 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		}
 	}
 	
+	public Point getScrollOffset() {
+		return scrollOffset;
+	}
+	
+	public void setScrollOffset(Point offset) {
+		this.scrollOffset = offset;
+		for(Entry<Point,ImageElement> entry : tileMap.entrySet()) {
+			updateTileCoords(entry.getKey(), entry.getValue());
+		}
+	}
+	
 	private void setTile(Point p, String imgSrc) {
 		ImageElement img = tileMap.get(p);
 		if (img == null) {
@@ -133,12 +145,12 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 			tileMap.put(p, img);
 		}
 		img.setSrc(imgSrc);
-		updateTile(p,img);
+		updateTileCoords(p,img);
 	}
 	
-	private void updateTile(Point p, ImageElement img) {
-		img.getStyle().setProperty("left", Integer.toString(p.x*tileSize) + "px");
-		img.getStyle().setProperty("top", Integer.toString(p.y*tileSize) + "px");
+	private void updateTileCoords(Point p, ImageElement img) {
+		img.getStyle().setProperty("left", Integer.toString((p.x + scrollOffset.x)*tileSize) + "px");
+		img.getStyle().setProperty("top", Integer.toString((p.y + scrollOffset.y)*tileSize) + "px");
 		img.getStyle().setProperty("width", Integer.toString(tileSize) + "px");
 		img.getStyle().setProperty("height", Integer.toString(tileSize) + "px");
 	}
@@ -148,7 +160,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 				event.getRelativeX(getElement()),
 				event.getRelativeY(getElement())
 			);
-		return new Point(p.x/tileSize,p.y/tileSize);
+		return new Point((p.x + scrollOffset.x)/tileSize,(p.y + scrollOffset.y)/tileSize);
 	}
 
 	@Override
