@@ -191,6 +191,7 @@ public class MCDesigner implements EntryPoint {
 				}
 			}
 		});
+		toolPanel.toolBox.selectTool(Tool.PENCIL);
 		
 		for(MaterialType type : MaterialType.values()) {
 			palette.addMaterialType(type);
