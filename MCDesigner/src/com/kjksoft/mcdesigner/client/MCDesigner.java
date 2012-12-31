@@ -4,16 +4,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -39,7 +36,6 @@ public class MCDesigner implements EntryPoint {
 	private final PopupPanel materialsPanel = new PopupPanel(true,true);
 	private final MaterialsList materialsList = new MaterialsList();
 	
-	// TODO replace existing mouse handler with tool-specific handler logic
 	private final PaintMouseHandler pencilMouseHandler = new PaintMouseHandler() {
 		@Override
 		protected void onTilePaint(TileView tileView, Point p) {
@@ -64,12 +60,16 @@ public class MCDesigner implements EntryPoint {
 		protected void onMouseMove(TileView tileView, MouseMoveEvent event) {
 			if (isMouseDown()) {
 				Point p = tileView.getCoordsFromMouseEvent(event);
-				if (!p.equals(getMouseDownPoint())) {
+				int dx = p.x - getMouseDownPoint().x;
+				int dy = p.y - getMouseDownPoint().y;
+				
+				if (dx != 0 || dy != 0) {
 					Point pScroll = tileView.getScrollOffset();
 					pScroll = new Point(
-							pScroll.x + p.x - getMouseDownPoint().x,
-							pScroll.y + p.y - getMouseDownPoint().y
+						pScroll.x - dx,
+						pScroll.y - dy
 					);
+					System.out.println(p + " " + getMouseDownPoint() + " " + pScroll);
 					tileView.setScrollOffset(pScroll);
 				}
 			}
@@ -107,7 +107,7 @@ public class MCDesigner implements EntryPoint {
 		RootLayoutPanel.get().add(mainPanel);
 		
 		// Add mouse handler
-		new TileMouseHandler();
+		//new TileMouseHandler();
 		tileView.addMouseMoveHandler(new MouseMoveHandler() {
 			@Override
 			public void onMouseMove(MouseMoveEvent event) {
@@ -170,10 +170,28 @@ public class MCDesigner implements EntryPoint {
 						Integer.toString(tileModel.getCurrentLayer()));
 			}
 		});
+		toolPanel.toolBox.addToolSelectionHandler(new ToolSelectionHandler() {
+			@Override
+			public void onToolSelection(Tool newTool) {
+				pencilMouseHandler.removeFrom(tileView);
+				eraserMouseHandler.removeFrom(tileView);
+				scrollMouseHandler.removeFrom(tileView);
+				switch(newTool) {
+				case ERASER:
+					eraserMouseHandler.installOn(tileView);
+					break;
+				case PENCIL:
+					pencilMouseHandler.installOn(tileView);
+					break;
+				case SCROLL:
+					scrollMouseHandler.installOn(tileView);
+					break;
+				default:
+					throw new UnsupportedOperationException();
+				}
+			}
+		});
 		
-//		for(Material m : Material.values()) {
-//			palette.addMaterial(m);
-//		}
 		for(MaterialType type : MaterialType.values()) {
 			palette.addMaterialType(type);
 			for(Material m : type.getMaterials()) {
@@ -185,79 +203,11 @@ public class MCDesigner implements EntryPoint {
 		palette.setPrimaryMaterial(Material.DIRT);
 	}
 	
-	private void onTilePaint(Point p) {
-		switch(toolPanel.getSelectedTool()) {
-		case PENCIL:
-			
-			break;
-		case ERASER:
-			drawTile(p,null);
-			break;
-			
-		// The following operations are not paint operations
-		case FILL:
-			// Do nothing
-		}
-	}
-	
-	private void onTileClick(Point p) {
-		switch(toolPanel.getSelectedTool()) {
-		case PENCIL:
-			drawTile(p,palette.getPrimaryMaterial());
-			break;
-		case ERASER:
-			drawTile(p,null);
-			break;
-		case FILL:
-			// TODO
-		}
-	}
-	
 	private void drawTile(Point p, Material m) {
 		if (m == null) {
 			tileModel.removeTile(p);
 		} else {
 			tileModel.putTile(p, m);
-		}
-	}
-	
-	// TODO figure out how to make this abstract and create different
-	// implementations per tool (since selection tool is going to be implemented
-	// very differently than pencil tool, for example)
-	private class TileMouseHandler implements MouseDownHandler, MouseUpHandler, MouseMoveHandler {
-
-		private boolean isMouseDown = false;
-		private Point mouseDownPoint;
-		
-		public TileMouseHandler() {
-			tileView.addMouseUpHandler(this);
-			tileView.addMouseDownHandler(this);
-			tileView.addMouseMoveHandler(this);
-		}
-		
-		@Override
-		public void onMouseMove(MouseMoveEvent event) {
-			if (isMouseDown) {
-				Point p = tileView.getCoordsFromMouseEvent(event);
-				onTilePaint(p);
-			}
-		}
-
-		@Override
-		public void onMouseUp(MouseUpEvent event) {
-			isMouseDown = false;
-			if (mouseDownPoint != null && mouseDownPoint.equals(tileView.getCoordsFromMouseEvent(event))) {
-				onTileClick(mouseDownPoint);
-			}
-			mouseDownPoint = null;
-		}
-
-		@Override
-		public void onMouseDown(MouseDownEvent event) {
-			if (event.getNativeButton() == NativeEvent.BUTTON_LEFT) { 
-				isMouseDown = true;
-				mouseDownPoint = tileView.getCoordsFromMouseEvent(event);
-			}
 		}
 	}
 }
