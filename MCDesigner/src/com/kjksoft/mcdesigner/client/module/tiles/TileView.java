@@ -32,6 +32,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
 
 public class TileView extends Widget implements HasAllMouseHandlers, HasClickHandlers {
+	private final int[] zoomLevels = new int[] { 8,16,32,48 };
+	private int iZoomLevel = 2;
+	
 	private final HashMap<Point,ImageElement> tileMap = new HashMap<Point, ImageElement>();
 	private final DivElement tileContainer;
 	private Point scrollOffset = new Point(0,0);
@@ -73,7 +76,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		tileContainer.getStyle().setHeight(100, Unit.PCT);
 		getElement().appendChild(tileContainer);
 		
-		setTileSize(32);
+		refreshZoom();
 	}
 	
 	public ITileModel getModel() {
@@ -87,16 +90,36 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		model = tileModel;
 		model.addTileListener(tileListener);
 	}
-
-	public int getTileSize() {
-		return tileSize;
+	
+	public void zoomIn() {
+		if (!canZoomIn()) throw new RuntimeException("cannot zoom in");
+		iZoomLevel++;
+		refreshZoom();
 	}
-
-	public void setTileSize(int tileSize) {
-		this.tileSize = tileSize;
-		tileContainer.getStyle().setBackgroundImage("url('images/grid_32.png')");
+	
+	public void zoomOut() {
+		if (!canZoomOut()) throw new RuntimeException("cannot zoom out");
+		iZoomLevel--;
+		refreshZoom();
+	}
+	
+	private void refreshZoom() {
+		int tileSize = tileSize();
+		tileContainer.getStyle().setBackgroundImage("url('images/grid_" + tileSize + ".png')");
 		tileContainer.getStyle().setProperty("backgroundSize", tileSize, Unit.PX);
 		tileContainer.getStyle().setProperty("backgroundRepeat", "repeat");
+	}
+	
+	private int tileSize() {
+		return zoomLevels[iZoomLevel];
+	}
+
+	public boolean canZoomIn() {
+		return iZoomLevel < zoomLevels.length - 1;
+	}
+	
+	public boolean canZoomOut() {
+		return iZoomLevel > 0;
 	}
 
 	public HashMap<Point,String> getTiles() {

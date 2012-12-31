@@ -12,5 +12,8 @@
 		<g:Button ui:field="prevLayerButton" text="&lt;&lt;"/>
 		<span ui:field="currentLayer">Layer 0</span>
 		<g:Button ui:field="nextLayerButton" text="&gt;&gt;"/>
+		<span>Zoom: </span>
+		<g:Button ui:field="zoomInButton" text="+"/>
+		<g:Button ui:field="zoomOutButton" text="-"/>
 	</g:HTMLPanel>
 </ui:UiBinder> 

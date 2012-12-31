@@ -84,7 +84,6 @@ public class MCDesigner implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		// Initialize the tile area
-		tileView.setTileSize(32);
 		tileView.setSize("100%", "100%");
 		tileView.setStyleName("tilearea");
 		tileView.setModel(tileModel);
@@ -170,6 +169,23 @@ public class MCDesigner implements EntryPoint {
 						Integer.toString(tileModel.getCurrentLayer()));
 			}
 		});
+		toolPanel.zoomInButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				tileView.zoomIn();
+				toolPanel.zoomInButton.setEnabled(tileView.canZoomIn());
+				toolPanel.zoomOutButton.setEnabled(tileView.canZoomOut());
+			}
+		});
+		toolPanel.zoomOutButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				tileView.zoomOut();
+				toolPanel.zoomInButton.setEnabled(tileView.canZoomIn());
+				toolPanel.zoomOutButton.setEnabled(tileView.canZoomOut());
+			}
+		});
+		
 		toolPanel.toolBox.addToolSelectionHandler(new ToolSelectionHandler() {
 			@Override
 			public void onToolSelection(Tool newTool) {
