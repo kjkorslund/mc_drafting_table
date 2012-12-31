@@ -149,8 +149,8 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 	}
 	
 	private void updateTileCoords(Point p, ImageElement img) {
-		img.getStyle().setProperty("left", Integer.toString((p.x + scrollOffset.x)*tileSize) + "px");
-		img.getStyle().setProperty("top", Integer.toString((p.y + scrollOffset.y)*tileSize) + "px");
+		img.getStyle().setProperty("left", Integer.toString((p.x - scrollOffset.x)*tileSize) + "px");
+		img.getStyle().setProperty("top", Integer.toString((p.y - scrollOffset.y)*tileSize) + "px");
 		img.getStyle().setProperty("width", Integer.toString(tileSize) + "px");
 		img.getStyle().setProperty("height", Integer.toString(tileSize) + "px");
 	}
@@ -160,7 +160,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 				event.getRelativeX(getElement()),
 				event.getRelativeY(getElement())
 			);
-		return new Point((p.x + scrollOffset.x)/tileSize,(p.y + scrollOffset.y)/tileSize);
+		return new Point(p.x/tileSize + scrollOffset.x,p.y/tileSize + scrollOffset.y);
 	}
 
 	@Override
