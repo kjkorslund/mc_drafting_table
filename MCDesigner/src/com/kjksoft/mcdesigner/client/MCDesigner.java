@@ -69,7 +69,6 @@ public class MCDesigner implements EntryPoint {
 						pScroll.x - dx,
 						pScroll.y - dy
 					);
-					System.out.println(p + " " + getMouseDownPoint() + " " + pScroll);
 					tileView.setScrollOffset(pScroll);
 				}
 			}
