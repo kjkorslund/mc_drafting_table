@@ -40,7 +40,6 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 	private Point scrollOffset = new Point(0,0);
 	
 	private ITileModel model;
-	private int tileSize;
 	private final TileListener tileListener = new TileListener() {
 		@Override
 		public void onTileUpdate(ITileModel model, Point p) {
@@ -108,6 +107,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		tileContainer.getStyle().setBackgroundImage("url('images/grid_" + tileSize + ".png')");
 		tileContainer.getStyle().setProperty("backgroundSize", tileSize, Unit.PX);
 		tileContainer.getStyle().setProperty("backgroundRepeat", "repeat");
+		updateAllTileCoords();
 	}
 	
 	private int tileSize() {
@@ -153,9 +153,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 	
 	public void setScrollOffset(Point offset) {
 		this.scrollOffset = offset;
-		for(Entry<Point,ImageElement> entry : tileMap.entrySet()) {
-			updateTileCoords(entry.getKey(), entry.getValue());
-		}
+		updateAllTileCoords();
 	}
 	
 	private void setTile(Point p, String imgSrc) {
@@ -171,11 +169,19 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		updateTileCoords(p,img);
 	}
 	
+	private void updateAllTileCoords() {
+		for(Entry<Point,ImageElement> entry : tileMap.entrySet()) {
+			updateTileCoords(entry.getKey(), entry.getValue());
+		}
+	}
+	
 	private void updateTileCoords(Point p, ImageElement img) {
+		int tileSize = tileSize();
 		img.getStyle().setProperty("left", Integer.toString((p.x - scrollOffset.x)*tileSize) + "px");
 		img.getStyle().setProperty("top", Integer.toString((p.y - scrollOffset.y)*tileSize) + "px");
-		img.getStyle().setProperty("width", Integer.toString(tileSize) + "px");
-		img.getStyle().setProperty("height", Integer.toString(tileSize) + "px");
+		String sTileSize = Integer.toString(tileSize);
+		img.getStyle().setProperty("width", sTileSize + "px");
+		img.getStyle().setProperty("height", sTileSize + "px");
 	}
 	
 	public <H extends EventHandler> Point getCoordsFromMouseEvent(MouseEvent<H> event) {
@@ -183,6 +189,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 				event.getRelativeX(getElement()),
 				event.getRelativeY(getElement())
 			);
+		int tileSize = tileSize();
 		return new Point(p.x/tileSize + scrollOffset.x,p.y/tileSize + scrollOffset.y);
 	}
 
