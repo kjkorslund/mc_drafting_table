@@ -181,11 +181,11 @@ public class LayerMap3D<T> {
 	}
 	
 	private T clearZ(Point3 p) {
-		HashMap<Point,T> zLayer = yMap.get(p.z);
+		HashMap<Point,T> zLayer = zMap.get(p.z);
 		if (zLayer != null) {
 			T result = zLayer.remove(new Point(p.x,p.y));
 			if (zLayer.size() == 0) {
-				yMap.remove(p.z);
+				zMap.remove(p.z);
 				clearZMinMax(p.z);
 			}
 			return result;
@@ -210,24 +210,24 @@ public class LayerMap3D<T> {
 	
 	private void clearXMinMax(int x) {
 		Integer newMin = null, newMax = null;
-		if (x == xMin) newMin = calcMin(xMap, xMin, xMax);
-		if (x == xMax) newMax = calcMax(xMap, xMin, xMax);
+		if (xMin != null && x == xMin) newMin = calcMin(xMap, xMin, xMax);
+		if (xMax != null && x == xMax) newMax = calcMax(xMap, xMin, xMax);
 		xMin = newMin;
 		xMax = newMax;
 	}
 	
 	private void clearYMinMax(int y) {
 		Integer newMin = null, newMax = null;
-		if (y == yMin) newMin = calcMin(yMap, yMin, yMax);
-		if (y == yMax) newMax = calcMax(yMap, yMin, yMax);
+		if (yMin != null && y == yMin) newMin = calcMin(yMap, yMin, yMax);
+		if (yMax != null && y == yMax) newMax = calcMax(yMap, yMin, yMax);
 		yMin = newMin;
 		yMax = newMax;
 	}
 	
 	private void clearZMinMax(int z) {
 		Integer newMin = null, newMax = null;
-		if (z == zMin) newMin = calcMin(zMap, zMin, zMax);
-		if (z == zMax) newMax = calcMax(zMap, zMin, zMax);
+		if (zMin != null && z == zMin) newMin = calcMin(zMap, zMin, zMax);
+		if (zMax != null && z == zMax) newMax = calcMax(zMap, zMin, zMax);
 		zMin = newMin;
 		zMax = newMax;
 	}

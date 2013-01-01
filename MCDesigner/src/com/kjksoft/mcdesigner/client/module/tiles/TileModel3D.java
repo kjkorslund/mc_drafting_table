@@ -102,8 +102,9 @@ public class TileModel3D extends AbstractTileModel {
 	}
 	
 	public void removeTile(int layer, Point p) {
-		if (!_removeTile(point3(layer,p))) return;
-		recalcLowerLayers();
+		if (_removeTile(point3(layer,p))) {
+			recalcLowerLayers();
+		}
 		onTileUpdate(p);
 	}
 	
@@ -250,6 +251,10 @@ public class TileModel3D extends AbstractTileModel {
 		return false;
 	}
 	
+	/**
+	 * @param p
+	 * @return true if lower layers need to be recalculated; false otherwise
+	 */
 	boolean _removeTile(Point3 p) {
 		materialMap.remove(p);
 		int layer = layer(p);
