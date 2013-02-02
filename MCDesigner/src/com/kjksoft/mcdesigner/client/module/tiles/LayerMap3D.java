@@ -209,27 +209,51 @@ public class LayerMap3D<T> {
 	}
 	
 	private void clearXMinMax(int x) {
-		Integer newMin = null, newMax = null;
-		if (xMin != null && x == xMin) newMin = calcMin(xMap, xMin, xMax);
-		if (xMax != null && x == xMax) newMax = calcMax(xMap, xMin, xMax);
-		xMin = newMin;
-		xMax = newMax;
+		if (xMin != null && xMax != null) {
+			if (x == xMin) {
+				xMin = calcMin(xMap, xMin, xMax);
+				if (xMin == null) xMax = null;
+			}
+			else if (x == xMax) {
+				xMax = calcMax(xMap, xMin, xMax);
+				if (xMax == null) xMin = null;
+			}
+		} else {
+			xMin = null;
+			xMax = null;
+		}
 	}
 	
 	private void clearYMinMax(int y) {
-		Integer newMin = null, newMax = null;
-		if (yMin != null && y == yMin) newMin = calcMin(yMap, yMin, yMax);
-		if (yMax != null && y == yMax) newMax = calcMax(yMap, yMin, yMax);
-		yMin = newMin;
-		yMax = newMax;
+		if (yMin != null && yMax != null) {
+			if (y == yMin) {
+				yMin = calcMin(yMap, yMin, yMax);
+				if (yMin == null) yMax = null;
+			}
+			else if (y == yMax) {
+				yMax = calcMax(yMap, yMin, yMax);
+				if (yMax == null) yMin = null;
+			}
+		} else {
+			yMin = null;
+			yMax = null;
+		}
 	}
 	
 	private void clearZMinMax(int z) {
-		Integer newMin = null, newMax = null;
-		if (zMin != null && z == zMin) newMin = calcMin(zMap, zMin, zMax);
-		if (zMax != null && z == zMax) newMax = calcMax(zMap, zMin, zMax);
-		zMin = newMin;
-		zMax = newMax;
+		if (zMin != null && zMax != null) {
+			if (z == zMin) {
+				zMin = calcMin(zMap, zMin, zMax);
+				if (zMin == null) zMax = null;
+			}
+			else if (z == zMax) {
+				zMax = calcMax(zMap, zMin, zMax);
+				if (zMax == null) zMin = null;
+			}
+		} else {
+			zMin = null;
+			zMax = null;
+		}
 	}
 	
 	private Integer calcMin(HashMap<Integer,HashMap<Point,T>> map, int min, int max) {
