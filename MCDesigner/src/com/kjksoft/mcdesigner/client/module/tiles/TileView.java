@@ -37,7 +37,8 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 	private final int[] zoomLevels = new int[] { 8,16,32,48 };
 	private int iZoomLevel = 2;
 	
-	private final HashMap<Point,CanvasElement> tileMap = new HashMap<Point, CanvasElement>();
+	private final HashMap<String, ImageElement> imgSourceMap = new HashMap<String, ImageElement>();
+	private final HashMap<Point,Tile> tileMap = new HashMap<Point, Tile>();
 	private final DivElement tileContainer;
 	private Point scrollOffset = new Point(0,0);
 	
@@ -124,30 +125,10 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		return iZoomLevel > 0;
 	}
 
-	public HashMap<Point,String> getTiles() {
-		// TODO: fix or remove
-		HashMap<Point, String> result = new HashMap<Point, String>();
-//		for(Entry<Point,CanvasElement> entry : tileMap.entrySet()) {
-//			result.put(entry.getKey(), entry.getValue().getSrc());
-//		}
-		return result;
-	}
-	
-	public HashMap<String,Integer> countTiles() {
-		// TODO: fix or remove
-		HashMap<String,Integer> result = new HashMap<String, Integer>();
-//		for(Entry<Point,CanvasElement> entry : tileMap.entrySet()) {
-//			String imgSrc = entry.getValue().getSrc();
-//			Integer count = result.get(imgSrc);
-//			result.put(imgSrc, count == null ? 1 : count+1);
-//		}
-		return result;
-	}
-	
 	private void clearTile(Point p) {
-		CanvasElement canvas = tileMap.remove(p);
-		if (canvas != null) {
-			tileContainer.removeChild(canvas);
+		Tile tile = tileMap.remove(p);
+		if (tile != null) {
+			tileContainer.removeChild(tile.getCanvas());
 		}
 	}
 	
@@ -161,37 +142,34 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 	}
 	
 	private void setTile(Point p, String imgSrc) {
-		CanvasElement canvas = tileMap.get(p);
-		if (canvas == null) {
-			canvas = Document.get().createCanvasElement();
-			canvas.getStyle().setPosition(Position.ABSOLUTE);
-			canvas.getStyle().setZIndex(-1);
-			tileContainer.appendChild(canvas);
-			tileMap.put(p, canvas);
+		Tile tile = tileMap.get(p);
+		if (tile == null) {
+			tile = new Tile();
+			tileContainer.appendChild(tile.getCanvas());
+			tileMap.put(p, tile);
 		}
+
+		ImageElement img = getSourceImage(imgSrc);
+		tile.setSourceImage(img);
 		
-//		img.setSrc(imgSrc);
-//		updateTileCoords(p,img);
-		
-		updateTileCoords(p,canvas);
-		ImageElement img = Document.get().createImageElement();
-		img.setSrc(imgSrc);
-		Context2d ctx = canvas.getContext2d();
-		ctx.drawImage(img, 0, 0, tileSize(), tileSize());
+		tile.draw(p);
+	}
+	
+	private ImageElement getSourceImage(String imgSrc) {
+		ImageElement result = imgSourceMap.get(imgSrc);
+		if (result == null) {
+			result = Document.get().createImageElement();
+			result.setSrc(imgSrc);
+		}
+		return result;
 	}
 	
 	private void updateAllTileCoords() {
-		for(Entry<Point,CanvasElement> entry : tileMap.entrySet()) {
-			updateTileCoords(entry.getKey(), entry.getValue());
+		for(Entry<Point,Tile> entry : tileMap.entrySet()) {
+			Point p = entry.getKey();
+			Tile tile = entry.getValue();
+			tile.draw(p);
 		}
-	}
-	
-	private void updateTileCoords(Point p, CanvasElement canvas) {
-		int tileSize = tileSize();
-		canvas.getStyle().setProperty("left", Integer.toString((p.x - scrollOffset.x)*tileSize) + "px");
-		canvas.getStyle().setProperty("top", Integer.toString((p.y - scrollOffset.y)*tileSize) + "px");
-		canvas.setWidth(tileSize);
-		canvas.setHeight(tileSize);
 	}
 	
 	public <H extends EventHandler> Point getCoordsFromMouseEvent(MouseEvent<H> event) {
@@ -236,5 +214,41 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 	@Override
 	public HandlerRegistration addClickHandler(ClickHandler handler) {
 		return addDomHandler(handler, ClickEvent.getType());
+	}
+	
+	private final class Tile {
+		private final CanvasElement canvas;
+		private ImageElement sourceImage;
+		
+		public Tile() {
+			this.canvas = Document.get().createCanvasElement();
+			this.canvas.getStyle().setPosition(Position.ABSOLUTE);
+			this.canvas.getStyle().setZIndex(-1);
+		}
+
+		public ImageElement getSourceImage() {
+			return sourceImage;
+		}
+
+		public void setSourceImage(ImageElement sourceImage) {
+			this.sourceImage = sourceImage;
+		}
+
+		public CanvasElement getCanvas() {
+			return canvas;
+		}
+		
+		public void draw(Point p) {
+			int tileSize = tileSize();
+			canvas.getStyle().setProperty("left", Integer.toString((p.x - scrollOffset.x)*tileSize) + "px");
+			canvas.getStyle().setProperty("top", Integer.toString((p.y - scrollOffset.y)*tileSize) + "px");
+			canvas.setWidth(tileSize);
+			canvas.setHeight(tileSize);
+			
+			if (sourceImage != null) {
+				Context2d ctx = canvas.getContext2d();
+				ctx.drawImage(sourceImage, 0, 0, tileSize(), tileSize());
+			}
+		}
 	}
 }
