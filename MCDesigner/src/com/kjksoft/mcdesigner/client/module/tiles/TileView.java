@@ -247,7 +247,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 			
 			if (sourceImage != null) {
 				Context2d ctx = canvas.getContext2d();
-				ctx.drawImage(sourceImage, 0, 0, tileSize(), tileSize());
+				ctx.drawImage(sourceImage, 0, 0, tileSize, tileSize);
 			}
 		}
 	}
