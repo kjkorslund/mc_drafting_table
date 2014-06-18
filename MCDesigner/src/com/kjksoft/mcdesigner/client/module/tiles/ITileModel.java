@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.List;
 
 
-public interface ITileModel {
+public interface ITileModel<T> {
 	public void addTileListener(TileListener listener);
 	public void removeTileListener(TileListener listener);
 	
 	public boolean hasTile(Point p);
-	public String getTile(Point p);
-	public List<String> getTiles(Collection<Point> points);
+	public T getTile(Point p);
+	public List<T> getTiles(Collection<Point> points);
 }

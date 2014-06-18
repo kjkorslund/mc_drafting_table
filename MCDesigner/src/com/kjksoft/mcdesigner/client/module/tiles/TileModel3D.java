@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 import com.kjksoft.mcdesigner.client.Material;
 
-public class TileModel3D extends AbstractTileModel {
+public class TileModel3D extends AbstractTileModel<String> {
 	// TODO consider rewriting this class to use GWT Lightweight Collections,
 	// for performance purposes
 	Axis currentAxis = Axis.Z;

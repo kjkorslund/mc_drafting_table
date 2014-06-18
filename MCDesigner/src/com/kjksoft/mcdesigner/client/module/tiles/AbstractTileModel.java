@@ -3,7 +3,7 @@ package com.kjksoft.mcdesigner.client.module.tiles;
 import java.util.Collection;
 import java.util.HashSet;
 
-public abstract class AbstractTileModel implements ITileModel {
+public abstract class AbstractTileModel<T> implements ITileModel<T> {
 	private final HashSet<TileListener> listeners = new HashSet<TileListener>();
 	
 	@Override
