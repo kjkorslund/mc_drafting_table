@@ -9,8 +9,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.kjksoft.mcdesigner.client.Material;
+import com.kjksoft.mcdesigner.client.canvas.FadeTransformer;
+import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
+import com.kjksoft.mcdesigner.client.texture.Texture;
 
-public class TileModel3D extends AbstractTileModel<String> {
+public class TileModel3D extends AbstractTileModel<ImageBuffer> {
 	// TODO consider rewriting this class to use GWT Lightweight Collections,
 	// for performance purposes
 	Axis currentAxis = Axis.Z;
@@ -21,6 +24,9 @@ public class TileModel3D extends AbstractTileModel<String> {
 	final HashMap<Point,Material> currentLayerMap = new HashMap<Point, Material>();
 	final HashMap<Point,Material> prevLayerMap = new HashMap<Point, Material>();
 	final HashMap<Point,Material> lowerLayersMap = new HashMap<Point, Material>();
+	
+	final HashMap<Texture, ImageBuffer> prevLayerImageMap = new HashMap<Texture, ImageBuffer>();
+	final HashMap<Texture, ImageBuffer> lowerLayersImageMap = new HashMap<Texture, ImageBuffer>();
 
 	@Override
 	public boolean hasTile(Point p) {
@@ -30,22 +36,48 @@ public class TileModel3D extends AbstractTileModel<String> {
 	}
 
 	@Override
-	public String getTile(Point p) {
+	public ImageBuffer getTile(Point p) {
 		Material m = currentLayerMap.get(p);
-		if (m != null) return m.imgSrc;
+		if (m != null) return m.texture.getImgBuffer();
 		
 		m = prevLayerMap.get(p);
-		if (m != null) return m.imgSrc_66;
+		if (m != null) return getPrevLayerImage(m.texture);
 		
 		m = lowerLayersMap.get(p);
-		if (m != null) return m.imgSrc_33;
+		if (m != null) return getLowerLayersImage(m.texture);
 		
 		return null;
 	}
+	
+	private ImageBuffer getPrevLayerImage(Texture texture) {
+		ImageBuffer result = prevLayerImageMap.get(texture);
+		if (result == null) {
+			result = new ImageBuffer();
+			result.loadFromImageBuffer(texture.getImgBuffer());
+			FadeTransformer transformer = new FadeTransformer();
+			transformer.setStrength(0.66f);
+			transformer.transform(result);
+			prevLayerImageMap.put(texture, result);
+		}
+		return result;
+	}
+	
+	private ImageBuffer getLowerLayersImage(Texture texture) {
+		ImageBuffer result = lowerLayersImageMap.get(texture);
+		if (result == null) {
+			result = new ImageBuffer();
+			result.loadFromImageBuffer(texture.getImgBuffer());
+			FadeTransformer transformer = new FadeTransformer();
+			transformer.setStrength(0.33f);
+			transformer.transform(result);
+			lowerLayersImageMap.put(texture, result);
+		}
+		return result;
+	}
 
 	@Override
-	public List<String> getTiles(Collection<Point> points) {
-		ArrayList<String> results = new ArrayList<String>();
+	public List<ImageBuffer> getTiles(Collection<Point> points) {
+		ArrayList<ImageBuffer> results = new ArrayList<ImageBuffer>();
 		for (Point p : points) {
 			results.add(getTile(p));
 		}

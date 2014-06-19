@@ -9,7 +9,6 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -32,37 +31,37 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Widget;
+import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 
 public class TileView extends Widget implements HasAllMouseHandlers, HasClickHandlers {
 	private final int[] zoomLevels = new int[] { 8,16,32,48 };
 	private int iZoomLevel = 2;
 	
-	private final HashMap<String, ImageElement> imgSourceMap = new HashMap<String, ImageElement>();
 	private final HashMap<Point,Tile> tileMap = new HashMap<Point, Tile>();
 	private final DivElement tileContainer;
 	private Point scrollOffset = new Point(0,0);
 	
-	private ITileModel model;
-	private final TileListener tileListener = new TileListener() {
+	private ITileModel<ImageBuffer> model;
+	private final TileListener<ImageBuffer> tileListener = new TileListener<ImageBuffer>() {
 		@Override
-		public void onTileUpdate(ITileModel model, Point p) {
+		public void onTileUpdate(ITileModel<ImageBuffer> model, Point p) {
 			updateTile(p,model.getTile(p));
 		}
 
 		@Override
-		public void onTilesUpdate(ITileModel model, Collection<Point> points) {
+		public void onTilesUpdate(ITileModel<ImageBuffer> model, Collection<Point> points) {
 			Iterator<Point> pointIter = points.iterator();
-			Iterator<String> imgSrcIter = model.getTiles(points).iterator();
+			Iterator<ImageBuffer> imgSrcIter = model.getTiles(points).iterator();
 			while(pointIter.hasNext()) {
 				updateTile(pointIter.next(),imgSrcIter.next());
 			}
 		}
 		
-		void updateTile(Point p, String imgSrc) {
-			if (imgSrc == null) {
+		void updateTile(Point p, ImageBuffer imgBuffer) {
+			if (imgBuffer == null) {
 				clearTile(p);
 			} else {
-				setTile(p,imgSrc);
+				setTile(p,imgBuffer);
 			}
 		}
 	};
@@ -81,11 +80,11 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		refreshZoom();
 	}
 	
-	public ITileModel getModel() {
+	public ITileModel<ImageBuffer> getModel() {
 		return model;
 	}
 
-	public void setModel(ITileModel tileModel) {
+	public void setModel(ITileModel<ImageBuffer> tileModel) {
 		if (model != null) {
 			model.removeTileListener(tileListener);
 		}
@@ -141,7 +140,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		updateAllTileCoords();
 	}
 	
-	private void setTile(Point p, String imgSrc) {
+	private void setTile(Point p, ImageBuffer imgSource) {
 		Tile tile = tileMap.get(p);
 		if (tile == null) {
 			tile = new Tile();
@@ -149,19 +148,9 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 			tileMap.put(p, tile);
 		}
 
-		ImageElement img = getSourceImage(imgSrc);
-		tile.setSourceImage(img);
+		tile.setSource(imgSource);
 		
 		tile.draw(p);
-	}
-	
-	private ImageElement getSourceImage(String imgSrc) {
-		ImageElement result = imgSourceMap.get(imgSrc);
-		if (result == null) {
-			result = Document.get().createImageElement();
-			result.setSrc(imgSrc);
-		}
-		return result;
 	}
 	
 	private void updateAllTileCoords() {
@@ -218,7 +207,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 	
 	private final class Tile {
 		private final CanvasElement canvas;
-		private ImageElement sourceImage;
+		private ImageBuffer source;
 		
 		public Tile() {
 			this.canvas = Document.get().createCanvasElement();
@@ -226,12 +215,12 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 			this.canvas.getStyle().setZIndex(-1);
 		}
 
-		public ImageElement getSourceImage() {
-			return sourceImage;
+		public ImageBuffer getSource() {
+			return source;
 		}
 
-		public void setSourceImage(ImageElement sourceImage) {
-			this.sourceImage = sourceImage;
+		public void setSource(ImageBuffer source) {
+			this.source = source;
 		}
 
 		public CanvasElement getCanvas() {
@@ -245,9 +234,9 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 			canvas.setWidth(tileSize);
 			canvas.setHeight(tileSize);
 			
-			if (sourceImage != null) {
+			if (source != null) {
 				Context2d ctx = canvas.getContext2d();
-				ctx.drawImage(sourceImage, 0, 0, tileSize, tileSize);
+				ctx.drawImage(source.getCanvas(), 0, 0, tileSize, tileSize);
 			}
 		}
 	}

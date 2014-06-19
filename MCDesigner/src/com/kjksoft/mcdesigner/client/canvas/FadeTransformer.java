@@ -1,7 +1,5 @@
 package com.kjksoft.mcdesigner.client.canvas;
 
-import java.awt.Color;
-
 import com.google.gwt.canvas.dom.client.ImageData;
 
 /**
@@ -11,7 +9,7 @@ import com.google.gwt.canvas.dom.client.ImageData;
  * @author Kevin
  * 
  */
-public class FadeTransformer extends CanvasTransformer {
+public class FadeTransformer extends ImageTransformer {
 	
 	private float strength = 1.0f;
 
@@ -30,16 +28,17 @@ public class FadeTransformer extends CanvasTransformer {
 
 	@Override
 	protected void transformImpl(ImageData imageData) {
-		float[] hsbvals = new float[3];
 		for(int x = 0; x < imageData.getWidth(); x++) {
 			for(int y = 0; y < imageData.getHeight(); y++) {
 				int r = imageData.getRedAt(x, y);
 				int g = imageData.getGreenAt(x, y);
 				int b = imageData.getBlueAt(x, y);
-				Color.RGBtoHSB(r, g, b, hsbvals);
-				hsbvals[1] = hsbvals[1]*strength;
+				RGB rgb = new RGB(r,g,b);
+				float[] hslvals = ColorUtil.RGBtoHSL(rgb);
+				hslvals[1] = hslvals[1]*strength;
+				hslvals[2] = 100.0f - (100.0f - hslvals[2])*strength;
 				
-				Color result = Color.getHSBColor(hsbvals[0], hsbvals[1], hsbvals[2]);
+				RGB result = ColorUtil.HSLtoRGB(hslvals[0], hslvals[1], hslvals[2]);
 				imageData.setRedAt(result.getRed(), x, y);
 				imageData.setGreenAt(result.getGreen(), x, y);
 				imageData.setBlueAt(result.getBlue(), x, y);
