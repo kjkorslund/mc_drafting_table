@@ -44,7 +44,7 @@ public class Palette extends Composite {
 
 	public void setPrimaryMaterial(Material primaryMaterial) {
 		this.primaryMaterial = primaryMaterial;
-		this.primaryBlock.setSrc((primaryMaterial == null) ? null : primaryMaterial.imgSrc);
+		this.primaryBlock.setSrc((primaryMaterial == null) ? null : primaryMaterial.texture.getImgSrc());
 	}
 
 	public Material getSecondaryMaterial() {
@@ -53,17 +53,17 @@ public class Palette extends Composite {
 
 	public void setSecondaryMaterial(Material secondaryMaterial) {
 		this.secondaryMaterial = secondaryMaterial;
-		this.primaryBlock.setSrc(secondaryMaterial.imgSrc);
+		this.primaryBlock.setSrc(secondaryMaterial.texture.getImgSrc());
 	}
 
 	public void addMaterial(Material material) {
-		Image img = (material == null) ? new Image() : new Image(material.imgSrc);
+		Image img = (material == null) ? new Image() : new Image(material.texture.getImgSrc());
 		img.addClickHandler(new PaletteClickHandler(material));
 		paletteSwatches.add(img);
 	}
 	
 	public void addMaterial(MaterialType type, Material material) {
-		Image img = (material == null) ? new Image() : new Image(material.imgSrc);
+		Image img = (material == null) ? new Image() : new Image(material.texture.getImgSrc());
 		img.addClickHandler(new PaletteClickHandler(material));
 		
 		addMaterialType(type);

@@ -38,8 +38,8 @@ public class MaterialsList extends Composite {
 	public void addMaterial(Material material, int count) {
 		LIElement li = Document.get().createLIElement();
 		ImageElement img = Document.get().createImageElement();
-		img.setSrc(material.imgSrc);
-		img.setAlt(material.toString());
+		img.setSrc(material.texture.getImgSrc());
+		img.setAlt(material.textureName);
 		
 		li.appendChild(img);
 		li.appendChild(Document.get().createTextNode(" " + formatMaterialsCount(count)));
