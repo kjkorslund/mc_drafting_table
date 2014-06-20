@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.kjksoft.mcdesigner.client.materials.Material;
+import com.kjksoft.mcdesigner.client.materials.MaterialType;
 import com.kjksoft.mcdesigner.client.module.MaterialsList;
 import com.kjksoft.mcdesigner.client.module.Palette;
 import com.kjksoft.mcdesigner.client.module.tiles.Point;

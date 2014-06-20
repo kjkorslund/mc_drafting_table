@@ -1,6 +1,6 @@
 package com.kjksoft.mcdesigner.client.module.tiles;
 
-import com.kjksoft.mcdesigner.client.Material;
+import com.kjksoft.mcdesigner.client.materials.Material;
 
 public class TileData3D {
 	private final Material material;

@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.kjksoft.mcdesigner.client.Material;
 import com.kjksoft.mcdesigner.client.canvas.FadeTransformer;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
+import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.texture.Texture;
 
 public class TileModel3D extends AbstractTileModel<ImageBuffer> {

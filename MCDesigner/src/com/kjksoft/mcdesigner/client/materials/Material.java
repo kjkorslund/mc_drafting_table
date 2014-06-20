@@ -1,4 +1,4 @@
-package com.kjksoft.mcdesigner.client;
+package com.kjksoft.mcdesigner.client.materials;
 
 import com.kjksoft.mcdesigner.client.texture.Texture;
 

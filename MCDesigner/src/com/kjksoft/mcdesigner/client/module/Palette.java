@@ -14,8 +14,8 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.kjksoft.mcdesigner.client.Material;
-import com.kjksoft.mcdesigner.client.MaterialType;
+import com.kjksoft.mcdesigner.client.materials.Material;
+import com.kjksoft.mcdesigner.client.materials.MaterialType;
 
 public class Palette extends Composite {
 
