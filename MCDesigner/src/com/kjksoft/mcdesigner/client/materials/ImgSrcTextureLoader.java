@@ -17,8 +17,13 @@ public class ImgSrcTextureLoader implements ITextureLoader {
 
 	@Override
 	public ImageBuffer loadTextureFor(Material material) {
+//		String imgPath = URL.encode(base + material.textureName + ".png");
+		String imgPath = base + material.textureName + ".png";
+//		RequestBuilder rb = new RequestBuilder(RequestBuilder.HEAD, imgPath);
+//		Request r = rb.send();
+//		r.
 		ImageBuffer texture = new ImageBuffer();
-		texture.loadFromImgSrc(base + material.textureName + ".png");
+		texture.loadFromImgSrc(imgPath);
 		return texture;
 	}
 	

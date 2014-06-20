@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 public enum MaterialType {
-	NATURAL("Natural",
-		Material.DIRT, Material.GRASS, Material.COBBLESTONE,
-		Material.OBSIDIAN
+	NATURAL("Natural"
+		, Material.DIRT, Material.GRASS, Material.COBBLESTONE
+		, Material.OBSIDIAN
 		),
-	CRAFTED("Crafted",
-		Material.OAK_PLANK, Material.BRICK
+	CRAFTED("Crafted"
+		, Material.OAK_PLANK, Material.BRICK
 		),
 	WOOL("Wool"),
 	;
