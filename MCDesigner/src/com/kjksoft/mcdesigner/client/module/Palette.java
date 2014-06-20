@@ -16,6 +16,8 @@ import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.MaterialType;
+import com.kjksoft.mcdesigner.client.materials.TextureStore;
+import com.kjksoft.mcdesigner.client.texture.Texture;
 
 public class Palette extends Composite {
 
@@ -44,7 +46,8 @@ public class Palette extends Composite {
 
 	public void setPrimaryMaterial(Material primaryMaterial) {
 		this.primaryMaterial = primaryMaterial;
-		this.primaryBlock.setSrc((primaryMaterial == null) ? null : primaryMaterial.texture.getImgSrc());
+		Texture texture = TextureStore.getInstance().getTexture(primaryMaterial);
+		this.primaryBlock.setSrc((primaryMaterial == null) ? null : texture.getImgSrc());
 	}
 
 	public Material getSecondaryMaterial() {
@@ -53,17 +56,20 @@ public class Palette extends Composite {
 
 	public void setSecondaryMaterial(Material secondaryMaterial) {
 		this.secondaryMaterial = secondaryMaterial;
-		this.primaryBlock.setSrc(secondaryMaterial.texture.getImgSrc());
+		Texture texture = TextureStore.getInstance().getTexture(secondaryMaterial);
+		this.primaryBlock.setSrc(texture.getImgSrc());
 	}
 
 	public void addMaterial(Material material) {
-		Image img = (material == null) ? new Image() : new Image(material.texture.getImgSrc());
+		Texture texture = TextureStore.getInstance().getTexture(material);
+		Image img = (material == null) ? new Image() : new Image(texture.getImgSrc());
 		img.addClickHandler(new PaletteClickHandler(material));
 		paletteSwatches.add(img);
 	}
 	
 	public void addMaterial(MaterialType type, Material material) {
-		Image img = (material == null) ? new Image() : new Image(material.texture.getImgSrc());
+		Texture texture = TextureStore.getInstance().getTexture(material);
+		Image img = (material == null) ? new Image() : new Image(texture.getImgSrc());
 		img.addClickHandler(new PaletteClickHandler(material));
 		
 		addMaterialType(type);

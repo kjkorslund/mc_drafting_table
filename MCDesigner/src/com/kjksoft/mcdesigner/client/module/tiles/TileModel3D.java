@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import com.kjksoft.mcdesigner.client.canvas.FadeTransformer;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 import com.kjksoft.mcdesigner.client.materials.Material;
+import com.kjksoft.mcdesigner.client.materials.TextureStore;
 import com.kjksoft.mcdesigner.client.texture.Texture;
 
 public class TileModel3D extends AbstractTileModel<ImageBuffer> {
@@ -37,14 +38,23 @@ public class TileModel3D extends AbstractTileModel<ImageBuffer> {
 
 	@Override
 	public ImageBuffer getTile(Point p) {
-		Material m = currentLayerMap.get(p);
-		if (m != null) return m.texture.getImgBuffer();
+		Material material = currentLayerMap.get(p);
+		if (material != null) {
+			Texture texture = TextureStore.getInstance().getTexture(material);
+			return texture.getImgBuffer();
+		}
 		
-		m = prevLayerMap.get(p);
-		if (m != null) return getPrevLayerImage(m.texture);
+		material = prevLayerMap.get(p);
+		if (material != null) {
+			Texture texture = TextureStore.getInstance().getTexture(material);
+			return getPrevLayerImage(texture);
+		}
 		
-		m = lowerLayersMap.get(p);
-		if (m != null) return getLowerLayersImage(m.texture);
+		material = lowerLayersMap.get(p);
+		if (material != null) {
+			Texture texture = TextureStore.getInstance().getTexture(material);
+			return getLowerLayersImage(texture);
+		}
 		
 		return null;
 	}

@@ -17,10 +17,10 @@ public enum Material {
 	
 	public final String textureName;
 	
-	public Texture texture;
-
 	private Material(String textureName) {
 		this.textureName = textureName;
-		this.texture = new Texture(base() + textureName + ".png");
+		
+		Texture texture = new Texture(base() + textureName + ".png");
+		TextureStore.getInstance().setTexture(this, texture);
 	}
 }

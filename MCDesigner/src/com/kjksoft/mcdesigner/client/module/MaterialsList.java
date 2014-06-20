@@ -10,6 +10,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.kjksoft.mcdesigner.client.materials.Material;
+import com.kjksoft.mcdesigner.client.materials.TextureStore;
+import com.kjksoft.mcdesigner.client.texture.Texture;
 
 public class MaterialsList extends Composite {
 
@@ -38,7 +40,8 @@ public class MaterialsList extends Composite {
 	public void addMaterial(Material material, int count) {
 		LIElement li = Document.get().createLIElement();
 		ImageElement img = Document.get().createImageElement();
-		img.setSrc(material.texture.getImgSrc());
+		Texture texture = TextureStore.getInstance().getTexture(material);
+		img.setSrc(texture.getImgSrc());
 		img.setAlt(material.textureName);
 		
 		li.appendChild(img);
