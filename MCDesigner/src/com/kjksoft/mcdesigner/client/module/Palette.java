@@ -2,8 +2,10 @@ package com.kjksoft.mcdesigner.client.module;
 
 import java.util.HashMap;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -11,13 +13,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.MaterialType;
 import com.kjksoft.mcdesigner.client.materials.TextureStore;
-import com.kjksoft.mcdesigner.client.texture.Texture;
 
 public class Palette extends Composite {
 
@@ -26,8 +27,8 @@ public class Palette extends Composite {
 	interface PaletteUiBinder extends UiBinder<Widget, Palette> {
 	}
 	
-	@UiField ImageElement primaryBlock;
-	@UiField ImageElement secondaryBlock;
+	@UiField CanvasElement primaryBlock;
+	@UiField CanvasElement secondaryBlock;
 	@UiField HTMLPanel paletteSwatches;
 	@UiField StackLayoutPanel materialTypesPanel;
 	
@@ -46,8 +47,9 @@ public class Palette extends Composite {
 
 	public void setPrimaryMaterial(Material primaryMaterial) {
 		this.primaryMaterial = primaryMaterial;
-		Texture texture = TextureStore.getInstance().getTexture(primaryMaterial);
-		this.primaryBlock.setSrc((primaryMaterial == null) ? null : texture.getImgSrc());
+		ImageBuffer texture = TextureStore.getInstance().getTexture(primaryMaterial);
+		drawTexture(primaryBlock, texture);
+		
 	}
 
 	public Material getSecondaryMaterial() {
@@ -56,24 +58,30 @@ public class Palette extends Composite {
 
 	public void setSecondaryMaterial(Material secondaryMaterial) {
 		this.secondaryMaterial = secondaryMaterial;
-		Texture texture = TextureStore.getInstance().getTexture(secondaryMaterial);
-		this.primaryBlock.setSrc(texture.getImgSrc());
+		ImageBuffer texture = TextureStore.getInstance().getTexture(secondaryMaterial);
+		drawTexture(secondaryBlock, texture);
 	}
 
 	public void addMaterial(Material material) {
-		Texture texture = TextureStore.getInstance().getTexture(material);
-		Image img = (material == null) ? new Image() : new Image(texture.getImgSrc());
-		img.addClickHandler(new PaletteClickHandler(material));
-		paletteSwatches.add(img);
+		Canvas swatch = createSwatch(material);
+		paletteSwatches.add(swatch);
 	}
 	
 	public void addMaterial(MaterialType type, Material material) {
-		Texture texture = TextureStore.getInstance().getTexture(material);
-		Image img = (material == null) ? new Image() : new Image(texture.getImgSrc());
-		img.addClickHandler(new PaletteClickHandler(material));
-		
 		addMaterialType(type);
-		materialTypeSwatchPanels.get(type).add(img);
+		
+		Canvas swatch = createSwatch(material);
+		materialTypeSwatchPanels.get(type).add(swatch);
+	}
+	
+	private Canvas createSwatch(Material material) {
+		Canvas canvas = Canvas.createIfSupported();
+		if (material != null) {
+			ImageBuffer texture = TextureStore.getInstance().getTexture(material);
+			drawTexture(canvas.getCanvasElement(), texture);
+		}
+		canvas.addClickHandler(new PaletteClickHandler(material));
+		return canvas;
 	}
 	
 	public void addMaterialType(MaterialType type) {
@@ -116,6 +124,16 @@ public class Palette extends Composite {
 			default:
 				// ignore middle-click
 			}
+		}
+	}
+	
+	private static void drawTexture(CanvasElement canvas, ImageBuffer texture) {
+		canvas.setWidth(texture.getWidth());
+		canvas.setHeight(texture.getHeight());
+		
+		if (texture != null) {
+			Context2d ctx = canvas.getContext2d();
+			ctx.drawImage(texture.getCanvas(), 0, 0, texture.getWidth(), texture.getHeight());
 		}
 	}
 

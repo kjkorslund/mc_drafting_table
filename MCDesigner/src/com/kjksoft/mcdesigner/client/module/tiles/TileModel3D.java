@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.kjksoft.mcdesigner.client.canvas.FadeTransformer;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.TextureStore;
-import com.kjksoft.mcdesigner.client.texture.Texture;
 
 public class TileModel3D extends AbstractTileModel<ImageBuffer> {
 	// TODO consider rewriting this class to use GWT Lightweight Collections,
@@ -26,9 +24,6 @@ public class TileModel3D extends AbstractTileModel<ImageBuffer> {
 	final HashMap<Point,Material> prevLayerMap = new HashMap<Point, Material>();
 	final HashMap<Point,Material> lowerLayersMap = new HashMap<Point, Material>();
 	
-	final HashMap<Texture, ImageBuffer> prevLayerImageMap = new HashMap<Texture, ImageBuffer>();
-	final HashMap<Texture, ImageBuffer> lowerLayersImageMap = new HashMap<Texture, ImageBuffer>();
-
 	@Override
 	public boolean hasTile(Point p) {
 		return currentLayerMap.containsKey(p)
@@ -40,49 +35,20 @@ public class TileModel3D extends AbstractTileModel<ImageBuffer> {
 	public ImageBuffer getTile(Point p) {
 		Material material = currentLayerMap.get(p);
 		if (material != null) {
-			Texture texture = TextureStore.getInstance().getTexture(material);
-			return texture.getImgBuffer();
+			return TextureStore.getInstance().getTexture(material);
 		}
 		
 		material = prevLayerMap.get(p);
 		if (material != null) {
-			Texture texture = TextureStore.getInstance().getTexture(material);
-			return getPrevLayerImage(texture);
+			return TextureStore.getInstance().getTexture66(material);
 		}
 		
 		material = lowerLayersMap.get(p);
 		if (material != null) {
-			Texture texture = TextureStore.getInstance().getTexture(material);
-			return getLowerLayersImage(texture);
+			return TextureStore.getInstance().getTexture33(material);
 		}
 		
 		return null;
-	}
-	
-	private ImageBuffer getPrevLayerImage(Texture texture) {
-		ImageBuffer result = prevLayerImageMap.get(texture);
-		if (result == null) {
-			result = new ImageBuffer();
-			result.loadFromImageBuffer(texture.getImgBuffer());
-			FadeTransformer transformer = new FadeTransformer();
-			transformer.setStrength(0.66f);
-			transformer.transform(result);
-			prevLayerImageMap.put(texture, result);
-		}
-		return result;
-	}
-	
-	private ImageBuffer getLowerLayersImage(Texture texture) {
-		ImageBuffer result = lowerLayersImageMap.get(texture);
-		if (result == null) {
-			result = new ImageBuffer();
-			result.loadFromImageBuffer(texture.getImgBuffer());
-			FadeTransformer transformer = new FadeTransformer();
-			transformer.setStrength(0.33f);
-			transformer.transform(result);
-			lowerLayersImageMap.put(texture, result);
-		}
-		return result;
 	}
 
 	@Override

@@ -12,6 +12,6 @@
 	margin: 0.25em 0em;
 }
 
-.materialsList li img {
+.materialsList li canvas {
 	vertical-align: middle;
 }

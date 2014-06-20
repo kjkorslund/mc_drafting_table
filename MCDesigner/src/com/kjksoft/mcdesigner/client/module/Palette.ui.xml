@@ -8,8 +8,8 @@
 			<g:HTMLPanel>
 				Selected:
 				<div class="{style.PaletteSelections}">
-					<img ui:field="primaryBlock" />
-					<img ui:field="secondaryBlock" />
+					<canvas ui:field="primaryBlock" />
+					<canvas ui:field="secondaryBlock" />
 				</div>
 			</g:HTMLPanel>
 		</g:north>

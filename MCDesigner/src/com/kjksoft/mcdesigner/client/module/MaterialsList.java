@@ -1,17 +1,18 @@
 package com.kjksoft.mcdesigner.client.module;
 
+import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.TextureStore;
-import com.kjksoft.mcdesigner.client.texture.Texture;
 
 public class MaterialsList extends Composite {
 
@@ -38,13 +39,12 @@ public class MaterialsList extends Composite {
 	}
 
 	public void addMaterial(Material material, int count) {
-		LIElement li = Document.get().createLIElement();
-		ImageElement img = Document.get().createImageElement();
-		Texture texture = TextureStore.getInstance().getTexture(material);
-		img.setSrc(texture.getImgSrc());
-		img.setAlt(material.textureName);
+		CanvasElement canvas = Document.get().createCanvasElement();
+		ImageBuffer texture = TextureStore.getInstance().getTexture(material);
+		drawTexture(canvas, texture);
 		
-		li.appendChild(img);
+		LIElement li = Document.get().createLIElement();
+		li.appendChild(canvas);
 		li.appendChild(Document.get().createTextNode(" " + formatMaterialsCount(count)));
 		
 		ulMaterials.appendChild(li);
@@ -86,5 +86,15 @@ public class MaterialsList extends Composite {
 		}
 		
 		return sb.toString();
+	}
+	
+	private static void drawTexture(CanvasElement canvas, ImageBuffer texture) {
+		canvas.setWidth(texture.getWidth());
+		canvas.setHeight(texture.getHeight());
+		
+		if (texture != null) {
+			Context2d ctx = canvas.getContext2d();
+			ctx.drawImage(texture.getCanvas(), 0, 0, texture.getWidth(), texture.getHeight());
+		}
 	}
 }

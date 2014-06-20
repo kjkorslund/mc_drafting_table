@@ -15,6 +15,14 @@ import com.google.gwt.dom.client.ImageElement;
 public class ImageBuffer {
 	private final CanvasElement canvas = Document.get().createCanvasElement();
 	
+	public final int getHeight() {
+		return canvas.getHeight();
+	}
+
+	public final int getWidth() {
+		return canvas.getWidth();
+	}
+
 	public CanvasElement getCanvas() {
 		return canvas;
 	}

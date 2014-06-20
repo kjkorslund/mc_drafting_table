@@ -1,4 +1,4 @@
-.PaletteSelections img {
+.PaletteSelections canvas {
 	border: 1px solid black;
 	margin: 0.5em;
 	display: inline-block;
@@ -6,7 +6,7 @@
 	height: 32px;
 }
 
-.PaletteSwatches img {
+.PaletteSwatches canvas {
 	border: 1px solid silver;
 	margin: 0.1em;
 	display: inline-block;

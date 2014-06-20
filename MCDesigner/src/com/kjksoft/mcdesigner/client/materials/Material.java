@@ -1,6 +1,5 @@
 package com.kjksoft.mcdesigner.client.materials;
 
-import com.kjksoft.mcdesigner.client.texture.Texture;
 
 public enum Material {
 	DIRT("dirt"),
@@ -11,16 +10,9 @@ public enum Material {
 	OBSIDIAN("obsidian"),
 	;
 	
-	private static final String base() {
-		return "images/material/";
-	};
-	
 	public final String textureName;
 	
 	private Material(String textureName) {
 		this.textureName = textureName;
-		
-		Texture texture = new Texture(base() + textureName + ".png");
-		TextureStore.getInstance().setTexture(this, texture);
 	}
 }
