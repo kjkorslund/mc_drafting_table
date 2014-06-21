@@ -7,6 +7,8 @@ public enum MaterialType {
 	PLANT("Plant"),
 	REDSTONE("Redstone"),
 	ORE("Ore"),
+	GLASS("Glass"),
+	HARDENED_CLAY("Hardened Clay"),
 	WOOL("Wool"),
 	APPARATUS("Apparatus"),
 	;
