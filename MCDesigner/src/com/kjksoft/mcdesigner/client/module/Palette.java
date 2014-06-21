@@ -119,7 +119,7 @@ public class Palette extends Composite {
 		if (!materialTypeSwatchPanels.containsKey(type)) {
 			HTMLPanel typeSwatchPanel = new HTMLPanel("");
 			materialTypeSwatchPanels.put(type, typeSwatchPanel);
-			materialTypesPanel.insert(typeSwatchPanel,type.toString(),2,materialTypesPanel.getWidgetCount()-1);
+			materialTypesPanel.insert(typeSwatchPanel,type.toString(),1.8,materialTypesPanel.getWidgetCount()-1);
 		}
 	}
 	

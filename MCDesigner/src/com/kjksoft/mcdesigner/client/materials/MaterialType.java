@@ -4,7 +4,9 @@ package com.kjksoft.mcdesigner.client.materials;
 public enum MaterialType {
 	NATURAL("Natural"),
 	CRAFTED("Crafted"),
-	PLANT("Plant"),
+	PLANT_TREE("Plants - Trees"),
+	PLANT_DECORATIVE("Plants - Decorative"),
+	PLANT_EDIBLE("Plants - Farmed"),
 	REDSTONE("Redstone"),
 	ORE("Ore"),
 	GLASS("Glass"),
