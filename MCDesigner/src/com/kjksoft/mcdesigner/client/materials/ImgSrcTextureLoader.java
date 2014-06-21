@@ -1,7 +1,5 @@
 package com.kjksoft.mcdesigner.client.materials;
 
-import java.util.HashSet;
-
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ImageElement;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
@@ -10,9 +8,6 @@ import com.kjksoft.mcdesigner.client.gwt.event.NativeEvents;
 
 
 public class ImgSrcTextureLoader extends TextureLoader {
-	
-	private final HashSet<ImageLoadHandler> activeHandlers = new HashSet<ImageLoadHandler>();
-	
 	private final String base;
 
 	public ImgSrcTextureLoader(String base) {
@@ -27,14 +22,9 @@ public class ImgSrcTextureLoader extends TextureLoader {
 	public void postLoadRequest(TextureLoadRequest loadRequest) {
 		Material material = loadRequest.getMaterial();
 		
-		System.out.println("Posting request for material " + material);
+//		System.out.println("Posting request for material " + material);
 		ImageElement img = Document.get().createImageElement();
 		ImageLoadHandler loadHandler = new ImageLoadHandler(img, loadRequest);
-		activeHandlers.add(loadHandler);
-		
-//		Image image = Image.wrap(img);
-//		image.addLoadHandler(new ImageLoadHandler(img, loadRequest));
-//		Event.setEventListener(img, loadHandler);
 		NativeEvents.register(img, loadHandler);
 		
 //		String imgPath = URL.encode(base + material.textureName + ".png");
@@ -53,7 +43,7 @@ public class ImgSrcTextureLoader extends TextureLoader {
 		
 		@Override
 		public void onLoad() {
-			System.out.println("Processing load request for material " + loadRequest.getMaterial());
+//			System.out.println("Processing load request for material " + loadRequest.getMaterial());
 			
 			ImageBuffer texture = new ImageBuffer();
 			texture.loadFromImg(img);
