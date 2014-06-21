@@ -2,6 +2,7 @@ package com.kjksoft.mcdesigner.client;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Unit;
@@ -224,11 +225,15 @@ public class MCDesigner implements EntryPoint {
 		
 		// Add materials to the palette
 		for(Material material : Material.values()) {
-			for(MaterialType type : material.getTypes()) {
-				palette.addMaterial(type,material);
+			Set<MaterialType> types = material.getTypes();
+			if (types != null && types.size() > 0) {
+				for(MaterialType type : types) {
+					palette.addMaterial(type,material);
+				}
+			} else {
+				palette.addMaterial(material);
 			}
 		}
-//		palette.addMaterial(null);
 		
 		palette.setPrimaryMaterial(Material.DIRT);
 	}
