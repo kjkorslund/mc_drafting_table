@@ -128,10 +128,9 @@ public class Palette extends Composite {
 	}
 	
 	private static void drawTexture(CanvasElement canvas, ImageBuffer texture) {
-		canvas.setWidth(texture.getWidth());
-		canvas.setHeight(texture.getHeight());
-		
 		if (texture != null) {
+			canvas.setWidth(texture.getWidth());
+			canvas.setHeight(texture.getHeight());
 			Context2d ctx = canvas.getContext2d();
 			ctx.drawImage(texture.getCanvas(), 0, 0, texture.getWidth(), texture.getHeight());
 		}

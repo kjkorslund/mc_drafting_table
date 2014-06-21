@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import com.kjksoft.mcdesigner.client.canvas.FadeTransformer;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
+import com.kjksoft.mcdesigner.client.materials.TextureLoader.TextureLoadHandler;
+import com.kjksoft.mcdesigner.client.materials.TextureLoader.TextureLoadRequest;
 
 /**
  * Class to track the texture associated with various materials. This is
@@ -30,12 +32,17 @@ public class TextureStore {
 	 * textures; however, materials will retain their previous texture if the
 	 * texture loader cannot load a texture for that material.
 	 */
-	public void loadTextures(ITextureLoader textureLoader) {
-		for(Material material : Material.values()) {
-			ImageBuffer texture = textureLoader.loadTextureFor(material);
-			if (texture != null) {
+	public void loadTextures(TextureLoader textureLoader) {
+		final TextureLoadHandler loadHandler = new TextureLoadHandler() {
+			@Override
+			public void onLoad(Material material, ImageBuffer texture) {
 				setTexture(material, texture);
 			}
+		};
+		
+		for(Material material : Material.values()) {
+			TextureLoadRequest loadRequest = new TextureLoadRequest(material, loadHandler);
+			textureLoader.postLoadRequest(loadRequest);
 		}
 	}
 	

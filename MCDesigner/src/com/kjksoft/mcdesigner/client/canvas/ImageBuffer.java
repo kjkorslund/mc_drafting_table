@@ -36,10 +36,7 @@ public class ImageBuffer {
 		ctx.drawImage(sourceCanvas, 0, 0, sourceCanvas.getWidth(), sourceCanvas.getHeight());
 	}
 
-	public void loadFromImgSrc(String imgSrc) {
-		ImageElement img = Document.get().createImageElement();
-		img.setSrc(imgSrc);
-		
+	public void loadFromImg(ImageElement img) {
 		canvas.setWidth(img.getWidth());
 		canvas.setHeight(img.getHeight());
 		Context2d ctx = canvas.getContext2d();
