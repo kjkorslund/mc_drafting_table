@@ -1,6 +1,7 @@
 package com.kjksoft.mcdesigner.client.materials;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import com.kjksoft.mcdesigner.client.canvas.FadeTransformer;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
@@ -20,6 +21,8 @@ public class TextureStore {
 	public static final TextureStore getInstance() {
 		return INSTANCE;
 	}
+	
+	private final HashSet<TextureUpdateListener> updateListeners = new HashSet<TextureUpdateListener>();
 	
 	private final HashMap<Material, ImageBuffer> textureMap = new HashMap<Material, ImageBuffer>();
 	private final HashMap<Material, ImageBuffer> textureMap66 = new HashMap<Material, ImageBuffer>();
@@ -46,10 +49,22 @@ public class TextureStore {
 		}
 	}
 	
+	public void addUpdateListener(TextureUpdateListener listener) {
+		updateListeners.add(listener);
+	}
+
+	public void removeUpdateListener(TextureUpdateListener listener) {
+		updateListeners.remove(listener);
+	}
+	
 	public void setTexture(Material material, ImageBuffer texture) {
 		textureMap.put(material, texture);
 		textureMap66.put(material, createFadedTexture(texture, 0.66f));
 		textureMap33.put(material, createFadedTexture(texture, 0.33f));
+		
+		for(TextureUpdateListener listener : updateListeners) {
+			listener.onTextureUpdate(material);
+		}
 	}
 	
 	public ImageBuffer getTexture(Material material) {
@@ -73,5 +88,9 @@ public class TextureStore {
 		fader.transform(result);
 		
 		return result;
+	}
+	
+	public static interface TextureUpdateListener {
+		public void onTextureUpdate(Material material);
 	}
 }
