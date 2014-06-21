@@ -90,7 +90,7 @@ public class Palette extends Composite {
 	private Canvas createSwatch(Material material) {
 		final Canvas canvas = Canvas.createIfSupported();
 		if (material != null) {
-			canvas.setTitle(material.textureName);
+			canvas.setTitle(material.toString());
 			
 			ImageBuffer texture = TextureStore.getInstance().getTexture(material);
 			drawTexture(canvas.getCanvasElement(), texture);
