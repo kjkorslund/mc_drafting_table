@@ -107,7 +107,7 @@ public class MCDesigner implements EntryPoint {
 		sidePanel.add(palette);
 		
 		mainPanel.addNorth(toolPanel, 2.2);
-		mainPanel.addWest(sidePanel, 10);
+		mainPanel.addWest(sidePanel, 12);
 		mainPanel.add(tileView);
 		
 		// Add the tile area to the document
