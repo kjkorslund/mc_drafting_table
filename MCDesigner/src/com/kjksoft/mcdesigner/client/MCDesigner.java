@@ -88,7 +88,7 @@ public class MCDesigner implements EntryPoint {
 	public void onModuleLoad() {
 		
 		// Load default material textures
-		ImgSrcTextureLoader textureLoader = new ImgSrcTextureLoader("images/material/");
+		ImgSrcTextureLoader textureLoader = new ImgSrcTextureLoader("images/textures/");
 		TextureStore.getInstance().loadTextures(textureLoader);
 		
 		// Initialize the tile area
@@ -217,13 +217,18 @@ public class MCDesigner implements EntryPoint {
 		});
 		toolPanel.toolBox.selectTool(Tool.PENCIL);
 		
+		// Create palette material type groups
 		for(MaterialType type : MaterialType.values()) {
 			palette.addMaterialType(type);
-			for(Material m : type.getMaterials()) {
-				palette.addMaterial(type,m);
+		}
+		
+		// Add materials to the palette
+		for(Material material : Material.values()) {
+			for(MaterialType type : material.getTypes()) {
+				palette.addMaterial(type,material);
 			}
 		}
-		palette.addMaterial(null);
+//		palette.addMaterial(null);
 		
 		palette.setPrimaryMaterial(Material.DIRT);
 	}
