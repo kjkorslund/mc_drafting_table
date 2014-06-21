@@ -37,12 +37,19 @@ public class ImgSrcTextureLoader extends TextureLoader {
 		
 //		Image image = Image.wrap(img);
 //		image.addLoadHandler(new ImageLoadHandler(img, loadRequest));
-		Event.setEventListener(img, loadHandler);
+//		Event.setEventListener(img, loadHandler);
+		addOnLoadListener(img,loadHandler);
 		
 //		String imgPath = URL.encode(base + material.textureName + ".png");
 		String imgPath = base + material.textureName + ".png";
 		img.setSrc(imgPath);
 	}
+	
+	private static native void addOnLoadListener(ImageElement img, ImageLoadHandler loadHandler) /*-{
+	  img.onload = function() {
+	  	loadHandler.@com.kjksoft.mcdesigner.client.materials.ImgSrcTextureLoader$ImageLoadHandler::onNativeLoad()()
+	  }
+	}-*/;
 	
 	private final class ImageLoadHandler implements LoadHandler, EventListener {
 		private final ImageElement img;
@@ -57,9 +64,15 @@ public class ImgSrcTextureLoader extends TextureLoader {
 		public void onLoad(LoadEvent event) {
 			onLoad();
 		}
+		
+		@SuppressWarnings("unused")
+		public void onNativeLoad() {
+			onLoad();
+		}
 
 		@Override
 		public void onBrowserEvent(Event event) {
+			System.out.println("Processing event #" + event.getTypeInt() + " for material " + loadRequest.getMaterial());
 			 if(Event.ONLOAD == event.getTypeInt()) {
 				 System.out.println("Processing load request for material " + loadRequest.getMaterial());
 				 onLoad();

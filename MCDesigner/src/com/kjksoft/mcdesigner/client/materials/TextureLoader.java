@@ -1,7 +1,5 @@
 package com.kjksoft.mcdesigner.client.materials;
 
-import java.util.HashSet;
-
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 
 /**
