@@ -16,7 +16,7 @@
 		<g:center>
 			<g:StackLayoutPanel unit='EM' ui:field="materialTypesPanel" addStyleNames="{style.PaletteSwatches}" >
 				<g:stack>
-					<g:header size='2.5'>Other</g:header>
+					<g:header size='2'>Other</g:header>
 					<g:HTMLPanel ui:field="paletteSwatches">
 					</g:HTMLPanel>
 				</g:stack>

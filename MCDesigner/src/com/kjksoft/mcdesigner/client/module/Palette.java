@@ -90,24 +90,27 @@ public class Palette extends Composite {
 	private Canvas createSwatch(Material material) {
 		final Canvas canvas = Canvas.createIfSupported();
 		if (material != null) {
+			canvas.setTitle(material.textureName);
+			
 			ImageBuffer texture = TextureStore.getInstance().getTexture(material);
 			drawTexture(canvas.getCanvasElement(), texture);
+			
+			final Material swatchMaterial = material;
+			final TextureUpdateListener textureUpdateListener = new TextureUpdateListener() {
+				@Override
+				public void onTextureUpdate(Material material) {
+					if (material == swatchMaterial) {
+						ImageBuffer texture = TextureStore.getInstance().getTexture(material);
+						drawTexture(canvas.getCanvasElement(), texture);
+					}
+				}
+			};
+			
+			// TODO: swatches should be properly tracked so the texture update
+			// listener can be removed if necessary
+			TextureStore.getInstance().addUpdateListener(textureUpdateListener);
 		}
 		canvas.addClickHandler(new PaletteClickHandler(material));
-		
-		final Material swatchMaterial = material;
-		final TextureUpdateListener textureUpdateListener = new TextureUpdateListener() {
-			@Override
-			public void onTextureUpdate(Material material) {
-				if (material == swatchMaterial) {
-					ImageBuffer texture = TextureStore.getInstance().getTexture(material);
-					drawTexture(canvas.getCanvasElement(), texture);
-				}
-			}
-		};
-		// TODO: swatches should be properly tracked so the texture update
-		// listener can be removed if necessary
-		TextureStore.getInstance().addUpdateListener(textureUpdateListener);
 		
 		return canvas;
 	}
@@ -116,7 +119,7 @@ public class Palette extends Composite {
 		if (!materialTypeSwatchPanels.containsKey(type)) {
 			HTMLPanel typeSwatchPanel = new HTMLPanel("");
 			materialTypeSwatchPanels.put(type, typeSwatchPanel);
-			materialTypesPanel.insert(typeSwatchPanel,type.toString(),2.5,materialTypesPanel.getWidgetCount()-1);
+			materialTypesPanel.insert(typeSwatchPanel,type.toString(),2,materialTypesPanel.getWidgetCount()-1);
 		}
 	}
 	
