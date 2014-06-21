@@ -19,6 +19,7 @@ import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.MaterialType;
 import com.kjksoft.mcdesigner.client.materials.TextureStore;
+import com.kjksoft.mcdesigner.client.materials.TextureStore.TextureUpdateListener;
 
 public class Palette extends Composite {
 
@@ -36,9 +37,22 @@ public class Palette extends Composite {
 	
 	private Material primaryMaterial;
 	private Material secondaryMaterial;
+	private final TextureUpdateListener textureUpdateListener = new TextureUpdateListener() {
+		@Override
+		public void onTextureUpdate(Material material) {
+			if (material == primaryMaterial) {
+				ImageBuffer texture = TextureStore.getInstance().getTexture(material);
+				drawTexture(primaryBlock, texture);
+			} else if (material == secondaryMaterial) {
+				ImageBuffer texture = TextureStore.getInstance().getTexture(material);
+				drawTexture(secondaryBlock, texture);
+			}
+		}
+	};
 	
 	public Palette() {
 		initWidget(uiBinder.createAndBindUi(this));
+		TextureStore.getInstance().addUpdateListener(textureUpdateListener);
 	}
 	
 	public Material getPrimaryMaterial() {
@@ -49,7 +63,6 @@ public class Palette extends Composite {
 		this.primaryMaterial = primaryMaterial;
 		ImageBuffer texture = TextureStore.getInstance().getTexture(primaryMaterial);
 		drawTexture(primaryBlock, texture);
-		
 	}
 
 	public Material getSecondaryMaterial() {
@@ -75,12 +88,27 @@ public class Palette extends Composite {
 	}
 	
 	private Canvas createSwatch(Material material) {
-		Canvas canvas = Canvas.createIfSupported();
+		final Canvas canvas = Canvas.createIfSupported();
 		if (material != null) {
 			ImageBuffer texture = TextureStore.getInstance().getTexture(material);
 			drawTexture(canvas.getCanvasElement(), texture);
 		}
 		canvas.addClickHandler(new PaletteClickHandler(material));
+		
+		final Material swatchMaterial = material;
+		final TextureUpdateListener textureUpdateListener = new TextureUpdateListener() {
+			@Override
+			public void onTextureUpdate(Material material) {
+				if (material == swatchMaterial) {
+					ImageBuffer texture = TextureStore.getInstance().getTexture(material);
+					drawTexture(canvas.getCanvasElement(), texture);
+				}
+			}
+		};
+		// TODO: swatches should be properly tracked so the texture update
+		// listener can be removed if necessary
+		TextureStore.getInstance().addUpdateListener(textureUpdateListener);
+		
 		return canvas;
 	}
 	
@@ -128,10 +156,9 @@ public class Palette extends Composite {
 	}
 	
 	private static void drawTexture(CanvasElement canvas, ImageBuffer texture) {
-		canvas.setWidth(texture.getWidth());
-		canvas.setHeight(texture.getHeight());
-		
 		if (texture != null) {
+			canvas.setWidth(texture.getWidth());
+			canvas.setHeight(texture.getHeight());
 			Context2d ctx = canvas.getContext2d();
 			ctx.drawImage(texture.getCanvas(), 0, 0, texture.getWidth(), texture.getHeight());
 		}
