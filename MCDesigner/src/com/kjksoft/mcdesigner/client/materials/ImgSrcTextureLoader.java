@@ -1,15 +1,12 @@
 package com.kjksoft.mcdesigner.client.materials;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.EventListener;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
+import com.kjksoft.mcdesigner.client.gwt.event.NativeEventHandler;
+import com.kjksoft.mcdesigner.client.gwt.event.NativeEvents;
 
 
 public class ImgSrcTextureLoader extends TextureLoader {
@@ -38,20 +35,14 @@ public class ImgSrcTextureLoader extends TextureLoader {
 //		Image image = Image.wrap(img);
 //		image.addLoadHandler(new ImageLoadHandler(img, loadRequest));
 //		Event.setEventListener(img, loadHandler);
-		addOnLoadListener(img,loadHandler);
+		NativeEvents.register(img, loadHandler);
 		
 //		String imgPath = URL.encode(base + material.textureName + ".png");
 		String imgPath = base + material.textureName + ".png";
 		img.setSrc(imgPath);
 	}
 	
-	private static native void addOnLoadListener(ImageElement img, ImageLoadHandler loadHandler) /*-{
-	  img.onload = function() {
-	  	loadHandler.@com.kjksoft.mcdesigner.client.materials.ImgSrcTextureLoader$ImageLoadHandler::onNativeLoad()()
-	  }
-	}-*/;
-	
-	private final class ImageLoadHandler implements LoadHandler, EventListener {
+	private final class ImageLoadHandler implements NativeEventHandler {
 		private final ImageElement img;
 		private final TextureLoadRequest loadRequest;
 
@@ -61,25 +52,9 @@ public class ImgSrcTextureLoader extends TextureLoader {
 		}
 		
 		@Override
-		public void onLoad(LoadEvent event) {
-			onLoad();
-		}
-		
-		@SuppressWarnings("unused")
-		public void onNativeLoad() {
-			onLoad();
-		}
-
-		@Override
-		public void onBrowserEvent(Event event) {
-			System.out.println("Processing event #" + event.getTypeInt() + " for material " + loadRequest.getMaterial());
-			 if(Event.ONLOAD == event.getTypeInt()) {
-				 System.out.println("Processing load request for material " + loadRequest.getMaterial());
-				 onLoad();
-             }
-		}
-		
-		private void onLoad() {
+		public void onLoad() {
+			System.out.println("Processing load request for material " + loadRequest.getMaterial());
+			
 			ImageBuffer texture = new ImageBuffer();
 			texture.loadFromImg(img);
 			
