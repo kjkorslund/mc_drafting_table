@@ -87,6 +87,8 @@ public class MCDesigner implements EntryPoint {
 	
 	@Override
 	public void onModuleLoad() {
+		// [kjk] Inject theme-override styles
+		Resources.INSTANCE.css().ensureInjected();
 		
 		// Load default material textures
 		ImgSrcTextureLoader textureLoader = new ImgSrcTextureLoader("images/textures/");

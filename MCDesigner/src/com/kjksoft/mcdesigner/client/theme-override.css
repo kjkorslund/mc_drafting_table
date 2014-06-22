@@ -1,0 +1,6 @@
+@external .gwt-*;
+
+.gwt-StackLayoutPanel .gwt-StackLayoutPanelHeader {
+	padding-top: 0px;
+	font-size: 1.1em;
+}
