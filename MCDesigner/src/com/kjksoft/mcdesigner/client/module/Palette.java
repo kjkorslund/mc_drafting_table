@@ -23,6 +23,7 @@ import com.kjksoft.mcdesigner.client.materials.TextureStore.TextureUpdateListene
 
 public class Palette extends Composite {
 
+	private static final double HEADER_SIZE = 1.6;
 	private static PaletteUiBinder uiBinder = GWT.create(PaletteUiBinder.class);
 
 	interface PaletteUiBinder extends UiBinder<Widget, Palette> {
@@ -119,7 +120,7 @@ public class Palette extends Composite {
 		if (!materialTypeSwatchPanels.containsKey(type)) {
 			HTMLPanel typeSwatchPanel = new HTMLPanel("");
 			materialTypeSwatchPanels.put(type, typeSwatchPanel);
-			materialTypesPanel.insert(typeSwatchPanel,type.toString(),1.8,materialTypesPanel.getWidgetCount()-1);
+			materialTypesPanel.insert(typeSwatchPanel,type.toString(),HEADER_SIZE,materialTypesPanel.getWidgetCount()-1);
 		}
 	}
 	
