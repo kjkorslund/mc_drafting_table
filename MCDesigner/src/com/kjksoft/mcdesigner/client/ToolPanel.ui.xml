@@ -2,18 +2,45 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m='urn:import:com.kjksoft.mcdesigner.client.module' >
+	<ui:style src="ToolPanel.css" />
 	
-	<g:HTMLPanel>
-		<g:Button ui:field="clearButton" text="Clear Layer" />
-		<g:Button ui:field="clearAllButton" text="Clear All" />
-		<g:Button ui:field="materialsButton" text="Count" />
-		<g:Button ui:field="materialsAllButton" text="Count All" />
-		<m:ToolBox ui:field="toolBox" />
-		<g:Button ui:field="prevLayerButton" text="&lt;&lt;"/>
-		<span ui:field="currentLayer">Layer 0</span>
-		<g:Button ui:field="nextLayerButton" text="&gt;&gt;"/>
-		<span>Zoom: </span>
-		<g:Button ui:field="zoomInButton" text="+"/>
-		<g:Button ui:field="zoomOutButton" text="-"/>
-	</g:HTMLPanel>
+	<g:DockLayoutPanel unit="EM">
+		<g:center>
+			<g:HTMLPanel width="">
+				<g:Button ui:field="clearButton" title="Clear this layer">
+					<img class="toolIcon" src="res/icons/glyphicons_016_bin.png" /> This Layer
+				</g:Button>
+				<g:Button ui:field="clearAllButton" title="Clear all layers">
+					<img class="toolIcon" src="res/icons/glyphicons_016_bin.png" /> All Layers
+				</g:Button>
+				<g:Button ui:field="materialsButton" title="Count resources for this layer">
+					<img class="toolIcon" src="res/icons/glyphicons_041_charts.png" /> This Layer
+				</g:Button>
+				<g:Button ui:field="materialsAllButton" title="Count resources for all layers">
+					<img class="toolIcon" src="res/icons/glyphicons_041_charts.png" /> All Layers
+				</g:Button>
+				<m:ToolBox ui:field="toolBox" />
+				<g:Button ui:field="prevLayerButton" title="Previous Layer">
+					<img class="toolIcon" src="res/icons/glyphicons_224_chevron-left.png" />
+				</g:Button>
+				<span ui:field="currentLayer">Layer 0</span>
+				<g:Button ui:field="nextLayerButton" title="Next Layer">
+					<img class="toolIcon" src="res/icons/glyphicons_223_chevron-right.png" />
+				</g:Button>
+				<span>Zoom: </span>
+				<g:Button ui:field="zoomInButton" title="Zoom In">
+					<img class="toolIcon" src="res/icons/glyphicons_236_zoom_in.png" />
+				</g:Button>
+				<g:Button ui:field="zoomOutButton" title="Zoom Out">
+					<img class="toolIcon" src="res/icons/glyphicons_237_zoom_out.png" />
+				</g:Button>
+			</g:HTMLPanel>
+		</g:center>
+		<g:east size="18">
+			<g:HTMLPanel width="">
+				<span style="attribution">Icons:  <a href="http://glyphicons.com/">GLYPHICONS.com</a> 
+				(<a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>)</span>
+			</g:HTMLPanel>
+		</g:east>
+	</g:DockLayoutPanel>
 </ui:UiBinder> 

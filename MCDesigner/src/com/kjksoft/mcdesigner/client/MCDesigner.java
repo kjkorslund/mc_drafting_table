@@ -108,7 +108,7 @@ public class MCDesigner implements EntryPoint {
 		sidePanel.addSouth(mouseCoords, 2);
 		sidePanel.add(palette);
 		
-		mainPanel.addNorth(toolPanel, 2.2);
+		mainPanel.addNorth(toolPanel, 2.25);
 		mainPanel.addWest(sidePanel, 12);
 		mainPanel.add(tileView);
 		

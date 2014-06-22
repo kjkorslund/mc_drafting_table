@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.kjksoft.mcdesigner.client.Tool;
 import com.kjksoft.mcdesigner.client.ToolSelectionHandler;
@@ -23,10 +24,10 @@ public class ToolBox extends Composite {
 		panel.setStyleName("toolbox");
 		initWidget(panel);
 		
-		buttons.put(Tool.PENCIL, new ToggleButton("P"));
-		buttons.put(Tool.ERASER, new ToggleButton("E"));
+		buttons.put(Tool.PENCIL, createToolButton("Pencil", "glyphicons_030_pencil.png"));
+		buttons.put(Tool.ERASER, createToolButton("Eraser", "glyphicons_030_pencil_rotated.png"));
 		//buttons.put(Tool.FILL, new ToggleButton("F"));
-		buttons.put(Tool.SCROLL, new ToggleButton("S"));
+		buttons.put(Tool.SCROLL, createToolButton("Scroll", "glyphicons_186_move.png"));
 		
 		panel.add(buttons.get(Tool.PENCIL));
 		panel.add(buttons.get(Tool.ERASER));
@@ -40,6 +41,14 @@ public class ToolBox extends Composite {
 		}
 		
 		selectTool(Tool.PENCIL);
+	}
+	
+	private ToggleButton createToolButton(String title, String iconFileName) {
+		Image image = new Image("res/icons/" + iconFileName);
+		image.setStylePrimaryName("toolIcon");
+		ToggleButton toggleButton = new ToggleButton(image);
+		toggleButton.setTitle(title);
+		return toggleButton;
 	}
 	
 	private class ToolClickHandler implements ClickHandler {
