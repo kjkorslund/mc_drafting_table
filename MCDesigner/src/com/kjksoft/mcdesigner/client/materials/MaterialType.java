@@ -2,17 +2,17 @@ package com.kjksoft.mcdesigner.client.materials;
 
 
 public enum MaterialType {
-	NATURAL("Natural"),
-	CRAFTED("Crafted"),
-	PLANT_TREE("Plants - Trees"),
-	PLANT_DECORATIVE("Plants - Decorative"),
-	PLANT_EDIBLE("Plants - Farmed"),
-	REDSTONE("Redstone"),
-	ORE("Ore"),
+	NATURAL("Terrain"),
+	MASONRY("Doors and Masonry"),
+	CRAFTED("Crafted Objects"),
+	PLANT_TREE("Trees and Mushrooms"),
+	PLANT_DECORATIVE("Decorative Plants"),
+	PLANT_FARMED("Farm Plants"),
+	REDSTONE("Rail and Redstone"),
+	ORE("Ores"),
 	GLASS("Glass"),
 	HARDENED_CLAY("Hardened Clay"),
 	WOOL("Wool"),
-	APPARATUS("Apparatus"),
 	;
 	
 	private final String title;
