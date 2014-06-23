@@ -19,6 +19,8 @@
 				<g:Button ui:field="materialsAllButton" title="Count resources for all layers">
 					<img class="toolIcon" src="res/icons/glyphicons_041_charts.png" /> All Layers
 				</g:Button>
+				
+				<span>&nbsp;</span>
 				<m:ToolBox ui:field="toolBox" />
 				<g:Button ui:field="prevLayerButton" title="Previous Layer">
 					<img class="toolIcon" src="res/icons/glyphicons_224_chevron-left.png" />
@@ -27,7 +29,8 @@
 				<g:Button ui:field="nextLayerButton" title="Next Layer">
 					<img class="toolIcon" src="res/icons/glyphicons_223_chevron-right.png" />
 				</g:Button>
-				<span>Zoom: </span>
+				
+				<span>&nbsp;&nbsp;&nbsp;Zoom: </span>
 				<g:Button ui:field="zoomInButton" title="Zoom In">
 					<img class="toolIcon" src="res/icons/glyphicons_236_zoom_in.png" />
 				</g:Button>
