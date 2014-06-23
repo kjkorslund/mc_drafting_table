@@ -9,7 +9,7 @@
 				Selected:
 				<div class="{style.PaletteSelections}">
 					<canvas ui:field="primaryBlock" />
-					<canvas ui:field="secondaryBlock" />
+					<canvas style="display:none" ui:field="secondaryBlock" />
 				</div>
 			</g:HTMLPanel>
 		</g:north>
