@@ -238,6 +238,7 @@ public class MCDesigner implements EntryPoint {
 		}
 		
 		palette.setPrimaryMaterial(Material.DIRT);
+		palette.setMaterialType(MaterialType.NATURAL);
 	}
 	
 	private void drawTile(Point p, Material m) {

@@ -75,6 +75,11 @@ public class Palette extends Composite {
 		ImageBuffer texture = TextureStore.getInstance().getTexture(secondaryMaterial);
 		drawTexture(secondaryBlock, texture);
 	}
+	
+	public void setMaterialType(MaterialType materialType) {
+		HTMLPanel typePanel = materialTypeSwatchPanels.get(materialType);
+		materialTypesPanel.showWidget(typePanel);
+	}
 
 	public void addMaterial(Material material) {
 		Canvas swatch = createSwatch(material);
