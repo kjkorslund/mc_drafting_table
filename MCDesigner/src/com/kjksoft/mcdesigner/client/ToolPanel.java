@@ -27,6 +27,7 @@ public class ToolPanel extends Composite {
 	@UiField Button nextLayerButton;
 	@UiField Button zoomInButton;
 	@UiField Button zoomOutButton;
+	@UiField Button importResPackButton;
 	
 	public ToolPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
