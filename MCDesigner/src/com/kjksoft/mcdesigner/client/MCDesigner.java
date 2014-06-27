@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -12,10 +13,15 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.kjksoft.mcdesigner.client.lib.zipjs.ErrorCallback;
+import com.kjksoft.mcdesigner.client.lib.zipjs.Zip;
+import com.kjksoft.mcdesigner.client.lib.zipjs.ZipEntry;
+import com.kjksoft.mcdesigner.client.lib.zipjs.ZipReader;
 import com.kjksoft.mcdesigner.client.materials.ImgSrcTextureLoader;
 import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.MaterialType;
@@ -200,7 +206,30 @@ public class MCDesigner implements EntryPoint {
 		toolPanel.importResPackButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				importResPack();
+				//importResPack();
+				Zip.getInstance().createZipReader("res/test.zip", new ZipReader.Callback() {
+					@Override
+					public void onCreate(ZipReader zipReader) {
+						Window.alert("Successfully opened zip file!");
+						zipReader.getEntries(new ZipEntry.Callback() {
+							@Override
+							public void onCreate(JsArray<ZipEntry> entries) {
+								Window.alert("Successfully read zip file entries!");
+								for(int i=0; i < entries.length(); i++) {
+									ZipEntry zipEntry = entries.get(i);
+									if (i < 10) {
+										Window.alert("Read entry #" + i + ": " + zipEntry.getFilename());
+									}
+								}
+							}
+						});
+					}
+				}, new ErrorCallback() {
+					@Override
+					public void onError(String error) {
+						Window.alert("ERROR: " + error);
+					}
+				});
 			}
 			
 			private native void importResPack() /*-{
