@@ -42,4 +42,6 @@ public class ZipEntry extends JavaScriptObject {
 	public final native boolean getCrc32() /*-{
 		return this.crc32;
 	}-*/;
+	
+	// TODO: implement getData function.  Might be tricky because of callbacks.
 }
