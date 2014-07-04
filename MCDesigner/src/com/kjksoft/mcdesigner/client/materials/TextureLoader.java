@@ -1,6 +1,8 @@
 package com.kjksoft.mcdesigner.client.materials;
 
+import com.google.gwt.dom.client.ImageElement;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
+import com.kjksoft.mcdesigner.client.gwt.event.NativeEventHandler;
 
 /**
  * Interface for a class that is capable of loading texture data for materials.
@@ -41,4 +43,29 @@ public abstract class TextureLoader {
 	public static interface TextureLoadHandler {
 		public void onLoad(Material material, ImageBuffer texture);
 	}
+	
+	public static class ImageLoadHandler implements NativeEventHandler {
+		private final ImageElement img;
+		private final TextureLoadRequest loadRequest;
+
+		public ImageLoadHandler(ImageElement img, TextureLoadRequest loadRequest) {
+			this.img = img;
+			this.loadRequest = loadRequest;
+		}
+		
+		@Override
+		public void onLoad() {
+//			System.out.println("Processing load request for material " + loadRequest.getMaterial());
+			
+			ImageBuffer texture = new ImageBuffer();
+			texture.loadFromImg(img);
+			
+			TextureLoadHandler loadHandler = loadRequest.getLoadHandler();
+			if (loadHandler != null) {
+				loadHandler.onLoad(loadRequest.getMaterial(), texture);
+			}
+		}
+	}
 }
+
+
