@@ -4,12 +4,12 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsDate;
 
-public class ZipEntry extends JavaScriptObject {
+public class JsZipEntry extends JavaScriptObject {
 	public static interface Callback {
-		public void onCreate(JsArray<ZipEntry> entries);
+		public void onCreate(JsArray<JsZipEntry> entries);
 	}
 	
-	protected ZipEntry() { }
+	protected JsZipEntry() { }
 	
 	public final native String getFilename() /*-{
 		return this.filename;

@@ -15,13 +15,15 @@ import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.kjksoft.mcdesigner.client.lib.zipjs.ErrorCallback;
-import com.kjksoft.mcdesigner.client.lib.zipjs.Zip;
-import com.kjksoft.mcdesigner.client.lib.zipjs.ZipEntry;
-import com.kjksoft.mcdesigner.client.lib.zipjs.ZipReader;
+import com.kjksoft.mcdesigner.client.lib.zipjs.JsZip;
+import com.kjksoft.mcdesigner.client.lib.zipjs.JsZipEntry;
+import com.kjksoft.mcdesigner.client.lib.zipjs.JsZipReader;
 import com.kjksoft.mcdesigner.client.materials.ImgSrcTextureLoader;
 import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.MaterialType;
@@ -44,7 +46,7 @@ public class MCDesigner implements EntryPoint {
 	private final ToolPanel toolPanel = new ToolPanel();
 	private final Palette palette = new Palette();
 	private final Label mouseCoords = new Label("x: ; z:");
-	private final PopupPanel materialsPanel = new PopupPanel(true,true);
+	private final PopupPanel materialsPanel = new PopupPanel(true, false);
 	private final MaterialsList materialsList = new MaterialsList();
 	
 	private final PaintMouseHandler pencilMouseHandler = new PaintMouseHandler() {
@@ -206,20 +208,35 @@ public class MCDesigner implements EntryPoint {
 		toolPanel.importResPackButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				Zip.getInstance().createZipReader("res/test.zip", new ZipReader.Callback() {
+				final PopupPanel popupPanel = new PopupPanel(true);
+				final HTMLPanel htmlPanel =  new HTMLPanel("<div><b>Loaded textures:</b></div>");
+				popupPanel.add(htmlPanel);
+				
+				htmlPanel.add(new Image("images/material/grass.png"));
+				htmlPanel.add(new Image("images/material/dirt.png"));
+				
+				
+				JsZip.getInstance().createZipReader("res/test.zip", new JsZipReader.CreateCallback() {
 					@Override
-					public void onCreate(ZipReader zipReader) {
+					public void onCreate(final JsZipReader zipReader) {
 						Window.alert("Successfully opened zip file!");
-						zipReader.getEntries(new ZipEntry.Callback() {
+						zipReader.getEntries(new JsZipEntry.Callback() {
 							@Override
-							public void onCreate(JsArray<ZipEntry> entries) {
+							public void onCreate(JsArray<JsZipEntry> entries) {
 								Window.alert("Successfully read zip file entries!");
 								for(int i=0; i < entries.length(); i++) {
-									ZipEntry zipEntry = entries.get(i);
+									JsZipEntry zipEntry = entries.get(i);
 									if (i < 10) {
-										Window.alert("Read entry #" + i + ": " + zipEntry.getFilename());
+//										Window.alert("Read entry #" + i + ": " + zipEntry.getFilename());
 									}
 								}
+								zipReader.close(new JsZipReader.CloseCallback() {
+									@Override
+									public void onClose() {
+										Window.alert("Successfully closed zip file");
+										popupPanel.center();
+									}
+								});
 							}
 						});
 					}
