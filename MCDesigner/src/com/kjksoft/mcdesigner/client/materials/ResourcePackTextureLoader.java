@@ -12,22 +12,40 @@ import com.kjksoft.mcdesigner.client.lib.zipjs.JsZipEntry;
 
 public class ResourcePackTextureLoader extends TextureLoader {
 	HashMap<String, TextureLoadRequest> requestMap = new HashMap<String, TextureLoadRequest>();
+	private String url;
 	private Command scheduledCommand = null;
 	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+
 	@Override
 	public void postLoadRequest(TextureLoadRequest loadRequest) {
 		requestMap.put(loadRequest.getMaterial().textureName, loadRequest);
 		
 		if (scheduledCommand == null) {
 			scheduledCommand = new Command() {
+
 				@Override
 				public void execute() {
 					ReadResourcePackCallbacks callbacks = new ReadResourcePackCallbacks() {
 						@Override
 						public boolean shouldExtract(JsZipEntry zipEntry) {
 							if (requestMap.size() > 0) {
-								String filename = getFilename(zipEntry);
-								return requestMap.containsKey(filename);
+								if (!zipEntry.isDirectory()) {
+									try {
+										String filename = getFilename(zipEntry);
+										GWT.log("  Processed filename: '" + filename + "'");
+										return requestMap.containsKey(filename);
+									} catch (StringIndexOutOfBoundsException e) {
+										GWT.log("Detected unsupported filename: " + zipEntry.getFilename());
+									}
+								}
 							}
 							return false;
 						}
@@ -50,7 +68,12 @@ public class ResourcePackTextureLoader extends TextureLoader {
 							img.setSrc(data64uri);
 						}
 
-						private String getFilename(JsZipEntry zipEntry) {
+						/**
+						 * @param zipEntry
+						 * @return
+						 * @throws StringIndexOutOfBoundsException
+						 */
+						private String getFilename(JsZipEntry zipEntry) throws StringIndexOutOfBoundsException {
 							String filename = zipEntry.getFilename();
 							int start = filename.lastIndexOf('/') + 1;
 							int end = filename.lastIndexOf('.');
@@ -61,6 +84,7 @@ public class ResourcePackTextureLoader extends TextureLoader {
 					// TODO: load zip file and look for matches to the request
 					// map. When a match is found, call the callback from the
 					// load request
+					readResourcePack(url, callbacks);
 					
 					scheduledCommand = null;
 				}
@@ -73,7 +97,7 @@ public class ResourcePackTextureLoader extends TextureLoader {
 	
 	private final native void readResourcePack(String url, ReadResourcePackCallbacks callbacks) /*-{
 		var shouldExtractFn = $entry(function(entry) {
-			callbacks.@com.kjksoft.mcdesigner.client.materials.ResourcePackTextureLoader$ReadResourcePackCallbacks::shouldExtract(Lcom/kjksoft/mcdesigner/client/lib/zipjs/JsZipEntry;)(entry);
+			return callbacks.@com.kjksoft.mcdesigner.client.materials.ResourcePackTextureLoader$ReadResourcePackCallbacks::shouldExtract(Lcom/kjksoft/mcdesigner/client/lib/zipjs/JsZipEntry;)(entry);
 		});
 		var onData64URIExtractedFn = $entry(function(entry, uri) {
 			callbacks.@com.kjksoft.mcdesigner.client.materials.ResourcePackTextureLoader$ReadResourcePackCallbacks::onData64URIExtracted(Lcom/kjksoft/mcdesigner/client/lib/zipjs/JsZipEntry;Ljava/lang/String;)(entry, uri);
@@ -88,10 +112,11 @@ public class ResourcePackTextureLoader extends TextureLoader {
 		var entryFn = function(entries) {
 			for(var i=0; i<entries.length; i++) {
 				var entry = entries[i];
-				console.log("Checking entry #" + i);
+				console.log("Checking entry #" + i + " - " + entry.filename);
 				if (shouldExtractFn(entry)) {
+					console.log("  Extracting entry");
 					var dataFn = function(data64URI) {
-						console.log("Data function callback");
+						console.log("  Calling entry data callback");
 						onData64URIExtractedFn(entry, data64URI);
 					}
 					entry.getData(new zip.Data64URIWriter(), dataFn);
