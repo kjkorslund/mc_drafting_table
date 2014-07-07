@@ -5,7 +5,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -13,17 +12,11 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.kjksoft.mcdesigner.client.lib.zipjs.ErrorCallback;
 import com.kjksoft.mcdesigner.client.lib.zipjs.JsZip;
-import com.kjksoft.mcdesigner.client.lib.zipjs.JsZipEntry;
-import com.kjksoft.mcdesigner.client.lib.zipjs.JsZipReader;
 import com.kjksoft.mcdesigner.client.materials.ImgSrcTextureLoader;
 import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.MaterialType;
@@ -96,6 +89,8 @@ public class MCDesigner implements EntryPoint {
 	
 	@Override
 	public void onModuleLoad() {
+		JsZip.initWorkerScriptsPath("/mcdesigner/zipjs/");
+		
 		// [kjk] Inject theme-override styles
 		Resources.INSTANCE.css().ensureInjected();
 		

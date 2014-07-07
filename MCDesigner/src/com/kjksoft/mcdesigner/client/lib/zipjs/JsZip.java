@@ -7,6 +7,11 @@ public class JsZip extends JavaScriptObject {
 		return $wnd.zip;
 	}-*/;
 	
+	public static final native void initWorkerScriptsPath(String path) /*-{
+		console.log("Initializing worker scripts path to '" + path + "'");
+		$wnd.zip.workerScriptsPath = path;
+	}-*/;
+	
 	protected JsZip() { }
 	
 	public final native void createZipReader(String url, JsZipReader.CreateCallback callback, ErrorCallback errorCallback) /*-{
