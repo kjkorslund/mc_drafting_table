@@ -3,6 +3,8 @@ package com.kjksoft.mcdesigner.client.materials;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.user.client.Command;
 import com.kjksoft.mcdesigner.client.canvas.FadeTransformer;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 import com.kjksoft.mcdesigner.client.materials.TextureLoader.TextureLoadHandler;
@@ -57,10 +59,29 @@ public class TextureStore {
 		updateListeners.remove(listener);
 	}
 	
-	public void setTexture(Material material, ImageBuffer texture) {
+	public void setTexture(final Material material, ImageBuffer texture) {
 		textureMap.put(material, texture);
-		textureMap66.put(material, createFadedTexture(texture, 0.66f));
-		textureMap33.put(material, createFadedTexture(texture, 0.33f));
+
+		// TODO [kjk] Deferring the faded texture creation commands helped a
+		// little with responsiveness, but the overall delay is still
+		// unacceptable. Investigate (a) improving the faded texture creation
+		// algorithm performance, (b) using web workers to perform the operation
+		// as a thread, and (c) displaying a progress bar to the user
+		FadedTextureCreator generator66 = new FadedTextureCreator(texture, 0.66f) {
+			@Override
+			protected void onCreated(ImageBuffer result) {
+				textureMap66.put(material, result);
+			}
+		};
+		Scheduler.get().scheduleDeferred(generator66);
+		
+		FadedTextureCreator generator33 = new FadedTextureCreator(texture, 0.33f) {
+			@Override
+			protected void onCreated(ImageBuffer result) {
+				textureMap33.put(material, result);
+			}
+		};
+		Scheduler.get().scheduleDeferred(generator33);
 		
 		for(TextureUpdateListener listener : updateListeners) {
 			listener.onTextureUpdate(material);
@@ -79,18 +100,35 @@ public class TextureStore {
 		return textureMap33.get(material);
 	}
 	
-	private ImageBuffer createFadedTexture(ImageBuffer source, float strength) {
-		ImageBuffer result = new ImageBuffer();
-		result.loadFromImageBuffer(source);
-		
-		FadeTransformer fader = new FadeTransformer();
-		fader.setStrength(strength);
-		fader.transform(result);
-		
-		return result;
-	}
-	
 	public static interface TextureUpdateListener {
 		public void onTextureUpdate(Material material);
+	}
+	
+	private static abstract class FadedTextureCreator implements Command {
+		private final ImageBuffer source;
+		private final float strength;
+
+		public FadedTextureCreator(ImageBuffer source, float strength) {
+			this.source = source;
+			this.strength = strength;
+		}
+		
+		@Override
+		public void execute() {
+			onCreated(createFadedTexture());
+		}
+		
+		protected abstract void onCreated(ImageBuffer result);
+		
+		private ImageBuffer createFadedTexture() {
+			ImageBuffer result = new ImageBuffer();
+			result.loadFromImageBuffer(source);
+			
+			FadeTransformer fader = new FadeTransformer();
+			fader.setStrength(strength);
+			fader.transform(result);
+			
+			return result;
+		}
 	}
 }

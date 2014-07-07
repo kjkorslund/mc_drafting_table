@@ -8,6 +8,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.Command;
 import com.kjksoft.mcdesigner.client.gwt.event.NativeEvents;
+import com.kjksoft.mcdesigner.client.gwt.time.TimeUtil;
 import com.kjksoft.mcdesigner.client.lib.zipjs.JsZipEntry;
 
 public class ResourcePackTextureLoader extends TextureLoader {
@@ -40,7 +41,6 @@ public class ResourcePackTextureLoader extends TextureLoader {
 								if (!zipEntry.isDirectory()) {
 									try {
 										String filename = getFilename(zipEntry);
-										GWT.log("  Processed filename: '" + filename + "'");
 										return requestMap.containsKey(filename);
 									} catch (StringIndexOutOfBoundsException e) {
 										GWT.log("Detected unsupported filename: " + zipEntry.getFilename());
@@ -81,9 +81,6 @@ public class ResourcePackTextureLoader extends TextureLoader {
 						}
 					};
 					
-					// TODO: load zip file and look for matches to the request
-					// map. When a match is found, call the callback from the
-					// load request
 					readResourcePack(url, callbacks);
 					
 					scheduledCommand = null;
@@ -96,6 +93,11 @@ public class ResourcePackTextureLoader extends TextureLoader {
 	
 	
 	private final native void readResourcePack(String url, ReadResourcePackCallbacks callbacks) /*-{
+		var time = function() {
+			return "[" + new Date() + "] ";
+		}
+		console.log(time() + "Entering readResourcePack");
+		
 		var shouldExtractFn = $entry(function(entry) {
 			return callbacks.@com.kjksoft.mcdesigner.client.materials.ResourcePackTextureLoader$ReadResourcePackCallbacks::shouldExtract(Lcom/kjksoft/mcdesigner/client/lib/zipjs/JsZipEntry;)(entry);
 		});
@@ -112,7 +114,7 @@ public class ResourcePackTextureLoader extends TextureLoader {
 		var entryFn = function(entries) {
 			for(var i=0; i<entries.length; i++) {
 				var entry = entries[i];
-				console.log("Checking entry #" + i + " - " + entry.filename);
+				console.log(time() + "Checking entry #" + i + " - " + entry.filename);
 				if (shouldExtractFn(entry)) {
 					console.log("  Extracting entry");
 					var dataFn = function(data64URI) {
@@ -122,14 +124,18 @@ public class ResourcePackTextureLoader extends TextureLoader {
 					entry.getData(new zip.Data64URIWriter(), dataFn);
 				}
 			}
-			console.log("Done checking entries");
+			console.log(time() + "Done checking entries");
 		}
 			
 		var callbackFn = function(reader) {
+			console.log(time() + "Getting entries");
 			reader.getEntries(entryFn);
+			console.log(time() + "Done getting entries");
 		}
 		
+		console.log(time() + "Creating reader")
 		zip.createReader(httpReader, callbackFn, errorFn);
+		console.log(time() + "Done creating reader");
 	}-*/;
 
 	private static interface ReadResourcePackCallbacks {

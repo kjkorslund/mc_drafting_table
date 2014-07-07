@@ -1,8 +1,11 @@
 package com.kjksoft.mcdesigner.client.materials;
 
+import com.google.gwt.core.client.Duration;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.ImageElement;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 import com.kjksoft.mcdesigner.client.gwt.event.NativeEventHandler;
+import com.kjksoft.mcdesigner.client.gwt.time.TimeUtil;
 
 /**
  * Interface for a class that is capable of loading texture data for materials.
@@ -55,15 +58,19 @@ public abstract class TextureLoader {
 		
 		@Override
 		public void onLoad() {
+			Duration d = new Duration();
 //			System.out.println("Processing load request for material " + loadRequest.getMaterial());
-			
+			GWT.log(TimeUtil.elapsedStr(d) + " Creating texture buffer");
 			ImageBuffer texture = new ImageBuffer();
+			GWT.log(TimeUtil.elapsedStr(d) + " Loading texture buffer");
 			texture.loadFromImg(img);
 			
+			GWT.log(TimeUtil.elapsedStr(d) + " Calling load handler");
 			TextureLoadHandler loadHandler = loadRequest.getLoadHandler();
 			if (loadHandler != null) {
 				loadHandler.onLoad(loadRequest.getMaterial(), texture);
 			}
+			GWT.log(TimeUtil.elapsedStr(d) + " Done calling load handler");
 		}
 	}
 }
