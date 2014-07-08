@@ -40,12 +40,12 @@ public class TileModel3D extends AbstractTileModel<ImageBuffer> {
 		
 		material = prevLayerMap.get(p);
 		if (material != null) {
-			return TextureStore.getInstance().getTexture66(material);
+			return TextureStore.getInstance().getTextureFaded33Pct(material);
 		}
 		
 		material = lowerLayersMap.get(p);
 		if (material != null) {
-			return TextureStore.getInstance().getTexture33(material);
+			return TextureStore.getInstance().getTextureFaded66Pct(material);
 		}
 		
 		return null;

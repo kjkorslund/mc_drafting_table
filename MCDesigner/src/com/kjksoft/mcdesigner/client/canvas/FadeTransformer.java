@@ -17,18 +17,17 @@ import com.kjksoft.mcdesigner.client.gwt.time.TimeUtil;
  */
 public class FadeTransformer {
 	
-	private float strength = 1.0f;
+	private double strength = 1.0f;
 
-	public float getStrength() {
+	public double getStrength() {
 		return strength;
 	}
 
 	/**
 	 * @param strength
-	 *            value ranging from 0.0f (complete whiteout) to 1.0f (no
-	 *            change)
+	 *            value ranging from 0.0f (no fade) to 1.0f (complete whiteout)
 	 */
-	public void setStrength(float strength) {
+	public void setStrength(double strength) {
 		this.strength = strength;
 	}
 	
@@ -39,7 +38,7 @@ public class FadeTransformer {
 		Context2d ctx = canvas.getContext2d();
 		GWT.log(TimeUtil.elapsedStr(d) + " FT2: Setting context global settings");
 		ctx.setGlobalCompositeOperation(Composite.SOURCE_OVER);
-		ctx.setGlobalAlpha(1.0 - strength);
+		ctx.setGlobalAlpha(strength);
 		ctx.setFillStyle(CssColor.make("white"));
 		GWT.log(TimeUtil.elapsedStr(d) + " FT2: Filling rectangle");
 		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());

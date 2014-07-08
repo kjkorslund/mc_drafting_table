@@ -92,11 +92,11 @@ public class TextureStore {
 		return textureMap.get(material);
 	}
 	
-	public ImageBuffer getTexture66(Material material) {
+	public ImageBuffer getTextureFaded66Pct(Material material) {
 		return textureMap66.get(material);
 	}
 	
-	public ImageBuffer getTexture33(Material material) {
+	public ImageBuffer getTextureFaded33Pct(Material material) {
 		return textureMap33.get(material);
 	}
 	
@@ -106,9 +106,9 @@ public class TextureStore {
 	
 	private static abstract class FadedTextureCreator implements Command {
 		private final ImageBuffer source;
-		private final float strength;
+		private final double strength;
 
-		public FadedTextureCreator(ImageBuffer source, float strength) {
+		public FadedTextureCreator(ImageBuffer source, double strength) {
 			this.source = source;
 			this.strength = strength;
 		}
