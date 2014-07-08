@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.Command;
-import com.kjksoft.mcdesigner.client.canvas.FadeTransformer;
+import com.kjksoft.mcdesigner.client.canvas.FadeTransformer2;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 import com.kjksoft.mcdesigner.client.materials.TextureLoader.TextureLoadHandler;
 import com.kjksoft.mcdesigner.client.materials.TextureLoader.TextureLoadRequest;
@@ -124,7 +124,7 @@ public class TextureStore {
 			ImageBuffer result = new ImageBuffer();
 			result.loadFromImageBuffer(source);
 			
-			FadeTransformer fader = new FadeTransformer();
+			FadeTransformer2 fader = new FadeTransformer2();
 			fader.setStrength(strength);
 			fader.transform(result);
 			
