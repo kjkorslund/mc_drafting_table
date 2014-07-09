@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -89,7 +90,8 @@ public class MCDesigner implements EntryPoint {
 	
 	@Override
 	public void onModuleLoad() {
-		JsZip.initWorkerScriptsPath("/mcdesigner/zipjs/");
+		;
+		JsZip.initWorkerScriptsPath(GWT.getModuleBaseForStaticFiles() + "zipjs/");
 		
 		// [kjk] Inject theme-override styles
 		Resources.INSTANCE.css().ensureInjected();
