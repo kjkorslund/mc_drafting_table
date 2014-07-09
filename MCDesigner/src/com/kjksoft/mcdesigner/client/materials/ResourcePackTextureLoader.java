@@ -26,7 +26,7 @@ public class ResourcePackTextureLoader extends TextureLoader {
 
 	@Override
 	public void postLoadRequest(TextureLoadRequest loadRequest) {
-		GWT.log("Posting load request: " + loadRequest.getMaterial().textureName);
+//		GWT.log("Posting load request: " + loadRequest.getMaterial().textureName);
 		requestMap.put(loadRequest.getMaterial().textureName, loadRequest);
 		
 		if (scheduledCommand == null) {
@@ -98,7 +98,7 @@ public class ResourcePackTextureLoader extends TextureLoader {
 		var time = function() {
 			return "[" + new Date() + "] ";
 		}
-		console.log(time() + "Entering readResourcePack");
+//		console.log(time() + "Entering readResourcePack");
 		
 		var shouldExtractFn = $entry(function(entry) {
 			return callbacks.@com.kjksoft.mcdesigner.client.materials.ResourcePackTextureLoader$ReadResourcePackCallbacks::shouldExtract(Lcom/kjksoft/mcdesigner/client/lib/zipjs/JsZipEntry;)(entry);
@@ -117,37 +117,37 @@ public class ResourcePackTextureLoader extends TextureLoader {
 		var entryFn = function(entries) {
 			for(var i=0; i<entries.length; i++) {
 				var entry = entries[i];
-				console.log(time() + "Checking entry #" + i + " - " + entry.filename);
+//				console.log(time() + "Checking entry #" + i + " - " + entry.filename);
 				if (shouldExtractFn(entry)) {
-					console.log("  Extracting entry (" + entry.filename + ")");
+//					console.log("  Extracting entry (" + entry.filename + ")");
 					var dataHandler = function(entry) {
 						return function(data64URI) {
-							console.log("  Calling entry data callback (" + entry.filename + ")");
+//							console.log("  Calling entry data callback (" + entry.filename + ")");
 							onData64URIExtractedFn(entry, data64URI);
 						};
 					};
 					entry.getData(new zip.Data64URIWriter(), dataHandler(entry));
 				} else {
-					console.log("  Not extracting entry (" + entry.filename + ")");
+//					console.log("  Not extracting entry (" + entry.filename + ")");
 				}
 			}
-			console.log(time() + "Done checking entries");
+//			console.log(time() + "Done checking entries");
 		}
 			
 		var callbackFn = function(reader) {
-			console.log(time() + "Getting entries");
+//			console.log(time() + "Getting entries");
 			reader.getEntries(entryFn);
-			console.log(time() + "Done getting entries");
-			console.log(time() + "Closing zip");
+//			console.log(time() + "Done getting entries");
+//			console.log(time() + "Closing zip");
 			reader.close(function() {
-				console.log(time() + "Zip closed");
+//				console.log(time() + "Zip closed");
 			});
 			
 		}
 		
-		console.log(time() + "Creating reader")
+//		console.log(time() + "Creating reader")
 		zip.createReader(httpReader, callbackFn, errorFn);
-		console.log(time() + "Done creating reader");
+//		console.log(time() + "Done creating reader");
 	}-*/;
 
 	private static interface ReadResourcePackCallbacks {
