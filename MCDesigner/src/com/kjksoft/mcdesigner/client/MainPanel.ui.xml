@@ -41,7 +41,7 @@
 				
 			</g:DockLayoutPanel>
 		</g:south>
-		<g:west size="12">
+		<g:west size="15">
 			<module:Palette ui:field="palette" />
 		</g:west>
 		<g:center>
