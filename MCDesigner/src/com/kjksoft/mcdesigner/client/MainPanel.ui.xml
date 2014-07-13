@@ -9,14 +9,26 @@
 		.mouseCoords {
 			padding-left:1em;
 		}
+		
+		.toolbar {
+			border-bottom: 1px solid silver;
+		}
+		
+		.statusbar {
+			border-top: 1px solid silver;
+		}
 	</ui:style>
 	
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="2.25">
-			<client:ToolPanel ui:field="toolPanel" />
+			<g:DockLayoutPanel unit="EM" addStyleNames="{style.toolbar}">
+				<g:center>
+					<client:ToolPanel ui:field="toolPanel"/>
+				</g:center>
+			</g:DockLayoutPanel>
 		</g:north>
 		<g:south size="2">
-			<g:DockLayoutPanel unit="EM">
+			<g:DockLayoutPanel unit="EM" addStyleNames="{style.statusbar}">
 				<g:west size="12">
 					<g:Label text="x: z:" ui:field="mouseCoords" addStyleNames="{style.mouseCoords}" />
 				</g:west>
