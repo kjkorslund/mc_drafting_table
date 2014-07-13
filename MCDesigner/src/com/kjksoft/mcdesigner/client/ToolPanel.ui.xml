@@ -43,11 +43,5 @@
 				</g:Button>
 			</g:HTMLPanel>
 		</g:center>
-		<g:east size="18">
-			<g:HTMLPanel width="">
-				<span style="attribution">Icons:  <a href="http://glyphicons.com/">GLYPHICONS.com</a> 
-				(<a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>)</span>
-			</g:HTMLPanel>
-		</g:east>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

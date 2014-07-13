@@ -1,0 +1,39 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:client='urn:import:com.kjksoft.mcdesigner.client'
+	xmlns:module="urn:import:com.kjksoft.mcdesigner.client.module"
+	xmlns:tiles="urn:import:com.kjksoft.mcdesigner.client.module.tiles">
+	
+	<ui:style>
+		.mouseCoords {
+			padding-left:1em;
+		}
+	</ui:style>
+	
+	<g:DockLayoutPanel unit="EM">
+		<g:north size="2.25">
+			<client:ToolPanel ui:field="toolPanel" />
+		</g:north>
+		<g:south size="2">
+			<g:DockLayoutPanel unit="EM">
+				<g:west size="12">
+					<g:Label text="x: z:" ui:field="mouseCoords" addStyleNames="{style.mouseCoords}" />
+				</g:west>
+				<g:east size="18.5">
+					<g:HTMLPanel>
+						<span style="attribution">Icons:  <a href="http://glyphicons.com/">GLYPHICONS.com</a> 
+						(<a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>)</span>
+					</g:HTMLPanel>
+				</g:east>
+				
+			</g:DockLayoutPanel>
+		</g:south>
+		<g:west size="12">
+			<module:Palette ui:field="palette" />
+		</g:west>
+		<g:center>
+			<tiles:TileView ui:field="tileView"/>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 
