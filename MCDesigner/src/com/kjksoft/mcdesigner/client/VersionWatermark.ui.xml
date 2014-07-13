@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	
+	<g:DockLayoutPanel unit="EM">
+		<g:center>
+			<g:Image url="res/draftingtable_watermark.png"/>
+		</g:center>
+		<g:south size="1.5">
+			<g:Label text="Version ___" ui:field="versionLabel" horizontalAlignment="ALIGN_RIGHT"/>
+		</g:south>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

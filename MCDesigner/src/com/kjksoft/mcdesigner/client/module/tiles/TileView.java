@@ -9,7 +9,12 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.FontStyle;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.TextAlign;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -30,7 +35,9 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.kjksoft.mcdesigner.client.VersionWatermark;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 
 public class TileView extends Widget implements HasAllMouseHandlers, HasClickHandlers {
@@ -76,6 +83,32 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		tileContainer.getStyle().setWidth(100, Unit.PCT);
 		tileContainer.getStyle().setHeight(100, Unit.PCT);
 		getElement().appendChild(tileContainer);
+		
+		// TODO: figure out a way to add a widget here
+//		VersionWatermark watermark = new VersionWatermark();
+		
+		ImageElement watermark = Document.get().createImageElement();
+		watermark.getStyle().setDisplay(Display.BLOCK);
+		watermark.setSrc("res/draftingtable_watermark.png");
+		
+		SpanElement version = Document.get().createSpanElement();
+		version.getStyle().setColor("darkgray");
+		version.getStyle().setFontStyle(FontStyle.ITALIC);
+		version.getStyle().setDisplay(Display.BLOCK);
+		version.getStyle().setTextAlign(TextAlign.RIGHT);
+		version.getStyle().setPaddingRight(1.0, Unit.EM);
+		version.setInnerText("Version: preview-20140713");
+		
+		DivElement watermarkContainer = Document.get().createDivElement();
+		watermarkContainer.getStyle().setPosition(Position.ABSOLUTE);
+		watermarkContainer.getStyle().setRight(1.0, Unit.EM);
+		watermarkContainer.getStyle().setBottom(1.0, Unit.EM);
+		watermarkContainer.getStyle().setZIndex(-3);
+		
+		watermarkContainer.appendChild(watermark);
+		watermarkContainer.appendChild(version);
+		tileContainer.appendChild(watermarkContainer);
+		
 		
 		refreshZoom();
 	}
