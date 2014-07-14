@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.kjksoft.mcdesigner.client.lib.zipjs.JsZip;
@@ -27,6 +28,8 @@ import com.kjksoft.mcdesigner.client.module.tiles.TileModel3D;
 import com.kjksoft.mcdesigner.client.module.tiles.TileView;
 import com.kjksoft.mcdesigner.client.tool.PaintMouseHandler;
 import com.kjksoft.mcdesigner.client.tool.ToolMouseHandler;
+import com.kjksoft.mcdesigner.client.widgets.ComboUploader;
+import com.kjksoft.mcdesigner.client.widgets.ComboUploader.SelectionHandler;
 
 public class MCDesigner implements EntryPoint {
 	
@@ -41,6 +44,7 @@ public class MCDesigner implements EntryPoint {
 //	private final Palette palette = new Palette();
 //	private final Label mouseCoords = new Label("x: ; z:");
 	private final PopupPanel materialsPanel = new PopupPanel(true, false);
+	private DialogBox resourcePackPopup = new DialogBox(true);
 	private final MaterialsList materialsList = new MaterialsList();
 	
 	private final PaintMouseHandler pencilMouseHandler = new PaintMouseHandler() {
@@ -106,6 +110,9 @@ public class MCDesigner implements EntryPoint {
 		mainPanel.getToolPanel().addStyleName("toolpanel");
 		
 		materialsPanel.setWidget(materialsList);
+		
+		resourcePackPopup.setText("Select texture pack");
+		resourcePackPopup.setGlassEnabled(true);
 		
 //		mouseCoords.addStyleName("mouseCoords");
 		
@@ -199,9 +206,19 @@ public class MCDesigner implements EntryPoint {
 		mainPanel.getToolPanel().importResPackButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				ResourcePackTextureLoader loader = new ResourcePackTextureLoader();
-				loader.setUrl("res/polishedcraft64x-17.zip");
-				TextureStore.getInstance().loadTextures(loader);
+				ComboUploader comboUploader = new ComboUploader();
+				comboUploader.setSelectionHandler(new SelectionHandler() {
+					@Override
+					public void onLinkSelection(String url) {
+						ResourcePackTextureLoader loader = new ResourcePackTextureLoader();
+						loader.setUrl(url);
+						TextureStore.getInstance().loadTextures(loader);
+						resourcePackPopup.hide();
+					}
+				});
+				
+				resourcePackPopup.setWidget(comboUploader);
+				resourcePackPopup.center();
 			}
 		});
 		
