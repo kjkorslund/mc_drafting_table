@@ -35,9 +35,7 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.kjksoft.mcdesigner.client.VersionWatermark;
 import com.kjksoft.mcdesigner.client.canvas.ImageBuffer;
 
 public class TileView extends Widget implements HasAllMouseHandlers, HasClickHandlers {
@@ -184,6 +182,16 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		tile.setSource(imgSource);
 		
 		tile.draw(p);
+	}
+	
+	public void updateAllTileSources() {
+		for(Entry<Point,Tile> entry : tileMap.entrySet()) {
+			Point p = entry.getKey();
+			Tile tile = entry.getValue();
+			ImageBuffer imgSource = model.getTile(p);
+			tile.setSource(imgSource);
+			tile.draw(p);
+		}
 	}
 	
 	private void updateAllTileCoords() {

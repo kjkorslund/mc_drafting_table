@@ -20,6 +20,7 @@ import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.MaterialType;
 import com.kjksoft.mcdesigner.client.materials.ResourcePackTextureLoader;
 import com.kjksoft.mcdesigner.client.materials.TextureStore;
+import com.kjksoft.mcdesigner.client.materials.TextureStore.TextureUpdateListener;
 import com.kjksoft.mcdesigner.client.module.MaterialsList;
 import com.kjksoft.mcdesigner.client.module.tiles.Point;
 import com.kjksoft.mcdesigner.client.module.tiles.TileModel3D;
@@ -201,45 +202,15 @@ public class MCDesigner implements EntryPoint {
 				ResourcePackTextureLoader loader = new ResourcePackTextureLoader();
 				loader.setUrl("res/polishedcraft64x-17.zip");
 				TextureStore.getInstance().loadTextures(loader);
-				
-//				final PopupPanel popupPanel = new PopupPanel(true);
-//				final HTMLPanel htmlPanel =  new HTMLPanel("<div><b>Loaded textures:</b></div>");
-//				popupPanel.add(htmlPanel);
-//				
-//				htmlPanel.add(new Image("images/material/grass.png"));
-//				htmlPanel.add(new Image("images/material/dirt.png"));
-//				
-//				
-//				JsZip.getInstance().createZipReader("res/test.zip", new JsZipReader.CreateCallback() {
-//					@Override
-//					public void onCreate(final JsZipReader zipReader) {
-//						Window.alert("Successfully opened zip file!");
-//						zipReader.getEntries(new JsZipEntry.Callback() {
-//							@Override
-//							public void onCreate(JsArray<JsZipEntry> entries) {
-//								Window.alert("Successfully read zip file entries!");
-//								for(int i=0; i < entries.length(); i++) {
-//									JsZipEntry zipEntry = entries.get(i);
-//									if (i < 10) {
-////										Window.alert("Read entry #" + i + ": " + zipEntry.getFilename());
-//									}
-//								}
-//								zipReader.close(new JsZipReader.CloseCallback() {
-//									@Override
-//									public void onClose() {
-//										Window.alert("Successfully closed zip file");
-//										popupPanel.center();
-//									}
-//								});
-//							}
-//						});
-//					}
-//				}, new ErrorCallback() {
-//					@Override
-//					public void onError(String error) {
-//						Window.alert("ERROR: " + error);
-//					}
-//				});
+			}
+		});
+		
+		TextureStore.getInstance().addUpdateListener(new TextureUpdateListener() {
+			@Override public void onTextureUpdate(Material material) { }
+
+			@Override
+			public void onTextureUpdateDeferred() {
+				mainPanel.tileView.updateAllTileSources();
 			}
 		});
 		

@@ -25,6 +25,7 @@ public class TextureStore {
 	}
 	
 	private final HashSet<TextureUpdateListener> updateListeners = new HashSet<TextureUpdateListener>();
+	private final DeferredTextureUpdateCommand deferredTextureUpdateCommand = new DeferredTextureUpdateCommand();
 	
 	private final HashMap<Material, ImageBuffer> textureMap = new HashMap<Material, ImageBuffer>();
 	private final HashMap<Material, ImageBuffer> textureMap66 = new HashMap<Material, ImageBuffer>();
@@ -86,6 +87,7 @@ public class TextureStore {
 		for(TextureUpdateListener listener : updateListeners) {
 			listener.onTextureUpdate(material);
 		}
+		deferredTextureUpdateCommand.schedule();
 	}
 	
 	public ImageBuffer getTexture(Material material) {
@@ -101,7 +103,38 @@ public class TextureStore {
 	}
 	
 	public static interface TextureUpdateListener {
+		/**
+		 * Executed immediately whenever there is a texture update
+		 * 
+		 * @param material
+		 */
 		public void onTextureUpdate(Material material);
+		
+		/**
+		 * Scheduled as a deferred call whenever there is a texture update. This
+		 * method will only be called once if multiple texture updates occur as
+		 * part of the same event
+		 */
+		public void onTextureUpdateDeferred();
+	}
+	
+	private class DeferredTextureUpdateCommand implements Command {
+		private boolean isScheduled = false;
+		
+		@Override
+		public void execute() {
+			for(TextureUpdateListener listener : updateListeners) {
+				listener.onTextureUpdateDeferred();
+				isScheduled = false;
+			}
+		}
+		
+		public void schedule() {
+			if(!isScheduled) {
+				Scheduler.get().scheduleDeferred(this);
+				isScheduled = true;
+			}
+		}
 	}
 	
 	private static abstract class FadedTextureCreator implements Command {

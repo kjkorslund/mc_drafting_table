@@ -49,6 +49,8 @@ public class Palette extends Composite {
 				drawTexture(secondaryBlock, texture);
 			}
 		}
+		
+		@Override public void onTextureUpdateDeferred() { }
 	};
 	
 	public Palette() {
@@ -110,6 +112,8 @@ public class Palette extends Composite {
 						drawTexture(canvas.getCanvasElement(), texture);
 					}
 				}
+
+				@Override public void onTextureUpdateDeferred() { }
 			};
 			
 			// TODO: swatches should be properly tracked so the texture update
