@@ -26,14 +26,7 @@
 			<g:header>Upload</g:header>
 			<g:VerticalPanel width="24em" height="9em">
 				<g:Label text="Choose a file to upload (incomplete):"/>
-				<g:DockLayoutPanel unit="EM" height="1.8em">
-					<g:center>
-						<g:Label ui:field="selectedFile"/>
-					</g:center>
-					<g:east size="6.0">
-						<g:Button text="Browse..." ui:field="browseButton"/>
-					</g:east>
-				</g:DockLayoutPanel>
+				<g:FileUpload width="23em" name="fileUpload" ui:field="fileUpload"/>
 				<g:HTMLPanel width="22.25em" height="3em" ui:field="dropTarget" addStyleNames="{style.dropTarget}">
 					<span>Drag and drop a file here</span>
 				</g:HTMLPanel>

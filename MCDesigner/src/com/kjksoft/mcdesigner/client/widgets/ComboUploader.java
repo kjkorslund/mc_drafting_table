@@ -8,10 +8,12 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.kjksoft.mcdesigner.client.lib.filereader.FileUploadChangeHandler;
+import com.kjksoft.mcdesigner.client.lib.filereader.JsFile;
 
 public class ComboUploader extends Composite {
 
@@ -36,13 +38,18 @@ public class ComboUploader extends Composite {
 				}
 			}
 		});
+		fileUpload.addChangeHandler(new FileUploadChangeHandler() {
+			@Override
+			protected void onFileUpload(JsFile file) {
+				GWT.log(file.getName());
+			}
+		});
 	}
 
 	@UiField Button linkButton;
-	@UiField Button browseButton;
 	@UiField HTMLPanel dropTarget;
-	@UiField Label selectedFile;
 	@UiField TextBox linkBox;
+	@UiField FileUpload fileUpload;
 	
 	private SelectionHandler selectionHandler = null;
 
