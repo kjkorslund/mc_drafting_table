@@ -1,4 +1,0 @@
-IMPORTANT:  unless a resource pack is explicitly listed in this file, assume that it is NOT
-licensed for public/commercial use!
-
-
