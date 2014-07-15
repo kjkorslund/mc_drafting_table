@@ -7,6 +7,12 @@
 	<g:DockLayoutPanel unit="EM">
 		<g:center>
 			<g:HTMLPanel width="">
+				<g:Button ui:field="importResPackButton" title="Import textures from a resource pack">
+					<img class="toolIcon" src="res/icons/glyphicons_358_file_import.png" /> Import Textures
+				</g:Button>
+				
+				<span>&nbsp;</span>
+				
 				<g:Button ui:field="clearButton" title="Clear this layer">
 					<img class="toolIcon" src="res/icons/glyphicons_016_bin.png" /> This Layer
 				</g:Button>
@@ -21,7 +27,9 @@
 				</g:Button>
 				
 				<span>&nbsp;</span>
+				
 				<m:ToolBox ui:field="toolBox" />
+				
 				<g:Button ui:field="prevLayerButton" title="Previous Layer">
 					<img class="toolIcon" src="res/icons/glyphicons_224_chevron-left.png" />
 				</g:Button>
@@ -36,10 +44,6 @@
 				</g:Button>
 				<g:Button ui:field="zoomOutButton" title="Zoom Out">
 					<img class="toolIcon" src="res/icons/glyphicons_237_zoom_out.png" />
-				</g:Button>
-				
-				<g:Button ui:field="importResPackButton" title="Load textures from resource pack">
-					Import Resource Pack
 				</g:Button>
 			</g:HTMLPanel>
 		</g:center>

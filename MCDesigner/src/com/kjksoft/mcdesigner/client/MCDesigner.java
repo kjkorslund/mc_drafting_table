@@ -112,7 +112,7 @@ public class MCDesigner implements EntryPoint {
 		
 		materialsPanel.setWidget(materialsList);
 		
-		resourcePackPopup.setText("Upload a resource pack");
+		resourcePackPopup.setText("Import textures from a resource pack");
 		resourcePackPopup.setGlassEnabled(true);
 		
 //		mouseCoords.addStyleName("mouseCoords");
