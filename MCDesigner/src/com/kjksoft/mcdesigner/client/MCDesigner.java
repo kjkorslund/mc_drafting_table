@@ -15,6 +15,7 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.kjksoft.mcdesigner.client.lib.filereader.JsFile;
 import com.kjksoft.mcdesigner.client.lib.zipjs.JsZip;
 import com.kjksoft.mcdesigner.client.materials.ImgSrcTextureLoader;
 import com.kjksoft.mcdesigner.client.materials.Material;
@@ -28,8 +29,8 @@ import com.kjksoft.mcdesigner.client.module.tiles.TileModel3D;
 import com.kjksoft.mcdesigner.client.module.tiles.TileView;
 import com.kjksoft.mcdesigner.client.tool.PaintMouseHandler;
 import com.kjksoft.mcdesigner.client.tool.ToolMouseHandler;
-import com.kjksoft.mcdesigner.client.widgets.ComboUploader;
-import com.kjksoft.mcdesigner.client.widgets.ComboUploader.SelectionHandler;
+import com.kjksoft.mcdesigner.client.widgets.FileUploader;
+import com.kjksoft.mcdesigner.client.widgets.FileUploader.SelectionHandler;
 
 public class MCDesigner implements EntryPoint {
 	
@@ -111,7 +112,7 @@ public class MCDesigner implements EntryPoint {
 		
 		materialsPanel.setWidget(materialsList);
 		
-		resourcePackPopup.setText("Select texture pack");
+		resourcePackPopup.setText("Upload a resource pack");
 		resourcePackPopup.setGlassEnabled(true);
 		
 //		mouseCoords.addStyleName("mouseCoords");
@@ -206,18 +207,20 @@ public class MCDesigner implements EntryPoint {
 		mainPanel.getToolPanel().importResPackButton.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				ComboUploader comboUploader = new ComboUploader();
-				comboUploader.setSelectionHandler(new SelectionHandler() {
+				FileUploader fileUploader = new FileUploader();
+				fileUploader.setHeaderText("Choose a resource pack to upload: ");
+				fileUploader.setSelectionHandler(new SelectionHandler() {
 					@Override
-					public void onLinkSelection(String url) {
+					public void onFileSelection(JsFile file) {
+						// TODO Auto-generated method stub
 						ResourcePackTextureLoader loader = new ResourcePackTextureLoader();
-						loader.setUrl(url);
+						loader.setFile(file);
 						TextureStore.getInstance().loadTextures(loader);
 						resourcePackPopup.hide();
 					}
 				});
 				
-				resourcePackPopup.setWidget(comboUploader);
+				resourcePackPopup.setWidget(fileUploader);
 				resourcePackPopup.center();
 			}
 		});

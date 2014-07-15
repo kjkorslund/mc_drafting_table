@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.dropTarget {
+			margin: 0.5em;
+			border: medium dashed teal;
+			color: teal;
+			text-align: center;
+			line-height: 3em;
+		}
+	</ui:style>
+
+	<g:VerticalPanel width="24em" height="8em">
+		<g:Label text="Choose a file to upload:" ui:field="headerLabel"/>
+		<g:FileUpload width="23em" name="fileUpload" ui:field="fileUpload"/>
+		<g:HTMLPanel width="22.25em" height="3em" ui:field="dropTarget" addStyleNames="{style.dropTarget}">
+			<span>Drop zone (not yet implemented)</span>
+		</g:HTMLPanel>
+	</g:VerticalPanel>
+</ui:UiBinder> 

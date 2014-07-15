@@ -2,28 +2,26 @@ package com.kjksoft.mcdesigner.client.materials;
 
 import java.util.HashMap;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.user.client.Command;
 import com.kjksoft.mcdesigner.client.gwt.event.NativeEvents;
+import com.kjksoft.mcdesigner.client.lib.filereader.JsFile;
 import com.kjksoft.mcdesigner.client.lib.zipjs.JsZipEntry;
 
 public class ResourcePackTextureLoader extends TextureLoader {
 	HashMap<String, TextureLoadRequest> requestMap = new HashMap<String, TextureLoadRequest>();
-	private String url;
 	private Command scheduledCommand = null;
+
+	private JsFile file = null;
 	
-	public String getUrl() {
-		return url;
+	public void setFile(JsFile file) {
+		this.file = file;
 	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-
+	
 	@Override
 	public void postLoadRequest(TextureLoadRequest loadRequest) {
 //		GWT.log("Posting load request: " + loadRequest.getMaterial().textureName);
@@ -83,7 +81,10 @@ public class ResourcePackTextureLoader extends TextureLoader {
 						}
 					};
 					
-					readResourcePack(url, callbacks);
+					if (file != null) {
+						JavaScriptObject reader = createFileReader(file);
+						readResourcePack(reader, callbacks);
+					}
 					
 					scheduledCommand = null;
 				}
@@ -92,9 +93,15 @@ public class ResourcePackTextureLoader extends TextureLoader {
 		}
 	}
 	
+	private native JavaScriptObject createUrlReader(String url) /*-{
+		return new $wnd.zip.HttpReader(url);
+	}-*/;
 	
+	private native JavaScriptObject createFileReader(JsFile file) /*-{
+		return new $wnd.zip.BlobReader(file);
+	}-*/;
 	
-	private final native void readResourcePack(String url, ReadResourcePackCallbacks callbacks) /*-{
+	private final native void readResourcePack(JavaScriptObject sourceReader, ReadResourcePackCallbacks callbacks) /*-{
 		var time = function() {
 			return "[" + new Date() + "] ";
 		}
@@ -112,7 +119,6 @@ public class ResourcePackTextureLoader extends TextureLoader {
 		});
 		
 		var zip = $wnd.zip;
-		var httpReader = new zip.HttpReader(url);
 		
 		var entryFn = function(entries) {
 			for(var i=0; i<entries.length; i++) {
@@ -146,7 +152,7 @@ public class ResourcePackTextureLoader extends TextureLoader {
 		}
 		
 //		console.log(time() + "Creating reader")
-		zip.createReader(httpReader, callbackFn, errorFn);
+		zip.createReader(sourceReader, callbackFn, errorFn);
 //		console.log(time() + "Done creating reader");
 	}-*/;
 
