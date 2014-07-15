@@ -20,7 +20,7 @@
 	</ui:style>
 	
 	<g:DockLayoutPanel unit="EM">
-		<g:north size="2.25">
+		<g:north size="2.4">
 			<g:DockLayoutPanel unit="EM" addStyleNames="{style.toolbar}">
 				<g:center>
 					<client:ToolPanel ui:field="toolPanel"/>
