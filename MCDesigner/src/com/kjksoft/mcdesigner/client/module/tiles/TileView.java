@@ -95,7 +95,7 @@ public class TileView extends Widget implements HasAllMouseHandlers, HasClickHan
 		version.getStyle().setDisplay(Display.BLOCK);
 		version.getStyle().setTextAlign(TextAlign.RIGHT);
 		version.getStyle().setPaddingRight(1.0, Unit.EM);
-		version.setInnerText("Version: preview-20140713");
+		version.setInnerText("Version: preview-20140714");
 		
 		DivElement watermarkContainer = Document.get().createDivElement();
 		watermarkContainer.getStyle().setPosition(Position.ABSOLUTE);
