@@ -5,6 +5,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.LIElement;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,6 +16,8 @@ import com.kjksoft.mcdesigner.client.materials.Material;
 import com.kjksoft.mcdesigner.client.materials.TextureStore;
 
 public class MaterialsList extends Composite {
+	
+	private static final int CANVAS_SIZE = 24;
 
 	private static MaterialsListUiBinder uiBinder = GWT
 			.create(MaterialsListUiBinder.class);
@@ -40,10 +43,12 @@ public class MaterialsList extends Composite {
 
 	public void addMaterial(Material material, int count) {
 		CanvasElement canvas = Document.get().createCanvasElement();
+		canvas.setTitle(material.toString());
 		ImageBuffer texture = TextureStore.getInstance().getTexture(material);
 		drawTexture(canvas, texture);
 		
 		LIElement li = Document.get().createLIElement();
+		li.getStyle().setLineHeight(CANVAS_SIZE, Unit.PX);
 		li.appendChild(canvas);
 		li.appendChild(Document.get().createTextNode(" " + formatMaterialsCount(count)));
 		
@@ -89,12 +94,12 @@ public class MaterialsList extends Composite {
 	}
 	
 	private static void drawTexture(CanvasElement canvas, ImageBuffer texture) {
-		canvas.setWidth(texture.getWidth());
-		canvas.setHeight(texture.getHeight());
+		canvas.setWidth(CANVAS_SIZE);
+		canvas.setHeight(CANVAS_SIZE);
 		
 		if (texture != null) {
 			Context2d ctx = canvas.getContext2d();
-			ctx.drawImage(texture.getCanvas(), 0, 0, texture.getWidth(), texture.getHeight());
+			ctx.drawImage(texture.getCanvas(), 0, 0, CANVAS_SIZE, CANVAS_SIZE);
 		}
 	}
 }
