@@ -27,11 +27,13 @@ public class ToolBox extends Composite {
 		buttons.put(Tool.PENCIL, createToolButton("Pencil", "glyphicons_030_pencil.png"));
 		buttons.put(Tool.ERASER, createToolButton("Eraser", "glyphicons_030_pencil_rotated.png"));
 		//buttons.put(Tool.FILL, new ToggleButton("F"));
+		buttons.put(Tool.LINE, createTempToolButton("Line", "L"));
 		buttons.put(Tool.SCROLL, createToolButton("Scroll", "glyphicons_186_move.png"));
 		
 		panel.add(buttons.get(Tool.PENCIL));
 		panel.add(buttons.get(Tool.ERASER));
 		//panel.add(buttons.get(Tool.FILL));
+		panel.add(buttons.get(Tool.LINE));
 		panel.add(buttons.get(Tool.SCROLL));
 		
 		for(Entry<Tool,ToggleButton> entry : buttons.entrySet()) {
@@ -41,6 +43,12 @@ public class ToolBox extends Composite {
 		}
 		
 		selectTool(Tool.PENCIL);
+	}
+	
+	private ToggleButton createTempToolButton(String title, String label) {
+		ToggleButton toggleButton = new ToggleButton(label);
+		toggleButton.setTitle(title);
+		return toggleButton;
 	}
 	
 	private ToggleButton createToolButton(String title, String iconFileName) {

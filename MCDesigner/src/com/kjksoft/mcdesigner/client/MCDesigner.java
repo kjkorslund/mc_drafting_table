@@ -29,6 +29,7 @@ import com.kjksoft.mcdesigner.client.module.tiles.TileModel3D;
 import com.kjksoft.mcdesigner.client.module.tiles.TileView;
 import com.kjksoft.mcdesigner.client.tool.PaintMouseHandler;
 import com.kjksoft.mcdesigner.client.tool.ToolMouseHandler;
+import com.kjksoft.mcdesigner.client.tool.VectorMouseHandler;
 import com.kjksoft.mcdesigner.client.widgets.FileUploader;
 import com.kjksoft.mcdesigner.client.widgets.FileUploader.SelectionHandler;
 
@@ -59,6 +60,19 @@ public class MCDesigner implements EntryPoint {
 		@Override
 		protected void onTilePaint(TileView tileView, Point p) {
 			drawTile(p,null);
+		}
+	};
+	
+	private final VectorMouseHandler lineMouseHandler = new VectorMouseHandler() {
+		@Override
+		protected void onVectorUpdate(TileView tileView, Point start, Point end) {
+			GWT.log("Line vector: " + start + " --> " + end);
+		}
+
+		@Override
+		protected void onFinalVectorUpdate(TileView tileView, Point start,
+				Point end) {
+			GWT.log("Line vector: " + start + " --> " + end + " (FINAL)");
 		}
 	};
 	
@@ -239,6 +253,7 @@ public class MCDesigner implements EntryPoint {
 			public void onToolSelection(Tool newTool) {
 				pencilMouseHandler.removeFrom(mainPanel.getTileView());
 				eraserMouseHandler.removeFrom(mainPanel.getTileView());
+				lineMouseHandler.removeFrom(mainPanel.getTileView());
 				scrollMouseHandler.removeFrom(mainPanel.getTileView());
 				switch(newTool) {
 				case ERASER:
@@ -246,6 +261,9 @@ public class MCDesigner implements EntryPoint {
 					break;
 				case PENCIL:
 					pencilMouseHandler.installOn(mainPanel.getTileView());
+					break;
+				case LINE:
+					lineMouseHandler.installOn(mainPanel.getTileView());
 					break;
 				case SCROLL:
 					scrollMouseHandler.installOn(mainPanel.getTileView());
