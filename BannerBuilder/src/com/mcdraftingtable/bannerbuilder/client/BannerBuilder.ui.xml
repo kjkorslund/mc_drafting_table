@@ -3,20 +3,28 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
 	<ui:style>
-		.mouseCoords {
-			padding-left:1em;
+		.bannerBackground {
+			background-color: aqua;
 		}
 		
-		.toolbar {
-			border-bottom: 1px solid silver;
-		}
-		
-		.statusbar {
-			border-top: 1px solid silver;
+		.overlayPanel {
+			background-color: white;
 		}
 	</ui:style>
 	
-	<g:DockLayoutPanel unit="EM">
-		
-	</g:DockLayoutPanel>
+	<g:LayoutPanel>
+		<g:layer>
+			<g:HTMLPanel addStyleNames="{style.bannerBackground}">
+				Background
+				<div align="center">test</div>
+			</g:HTMLPanel>
+		</g:layer>
+		<g:layer right="2em" width="20em" top="2em" height="32em">
+			<g:HTMLPanel addStyleNames="{style.overlayPanel}">Materials and instructions</g:HTMLPanel>
+		</g:layer>
+		<g:layer left="2em" width="20em" top="2em" height="32em">
+			<g:HTMLPanel addStyleNames="{style.overlayPanel}">Builder tools</g:HTMLPanel>
+		</g:layer>
+	</g:LayoutPanel>
+	
 </ui:UiBinder> 
