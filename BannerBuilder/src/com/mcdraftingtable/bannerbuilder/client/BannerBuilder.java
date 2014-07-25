@@ -22,7 +22,7 @@ public class BannerBuilder extends Composite implements EntryPoint {
 	static interface BannerBuilderStyle extends CssResource {
 		String bannerBackground();
 		String overlayPanel();
-		String overlayPanelShadow();
+		String overlayPanelParent();
 	}
 
 	private static BannerBuilderUiBinder uiBinder = GWT
@@ -39,9 +39,9 @@ public class BannerBuilder extends Composite implements EntryPoint {
 		// [kjk] This is a bit of a hack. The box shadow only works if it's
 		// applied to the parent div for the overlay panels.
 		designOverlay.getElement().getParentElement().addClassName(
-				style.overlayPanelShadow());
+				style.overlayPanelParent());
 		instructionsOverlay.getElement().getParentElement().addClassName(
-				style.overlayPanelShadow());
+				style.overlayPanelParent());
 	}
 	
 	/**

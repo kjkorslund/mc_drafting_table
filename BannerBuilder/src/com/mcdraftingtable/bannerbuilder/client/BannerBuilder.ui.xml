@@ -1,19 +1,20 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:client='urn:import:com.mcdraftingtable.bannerbuilder.client'>
 	
 	<ui:style type="com.mcdraftingtable.bannerbuilder.client.BannerBuilder.BannerBuilderStyle">
 		.bannerBackground {
-			background-color: aqua;
+			background: linear-gradient(#bbddff, #88bbee);
 		}
 		
 		.overlayPanel {
-			background-color: white;
-			border: solid 1px silver;
 			padding: 0.5em;
 		}
 		
-		.overlayPanelShadow {
+		.overlayPanelParent {
+			background-color: white;
+			border: solid 1px silver;
 			box-shadow: 6px 6px 4px rgba(0,0,0,0.33);
 		}
 	</ui:style>
