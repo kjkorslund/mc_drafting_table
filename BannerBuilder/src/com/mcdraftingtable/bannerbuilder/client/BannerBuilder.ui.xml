@@ -2,28 +2,33 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	
-	<ui:style>
+	<ui:style type="com.mcdraftingtable.bannerbuilder.client.BannerBuilder.BannerBuilderStyle">
 		.bannerBackground {
 			background-color: aqua;
 		}
 		
 		.overlayPanel {
 			background-color: white;
+			border: solid 1px silver;
+			padding: 0.5em;
+		}
+		
+		.overlayPanelShadow {
+			box-shadow: 6px 6px 4px rgba(0,0,0,0.33);
 		}
 	</ui:style>
 	
-	<g:LayoutPanel>
+	<g:LayoutPanel ui:field="layoutPanel">
 		<g:layer>
 			<g:HTMLPanel addStyleNames="{style.bannerBackground}">
-				Background
-				<div align="center">test</div>
+				<div align="center" style="margin-top:12em">Banner display</div>
 			</g:HTMLPanel>
 		</g:layer>
 		<g:layer right="2em" width="20em" top="2em" height="32em">
-			<g:HTMLPanel addStyleNames="{style.overlayPanel}">Materials and instructions</g:HTMLPanel>
+			<g:HTMLPanel ui:field="instructionsOverlay" addStyleNames="{style.overlayPanel}">Instructions overlay</g:HTMLPanel>
 		</g:layer>
 		<g:layer left="2em" width="20em" top="2em" height="32em">
-			<g:HTMLPanel addStyleNames="{style.overlayPanel}">Builder tools</g:HTMLPanel>
+			<g:HTMLPanel ui:field="designOverlay" addStyleNames="{style.overlayPanel}">Design overlay</g:HTMLPanel>
 		</g:layer>
 	</g:LayoutPanel>
 	
