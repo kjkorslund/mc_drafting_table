@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	
+	<ui:style>
+		.mouseCoords {
+			padding-left:1em;
+		}
+		
+		.toolbar {
+			border-bottom: 1px solid silver;
+		}
+		
+		.statusbar {
+			border-top: 1px solid silver;
+		}
+	</ui:style>
+	
+	<g:DockLayoutPanel unit="EM">
+		
+	</g:DockLayoutPanel>
+</ui:UiBinder> 
