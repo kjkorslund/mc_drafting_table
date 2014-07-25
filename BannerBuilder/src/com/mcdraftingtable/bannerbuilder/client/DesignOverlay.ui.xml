@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	</ui:style>
+	<g:VerticalPanel>
+		<g:Label text="Base Color:"/>
+		<g:HorizontalPanel/>
+		<g:Label text="Layers:"/>
+		<g:HTMLPanel>(Layer 1)</g:HTMLPanel>
+		<g:HTMLPanel>(Layer 2)</g:HTMLPanel>
+		<g:HTMLPanel>(Layer 3)</g:HTMLPanel>
+		<g:HTMLPanel>(Layer 4)</g:HTMLPanel>
+		<g:HTMLPanel>(Layer 5)</g:HTMLPanel>
+		<g:HTMLPanel>(Layer 6)</g:HTMLPanel>
+	</g:VerticalPanel>
+</ui:UiBinder> 
