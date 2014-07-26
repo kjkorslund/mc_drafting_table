@@ -11,13 +11,8 @@
 		.border {
 			border: solid 1px olive;
 		}
-		
-		.rootPanel {
-			border-top: solid 1px gray;
-		}
 	</ui:style>
-	<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" width="100%" horizontalAlignment="ALIGN_LEFT" spacing="4"
-			addStyleNames="{style.rootPanel}">
+	<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" width="100%" horizontalAlignment="ALIGN_LEFT" spacing="4">
 		<g:Label ui:field="layerLabel" text="Layer #:"/>
 		<g:Image ui:field="patternSwatch" addStyleNames="{style.swatch}" />
 		<g:Image ui:field="colorSwatch" addStyleNames="{style.swatch}" />

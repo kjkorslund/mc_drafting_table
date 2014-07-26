@@ -7,17 +7,29 @@
 		.border {
 			border: solid 1px blue;
 		}
+		
+		.layerRow {
+			/*border-top: solid 1px gray;*/
+		}
 	</ui:style>
 	
 	<g:VerticalPanel horizontalAlignment="ALIGN_LEFT">
 		<g:Label text="Base Color:" addStyleNames="{style.border}"/>
 		<g:HorizontalPanel/>
 		<g:Label text="Layers:"/>
-		<client:LayerSummary layerID="1" />
-		<client:LayerSummary layerID="2" />
-		<client:LayerSummary layerID="3" />
-		<client:LayerSummary layerID="4" />
-		<client:LayerSummary layerID="5" />
-		<client:LayerSummary layerID="6" />
+		
+		<client:LayerSummary ui:field="layerRow1" layerID="1" addStyleNames="{style.layerRow}" visible="false" />
+		<client:LayerSummary ui:field="layerRow2" layerID="2" addStyleNames="{style.layerRow}" visible="false" />
+		<client:LayerSummary ui:field="layerRow3" layerID="3" addStyleNames="{style.layerRow}" visible="false" />
+		<client:LayerSummary ui:field="layerRow4" layerID="4" addStyleNames="{style.layerRow}" visible="false" />
+		<client:LayerSummary ui:field="layerRow5" layerID="5" addStyleNames="{style.layerRow}" visible="false" />
+		<client:LayerSummary ui:field="layerRow6" layerID="6" addStyleNames="{style.layerRow}" visible="false" />
+		
+		<g:HorizontalPanel ui:field="addLayerRow" addStyleNames="{style.layerRow}" width="100%" spacing="4">
+			<g:Cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_MIDDLE">
+				<g:Button ui:field="addLayerButton">+</g:Button>
+			</g:Cell>
+			
+		</g:HorizontalPanel>
 	</g:VerticalPanel>
 </ui:UiBinder> 

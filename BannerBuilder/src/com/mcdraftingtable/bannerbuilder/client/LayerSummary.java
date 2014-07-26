@@ -1,8 +1,11 @@
 package com.mcdraftingtable.bannerbuilder.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
@@ -28,6 +31,8 @@ public class LayerSummary extends Composite {
 
 	public LayerSummary() {
 		initWidget(uiBinder.createAndBindUi(this));
+		patternSwatch.addClickHandler(new PatternClickHandler());
+		colorSwatch.addClickHandler(new ColorClickHandler());
 	}
 	
 	public void setLayerID(int id) {
@@ -38,5 +43,24 @@ public class LayerSummary extends Composite {
 	public int getLayerID() {
 		return this.id;
 	}
+	
+	private class ColorClickHandler implements ClickHandler {
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO proper color selection dialog
+			Window.alert("Choose a color");
+		}
+	}
+	
+	private class PatternClickHandler implements ClickHandler {
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO proper patter selection dialog
+			Window.alert("Choose a pattern");
+		}
+	}
 
+	public interface RemoveLayerHandler {
+		// TODO finish
+	}
 }
