@@ -25,11 +25,13 @@
 				<div align="center" style="margin-top:12em">Banner display</div>
 			</g:HTMLPanel>
 		</g:layer>
-		<g:layer right="2em" width="20em" top="2em" height="32em">
-			<g:HTMLPanel ui:field="instructionsOverlay" addStyleNames="{style.overlayPanel}">Instructions overlay</g:HTMLPanel>
+		<g:layer right="2em" width="32em" top="2em" height="32em">
+			<g:HTMLPanel ui:field="instructionsOverlay" addStyleNames="{style.overlayPanel}" width="100%">
+				Instructions overlay
+			</g:HTMLPanel>
 		</g:layer>
-		<g:layer left="2em" width="20em" top="2em" height="32em">
-			<g:HTMLPanel ui:field="designOverlay" addStyleNames="{style.overlayPanel}">Design overlay</g:HTMLPanel>
+		<g:layer left="2em" width="24em" top="2em" height="32em">
+			<client:DesignOverlay ui:field="designOverlay" addStyleNames="{style.overlayPanel}" width="100%" />
 		</g:layer>
 	</g:LayoutPanel>
 	

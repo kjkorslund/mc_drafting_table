@@ -30,7 +30,7 @@ public class BannerBuilder extends Composite implements EntryPoint {
 	
 	@UiField LayoutPanel layoutPanel;
 	@UiField HTMLPanel instructionsOverlay;
-	@UiField HTMLPanel designOverlay;
+	@UiField DesignOverlay designOverlay;
 	@UiField BannerBuilderStyle style;
 	
 	public BannerBuilder() {

@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.swatch {
+			border: solid 1px silver;
+			width:48px;
+			height:48px;`
+		}
+		
+		.border {
+			border: solid 1px olive;
+		}
+		
+		.rootPanel {
+			border-top: solid 1px gray;
+		}
+	</ui:style>
+	<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" width="100%" horizontalAlignment="ALIGN_LEFT" spacing="4"
+			addStyleNames="{style.rootPanel}">
+		<g:Label ui:field="layerLabel" text="Layer #:"/>
+		<g:Image ui:field="patternSwatch" addStyleNames="{style.swatch}" />
+		<g:Image ui:field="colorSwatch" addStyleNames="{style.swatch}" />
+		<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT" spacing="4">
+			<g:Button ui:field="addButton" text="+" />
+			<g:Button ui:field="removeButton" text="-" />
+			<g:Button ui:field="moveUpButton" text="^" />
+			<g:Button ui:field="moveDownButton" text="v" />
+		</g:HorizontalPanel>
+		
+	</g:HorizontalPanel>
+</ui:UiBinder> 
