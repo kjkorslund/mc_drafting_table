@@ -21,12 +21,13 @@
 		<g:Label ui:field="layerLabel" text="Layer #:"/>
 		<g:Image ui:field="patternSwatch" addStyleNames="{style.swatch}" />
 		<g:Image ui:field="colorSwatch" addStyleNames="{style.swatch}" />
-		<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT" spacing="4">
-			<g:Button ui:field="addButton" text="+" />
-			<g:Button ui:field="removeButton" text="-" />
-			<g:Button ui:field="moveUpButton" text="^" />
-			<g:Button ui:field="moveDownButton" text="v" />
-		</g:HorizontalPanel>
+		<g:cell horizontalAlignment="ALIGN_RIGHT">
+			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" spacing="4">
+				<g:Button ui:field="moveUpButton" text="^" />
+				<g:Button ui:field="moveDownButton" text="v" />
+				<g:Button ui:field="removeButton" text="-" />
+			</g:HorizontalPanel>
+		</g:cell>
 		
 	</g:HorizontalPanel>
 </ui:UiBinder> 

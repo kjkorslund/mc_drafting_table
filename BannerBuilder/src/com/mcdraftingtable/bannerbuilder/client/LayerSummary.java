@@ -20,10 +20,9 @@ public class LayerSummary extends Composite {
 	@UiField Label layerLabel;
 	@UiField Image patternSwatch;
 	@UiField Image colorSwatch;
-	@UiField Button addButton;
-	@UiField Button removeButton;
 	@UiField Button moveUpButton;
 	@UiField Button moveDownButton;
+	@UiField Button removeButton;
 	
 	private int id;
 
