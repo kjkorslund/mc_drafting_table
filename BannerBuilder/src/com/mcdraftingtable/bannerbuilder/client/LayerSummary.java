@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -27,12 +28,18 @@ public class LayerSummary extends Composite {
 	@UiField Button moveDownButton;
 	@UiField Button removeButton;
 	
+	private RemoveLayerHandler removeLayerHandler = null;
+	
 	private int id;
 
 	public LayerSummary() {
 		initWidget(uiBinder.createAndBindUi(this));
 		patternSwatch.addClickHandler(new PatternClickHandler());
 		colorSwatch.addClickHandler(new ColorClickHandler());
+		removeButton.addClickHandler(new RemoveLayerClickHandler());
+
+		// [kk] This is temporary, for testing the add/remove layer dynamics
+		colorSwatch.getElement().getStyle().setBackgroundColor(randomColor());
 	}
 	
 	public void setLayerID(int id) {
@@ -44,6 +51,14 @@ public class LayerSummary extends Composite {
 		return this.id;
 	}
 	
+	public RemoveLayerHandler getRemoveLayerHandler() {
+		return removeLayerHandler;
+	}
+
+	public void setRemoveLayerHandler(RemoveLayerHandler removeLayerHandler) {
+		this.removeLayerHandler = removeLayerHandler;
+	}
+
 	private class ColorClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
@@ -59,8 +74,27 @@ public class LayerSummary extends Composite {
 			Window.alert("Choose a pattern");
 		}
 	}
+	
+	private String randomColor() {
+		int r = Random.nextInt(256);
+		int g = Random.nextInt(256);
+		int b = Random.nextInt(256);
+		return "rgb(" + r + "," + g + "," + b + ")";
+	}
 
 	public interface RemoveLayerHandler {
-		// TODO finish
+		public void onRemoveLayer(LayerSummary layer);
+	}
+	
+	private class RemoveLayerClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			// TODO Auto-generated method stub
+			if (removeLayerHandler != null) {
+				removeLayerHandler.onRemoveLayer(LayerSummary.this);
+			}
+		}
+		
 	}
 }

@@ -8,9 +8,13 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mcdraftingtable.bannerbuilder.client.LayerSummary.RemoveLayerHandler;
 
 public class DesignOverlay extends Composite {
+	
+	private static final int MAX_LAYERS = 6;
 
 	private static DesignOverlayUiBinder uiBinder = GWT
 			.create(DesignOverlayUiBinder.class);
@@ -19,63 +23,55 @@ public class DesignOverlay extends Composite {
 			UiBinder<Widget, DesignOverlay> {
 	}
 	
-	@UiField LayerSummary layerRow1;
-	@UiField LayerSummary layerRow2;
-	@UiField LayerSummary layerRow3;
-	@UiField LayerSummary layerRow4;
-	@UiField LayerSummary layerRow5;
-	@UiField LayerSummary layerRow6;
+	@UiField VerticalPanel mainPanel;
 	@UiField HorizontalPanel addLayerRow;
 	@UiField Button addLayerButton;
 
-	private int layerCount = 0;
-	
+	final RemoveLayerHandlerImpl removeLayerHandler = new RemoveLayerHandlerImpl();
+	int layerCount = 0;
+
 	public DesignOverlay() {
 		initWidget(uiBinder.createAndBindUi(this));
 		addLayerButton.addClickHandler(new AddLayerClickHandler());
-		// TODO rework this class to dynamically create the layer rows, so
-		// layers can be easily removed
 	}
 
-	public int getLayerCount() {
-		return layerCount;
-	}
-
-	public void setLayerCount(int layerCount) {
-		if (layerCount > 6) layerCount = 6;
-		this.layerCount = layerCount;
-		
-		for(int i=0; i < 6; i++) {
-			int layerID = i+1;
-			LayerSummary layerRow = getLayerByID(layerID);
-			layerRow.setVisible(i < layerCount);
-		}
-		addLayerRow.setVisible(layerCount < 6);
-	}
-	
-	private LayerSummary getLayerByID(int layerID) {
-		switch(layerID) {
-		case 1:
-			return layerRow1;
-		case 2:
-			return layerRow2;
-		case 3:
-			return layerRow3;
-		case 4:
-			return layerRow4;
-		case 5:
-			return layerRow5;
-		case 6:
-			return layerRow6;
-		}
-		throw new IllegalArgumentException("layerID must be in the range [1,6]");
+	public LayerSummary getLayerAt(int index) {
+		int startIndex = mainPanel.getWidgetIndex(addLayerRow) - layerCount;
+		return (LayerSummary) mainPanel.getWidget(startIndex + index);
 	}
 	
 	private class AddLayerClickHandler implements ClickHandler {
-
 		@Override
 		public void onClick(ClickEvent event) {
-			setLayerCount(layerCount+1);
+			LayerSummary newLayerSummary = new LayerSummary();
+			newLayerSummary.setLayerID(layerCount+1);
+			newLayerSummary.setRemoveLayerHandler(removeLayerHandler);
+			
+			int index = mainPanel.getWidgetIndex(addLayerRow);
+			mainPanel.insert(newLayerSummary, index);
+			
+			layerCount++;
+			if (layerCount >= MAX_LAYERS) {
+				addLayerRow.setVisible(false);
+			}
+		}
+	}
+	
+	private class RemoveLayerHandlerImpl implements RemoveLayerHandler {
+
+		@Override
+		public void onRemoveLayer(LayerSummary layer) {
+			mainPanel.remove(layer);
+			
+			layerCount--;
+			if (layerCount < MAX_LAYERS) {
+				addLayerRow.setVisible(true);
+			}
+			
+			// [kjk] Relabel existing layers
+			for(int i = layer.getLayerID()-1; i<layerCount; i++) {
+				getLayerAt(i).setLayerID(i+1);
+			}
 		}
 		
 	}
