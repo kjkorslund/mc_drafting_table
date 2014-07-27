@@ -10,9 +10,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mcdraftingtable.bannerbuilder.client.LayerSummary.RemoveLayerHandler;
 
 public class DesignOverlay extends Composite {
+	// FIXME [kjk] The logic for showing/hiding the up/down buttons is messed up
+	// right now. It's too complicated as well. There's got to be a better
+	// way... 
 	
 	private static final int MAX_LAYERS = 6;
 
@@ -27,7 +29,6 @@ public class DesignOverlay extends Composite {
 	@UiField HorizontalPanel addLayerRow;
 	@UiField Button addLayerButton;
 
-	final RemoveLayerHandlerImpl removeLayerHandler = new RemoveLayerHandlerImpl();
 	int layerCount = 0;
 
 	public DesignOverlay() {
@@ -35,20 +36,20 @@ public class DesignOverlay extends Composite {
 		addLayerButton.addClickHandler(new AddLayerClickHandler());
 	}
 
-	public LayerSummary getLayerAt(int index) {
+	public LayerConfiguration getLayerAt(int index) {
 		int startIndex = mainPanel.getWidgetIndex(addLayerRow) - layerCount;
-		return (LayerSummary) mainPanel.getWidget(startIndex + index);
+		return (LayerConfiguration) mainPanel.getWidget(startIndex + index);
 	}
 	
 	private class AddLayerClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
-			LayerSummary newLayerSummary = new LayerSummary();
-			newLayerSummary.setLayerID(layerCount+1);
-			newLayerSummary.setRemoveLayerHandler(removeLayerHandler);
+			LayerConfiguration newLayerConfig = new LayerConfiguration();
+			newLayerConfig.setLayerID(layerCount+1);
+			new LayerHandlers(newLayerConfig);
 			
 			int index = mainPanel.getWidgetIndex(addLayerRow);
-			mainPanel.insert(newLayerSummary, index);
+			mainPanel.insert(newLayerConfig, index);
 			
 			layerCount++;
 			if (layerCount >= MAX_LAYERS) {
@@ -57,11 +58,36 @@ public class DesignOverlay extends Composite {
 		}
 	}
 	
-	private class RemoveLayerHandlerImpl implements RemoveLayerHandler {
+	private class LayerHandlers {
+		private final LayerConfiguration layerConfig;
+		private final ClickHandler removeButtonHandler = new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				removeLayer();
+			}
+		};
+		private final ClickHandler moveUpButtonHandler = new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				moveLayerUp();
+			}
+		};
+		private final ClickHandler moveDownButtonHandler = new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				moveLayerDown();
+			}
+		};
 
-		@Override
-		public void onRemoveLayer(LayerSummary layer) {
-			mainPanel.remove(layer);
+		public LayerHandlers(LayerConfiguration layerConfig) {
+			this.layerConfig = layerConfig;
+			layerConfig.getRemoveButton().addClickHandler(removeButtonHandler);
+			layerConfig.getMoveUpButton().addClickHandler(moveUpButtonHandler);
+			layerConfig.getMoveDownButton().addClickHandler(moveDownButtonHandler);
+		}
+		
+		private void removeLayer() {
+			mainPanel.remove(layerConfig);
 			
 			layerCount--;
 			if (layerCount < MAX_LAYERS) {
@@ -69,11 +95,38 @@ public class DesignOverlay extends Composite {
 			}
 			
 			// [kjk] Relabel existing layers
-			for(int i = layer.getLayerID()-1; i<layerCount; i++) {
+			for(int i = layerConfig.getLayerID()-1; i<layerCount; i++) {
 				getLayerAt(i).setLayerID(i+1);
 			}
 		}
+
+		private void moveLayerUp() {
+			promoteLayer(layerConfig);
+		}
 		
+		private void moveLayerDown() {
+			int index = layerConfig.getLayerID()-1;
+			promoteLayer(getLayerAt(index+1));
+		}
+		
+		private void promoteLayer(LayerConfiguration layerConfig) {
+			int index = layerConfig.getLayerID()-1;
+			int newIndex = index-1;
+			mainPanel.insert(layerConfig, newIndex);
+			layerConfig.setLayerID(newIndex+1);
+			layerConfig.getMoveDownButton().setEnabled(true);
+			if (newIndex == 0) {
+				layerConfig.getMoveUpButton().setEnabled(false);
+			}
+			
+			LayerConfiguration otherLayerConfig = getLayerAt(index);
+			otherLayerConfig.setLayerID(index+1);
+			otherLayerConfig.getMoveUpButton().setEnabled(true);
+			if (index == layerCount-1) {
+				otherLayerConfig.getMoveDownButton().setEnabled(false);
+			}
+		}
+
 	}
 
 }
