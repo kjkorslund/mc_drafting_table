@@ -1,5 +1,7 @@
 package com.mcdraftingtable.bannerbuilder.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -29,33 +31,43 @@ public class DesignOverlay extends Composite {
 	@UiField HorizontalPanel addLayerRow;
 	@UiField Button addLayerButton;
 
-	int layerCount = 0;
+	private final ArrayList<LayerConfiguration> layerConfigurations = new ArrayList<>(MAX_LAYERS);
+	private final int startIndex;
 
 	public DesignOverlay() {
 		initWidget(uiBinder.createAndBindUi(this));
 		addLayerButton.addClickHandler(new AddLayerClickHandler());
+		startIndex = mainPanel.getWidgetIndex(addLayerRow);
 	}
 
 	public LayerConfiguration getLayerAt(int index) {
-		int startIndex = mainPanel.getWidgetIndex(addLayerRow) - layerCount;
 		return (LayerConfiguration) mainPanel.getWidget(startIndex + index);
 	}
 	
 	private class AddLayerClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
+			int index = layerConfigurations.size();
+
 			LayerConfiguration newLayerConfig = new LayerConfiguration();
-			newLayerConfig.setLayerID(layerCount+1);
 			new LayerHandlers(newLayerConfig);
+
+			layerConfigurations.add(newLayerConfig);
+			updateLayerConfigurationAt(layerConfigurations.size() - 1);
 			
-			int index = mainPanel.getWidgetIndex(addLayerRow);
-			mainPanel.insert(newLayerConfig, index);
-			
-			layerCount++;
-			if (layerCount >= MAX_LAYERS) {
+			mainPanel.insert(newLayerConfig, startIndex + index);
+
+			if (layerConfigurations.size() >= MAX_LAYERS) {
 				addLayerRow.setVisible(false);
 			}
 		}
+	}
+	
+	private void updateLayerConfigurationAt(int index) {
+		LayerConfiguration layerConfig = layerConfigurations.get(index);
+		layerConfig.setLayerID(index+1);
+		layerConfig.getMoveUpButton().setVisible(index > 0);
+		layerConfig.getMoveDownButton().setVisible(index < (layerConfigurations.size() - 1));
 	}
 	
 	private class LayerHandlers {
@@ -87,44 +99,41 @@ public class DesignOverlay extends Composite {
 		}
 		
 		private void removeLayer() {
-			mainPanel.remove(layerConfig);
+			int index = layerConfigurations.indexOf(layerConfig);
+			layerConfigurations.remove(index);
+			mainPanel.remove(index);
 			
-			layerCount--;
-			if (layerCount < MAX_LAYERS) {
+			if (layerConfigurations.size() < MAX_LAYERS) {
 				addLayerRow.setVisible(true);
 			}
 			
 			// [kjk] Relabel existing layers
-			for(int i = layerConfig.getLayerID()-1; i<layerCount; i++) {
-				getLayerAt(i).setLayerID(i+1);
+			for(int i = index; i<layerConfigurations.size(); i++) {
+				updateLayerConfigurationAt(i);
 			}
 		}
 
 		private void moveLayerUp() {
-			promoteLayer(layerConfig);
+			int index = layerConfigurations.indexOf(layerConfig);
+			promoteLayer(index);
 		}
 		
 		private void moveLayerDown() {
-			int index = layerConfig.getLayerID()-1;
-			promoteLayer(getLayerAt(index+1));
+			int index = layerConfigurations.indexOf(layerConfig);
+			promoteLayer(index + 1);
 		}
 		
-		private void promoteLayer(LayerConfiguration layerConfig) {
-			int index = layerConfig.getLayerID()-1;
-			int newIndex = index-1;
-			mainPanel.insert(layerConfig, newIndex);
-			layerConfig.setLayerID(newIndex+1);
-			layerConfig.getMoveDownButton().setEnabled(true);
-			if (newIndex == 0) {
-				layerConfig.getMoveUpButton().setEnabled(false);
-			}
+		private void promoteLayer(int index) {
+			int newIndex = index - 1;
 			
-			LayerConfiguration otherLayerConfig = getLayerAt(index);
-			otherLayerConfig.setLayerID(index+1);
-			otherLayerConfig.getMoveUpButton().setEnabled(true);
-			if (index == layerCount-1) {
-				otherLayerConfig.getMoveDownButton().setEnabled(false);
-			}
+			LayerConfiguration config = layerConfigurations.get(index);
+			layerConfigurations.set(index, layerConfigurations.get(newIndex));
+			layerConfigurations.set(newIndex, config);
+			
+			mainPanel.insert(config, newIndex);
+			
+			updateLayerConfigurationAt(index);
+			updateLayerConfigurationAt(newIndex);
 		}
 
 	}
