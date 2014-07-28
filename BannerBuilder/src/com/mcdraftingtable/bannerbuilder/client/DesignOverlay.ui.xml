@@ -18,6 +18,8 @@
 		<g:HorizontalPanel/>
 		<g:Label text="Layers:"/>
 		
+		<!-- TODO: figure out a way to get the layer configuration widgets to line up vertically -->
+		
 		<g:HorizontalPanel ui:field="addLayerRow" addStyleNames="{style.layerRow}" width="100%" spacing="4">
 			<g:Cell horizontalAlignment="ALIGN_RIGHT" verticalAlignment="ALIGN_MIDDLE">
 				<g:Button ui:field="addLayerButton">+</g:Button>

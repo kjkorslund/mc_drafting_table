@@ -14,9 +14,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DesignOverlay extends Composite {
-	// FIXME [kjk] The logic for showing/hiding the up/down buttons is messed up
-	// right now. It's too complicated as well. There's got to be a better
-	// way... 
 	
 	private static final int MAX_LAYERS = 6;
 
@@ -54,6 +51,11 @@ public class DesignOverlay extends Composite {
 
 			layerConfigurations.add(newLayerConfig);
 			updateLayerConfigurationAt(layerConfigurations.size() - 1);
+			if (layerConfigurations.size() > 1) {
+				// [kjk] This update is to add the 'move down' button for the
+				// previous row
+				updateLayerConfigurationAt(layerConfigurations.size() - 2);
+			}
 			
 			mainPanel.insert(newLayerConfig, startIndex + index);
 
@@ -101,7 +103,7 @@ public class DesignOverlay extends Composite {
 		private void removeLayer() {
 			int index = layerConfigurations.indexOf(layerConfig);
 			layerConfigurations.remove(index);
-			mainPanel.remove(index);
+			mainPanel.remove(startIndex + index);
 			
 			if (layerConfigurations.size() < MAX_LAYERS) {
 				addLayerRow.setVisible(true);
@@ -130,7 +132,7 @@ public class DesignOverlay extends Composite {
 			layerConfigurations.set(index, layerConfigurations.get(newIndex));
 			layerConfigurations.set(newIndex, config);
 			
-			mainPanel.insert(config, newIndex);
+			mainPanel.insert(config, startIndex + newIndex);
 			
 			updateLayerConfigurationAt(index);
 			updateLayerConfigurationAt(newIndex);
