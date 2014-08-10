@@ -31,9 +31,7 @@
 		</g:center>
 		<g:east size="32.0">
 			<g:ScrollPanel addStyleNames="{style.overlayPanel}">
-				<g:HTMLPanel ui:field="instructionsOverlay" width="100%">
-					Instructions overlay
-				</g:HTMLPanel>
+				<client:InstructionsOverlay ui:field="instructionsOverlay" width="100%" />
 			</g:ScrollPanel>
 		</g:east>
 	</g:DockLayoutPanel>

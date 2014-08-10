@@ -27,7 +27,7 @@ public class BannerBuilder extends Composite implements EntryPoint {
 	private static BannerBuilderUiBinder uiBinder = GWT
 			.create(BannerBuilderUiBinder.class);
 	
-	@UiField HTMLPanel instructionsOverlay;
+	@UiField InstructionsOverlay instructionsOverlay;
 	@UiField DesignOverlay designOverlay;
 	@UiField BannerBuilderStyle style;
 	
