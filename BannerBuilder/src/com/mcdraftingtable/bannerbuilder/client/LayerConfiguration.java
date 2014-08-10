@@ -44,7 +44,7 @@ public class LayerConfiguration extends Composite {
 		colorSwatch.addClickHandler(new ColorClickHandler());
 
 		// [kk] This is temporary, for testing the add/remove layer dynamics
-		colorSwatch.getElement().getStyle().setBackgroundColor(randomColor());
+		colorSwatch.getElement().getStyle().setBackgroundColor(DyeColor.random().rgb.toCssString());
 		
 		for(DyeColor dyeColor : DyeColor.values()) {
 			colorChooser.addColor(dyeColor.rgb);
@@ -94,10 +94,4 @@ public class LayerConfiguration extends Composite {
 		}
 	}
 	
-	private String randomColor() {
-		int r = Random.nextInt(256);
-		int g = Random.nextInt(256);
-		int b = Random.nextInt(256);
-		return "rgb(" + r + "," + g + "," + b + ")";
-	}
 }

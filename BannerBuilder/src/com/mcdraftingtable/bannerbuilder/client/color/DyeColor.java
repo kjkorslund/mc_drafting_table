@@ -1,5 +1,7 @@
 package com.mcdraftingtable.bannerbuilder.client.color;
 
+import com.google.gwt.user.client.Random;
+
 public enum DyeColor {
 	BLACK(0,0,0),
 	RED(153,51,51),
@@ -17,8 +19,12 @@ public enum DyeColor {
 	MAGENTA(178,76,216),
 	ORANGE(216, 127, 51),
 	WHITE(255, 255, 255),
-	
 	;
+	
+	public static DyeColor random() {
+		DyeColor[] colors = DyeColor.values();
+		return colors[Random.nextInt(colors.length)];
+	}
 	
 	public final RGB rgb;
 	
