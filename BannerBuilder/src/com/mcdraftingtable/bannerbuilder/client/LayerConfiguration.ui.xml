@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:clientui="urn:import:com.mcdraftingtable.bannerbuilder.client.ui">
 	<ui:style>
 		.swatch {
 			border: solid 1px silver;
@@ -15,7 +16,7 @@
 	<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" width="100%" horizontalAlignment="ALIGN_LEFT" spacing="4">
 		<g:Label ui:field="layerLabel" text="Layer #:"/>
 		<g:Image ui:field="patternSwatch" addStyleNames="{style.swatch}" />
-		<g:Image ui:field="colorSwatch" addStyleNames="{style.swatch}" />
+		<clientui:ColorSwatch ui:field="colorSwatch" />
 		<g:cell horizontalAlignment="ALIGN_RIGHT">
 			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" spacing="4">
 				<g:Button ui:field="moveUpButton" text="^" />

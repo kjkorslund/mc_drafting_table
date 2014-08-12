@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mcdraftingtable.bannerbuilder.client.ui.ColorSwatch;
 
 public class DesignOverlay extends Composite {
 	
@@ -25,6 +26,7 @@ public class DesignOverlay extends Composite {
 	}
 	
 	@UiField VerticalPanel mainPanel;
+	@UiField ColorSwatch baseColorSwatch;
 	@UiField HorizontalPanel addLayerRow;
 	@UiField Button addLayerButton;
 

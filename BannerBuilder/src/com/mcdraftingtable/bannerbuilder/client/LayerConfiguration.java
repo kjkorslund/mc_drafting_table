@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mcdraftingtable.bannerbuilder.client.color.DyeColor;
 import com.mcdraftingtable.bannerbuilder.client.ui.ColorChooser;
+import com.mcdraftingtable.bannerbuilder.client.ui.ColorSwatch;
 
 public class LayerConfiguration extends Composite {
 
@@ -27,7 +28,7 @@ public class LayerConfiguration extends Composite {
 	
 	@UiField Label layerLabel;
 	@UiField Image patternSwatch;
-	@UiField Image colorSwatch;
+	@UiField ColorSwatch colorSwatch;
 	@UiField Button moveUpButton;
 	@UiField Button moveDownButton;
 	@UiField Button removeButton;
@@ -39,7 +40,7 @@ public class LayerConfiguration extends Composite {
 	public LayerConfiguration() {
 		initWidget(uiBinder.createAndBindUi(this));
 		patternSwatch.addClickHandler(new PatternClickHandler());
-		colorSwatch.addClickHandler(new ColorClickHandler());
+//		colorSwatch.addClickHandler(new ColorClickHandler());
 
 		// [kk] This is temporary, for testing the add/remove layer dynamics
 		colorSwatch.getElement().getStyle().setBackgroundColor(DyeColor.random().rgb.toCssString());

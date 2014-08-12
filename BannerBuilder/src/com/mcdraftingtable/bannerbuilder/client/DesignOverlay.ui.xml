@@ -1,7 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:client='urn:import:com.mcdraftingtable.bannerbuilder.client'>
+	xmlns:client="urn:import:com.mcdraftingtable.bannerbuilder.client"
+	xmlns:clientui="urn:import:com.mcdraftingtable.bannerbuilder.client.ui">
 	
 	<ui:style>
 		.border {
@@ -15,7 +16,7 @@
 	
 	<g:VerticalPanel ui:field="mainPanel" horizontalAlignment="ALIGN_LEFT">
 		<g:Label text="Base Color:" addStyleNames="{style.border}"/>
-		<g:HorizontalPanel/>
+		<clientui:ColorSwatch ui:field="baseColorSwatch" />
 		<g:Label text="Layers:"/>
 		
 		<!-- TODO: figure out a way to get the layer configuration widgets to line up vertically -->
