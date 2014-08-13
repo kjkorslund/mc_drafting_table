@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:gCanvas="urn:import:com.google.gwt.canvas.client">
+	<ui:style type='com.mcdraftingtable.bannerbuilder.client.ui.ColorSwatch.SwatchStyle'>
+		.swatch {
+			border: solid 1px silver;
+			width:48px;
+			height:48px;
+		}
+	</ui:style>
+	
+	<!--
+	<gCanvas:Canvas ui:field="swatch" addStyleNames="{style.swatch}" />
+	
+	<g:SimpleLayoutPanel ui:field="swatchParent">
+		<gCanvas:Canvas ui:field="swatch" addStyleNames="{style.swatch}" />
+	</g:SimpleLayoutPanel>
+	 -->
+	 
+	<g:FocusPanel ui:field="swatchPanel" addStyleNames="{style.swatch}">
+		<g:HTMLPanel>
+			<canvas ui:field="swatch" />
+		</g:HTMLPanel>
+	</g:FocusPanel>
+	
+</ui:UiBinder> 

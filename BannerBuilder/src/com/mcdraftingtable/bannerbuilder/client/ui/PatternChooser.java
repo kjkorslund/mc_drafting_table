@@ -1,20 +1,18 @@
 package com.mcdraftingtable.bannerbuilder.client.ui;
 
 import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.mcdraftingtable.bannerbuilder.client.color.RGB;
+import com.mcdraftingtable.bannerbuilder.client.pattern.BannerTestPattern;
 
-public class ColorChooser extends PopupPanel {
+public class PatternChooser extends PopupPanel {
 	private static final int SIZE_PX = 32;
 	
 	final AbstractChooser chooser = new AbstractChooser();
-	private RGB chosenColor = null;
+	private BannerTestPattern chosenPattern = null;
 	
-	public ColorChooser() {
+	public PatternChooser() {
 		super(true, true);
 		getElement().getStyle().setBorderColor("gray");
 		
@@ -23,36 +21,34 @@ public class ColorChooser extends PopupPanel {
 		setWidget(chooser);
 	}
 	
-	public void addColor(RGB rgb) {
+	public void addPattern(BannerTestPattern pattern) {
 		Canvas canvas = Canvas.createIfSupported();
 		canvas.getCanvasElement().setWidth(SIZE_PX);
 		canvas.getCanvasElement().setHeight(SIZE_PX);
-
-		Context2d context2d = canvas.getContext2d();
-		context2d.setFillStyle(CssColor.make(rgb.toCssString()));
-		context2d.fillRect(0, 0, SIZE_PX, SIZE_PX);
 		
-		canvas.addClickHandler(new ColorClickHandler(rgb));
+		pattern.drawOn(canvas.getCanvasElement());
+		
+		canvas.addClickHandler(new PatternClickHandler(pattern));
 		
 		chooser.addChoice(canvas);
 	}
 	
-	public RGB getChosenColor() {
-		return chosenColor;
+	public BannerTestPattern getChosenPattern() {
+		return chosenPattern;
 	}
 
-	private class ColorClickHandler implements ClickHandler {
+	private class PatternClickHandler implements ClickHandler {
 		
-		private final RGB rgb;
+		private final BannerTestPattern pattern;
 
-		public ColorClickHandler(RGB rgb) {
-			this.rgb = rgb;
+		public PatternClickHandler(BannerTestPattern pattern) {
+			this.pattern = pattern;
 		}
 
 		@Override
 		public void onClick(ClickEvent event) {
-			ColorChooser.this.chosenColor = this.rgb;
-			ColorChooser.this.hide();
+			PatternChooser.this.chosenPattern = this.pattern;
+			PatternChooser.this.hide();
 		}
 		
 	}

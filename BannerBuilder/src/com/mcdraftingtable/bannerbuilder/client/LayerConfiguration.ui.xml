@@ -15,7 +15,7 @@
 	</ui:style>
 	<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" width="100%" horizontalAlignment="ALIGN_LEFT" spacing="4">
 		<g:Label ui:field="layerLabel" text="Layer #:"/>
-		<g:Image ui:field="patternSwatch" addStyleNames="{style.swatch}" />
+		<clientui:PatternSwatch ui:field="patternSwatch" />
 		<clientui:ColorSwatch ui:field="colorSwatch" />
 		<g:cell horizontalAlignment="ALIGN_RIGHT">
 			<g:HorizontalPanel verticalAlignment="ALIGN_MIDDLE" spacing="4">
