@@ -1,7 +1,6 @@
 package com.mcdraftingtable.bannerbuilder.client.ui;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -51,7 +50,7 @@ public class ColorSwatch extends Composite {
 		this.color = color;
 		
 		Context2d context2d = swatch.getContext2d();
-		context2d.setFillStyle(CssColor.make(color.toCssString()));
+		context2d.setFillStyle(color.toCssColor());
 		context2d.fillRect(0, 0, SIZE_PX, SIZE_PX);
 	}
 	

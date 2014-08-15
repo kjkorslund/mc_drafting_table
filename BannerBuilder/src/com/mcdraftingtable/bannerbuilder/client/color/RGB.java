@@ -1,5 +1,7 @@
 package com.mcdraftingtable.bannerbuilder.client.color;
 
+import com.google.gwt.canvas.dom.client.CssColor;
+
 public class RGB {
 	public final int r;
 	public final int g;
@@ -13,5 +15,9 @@ public class RGB {
 	
 	public String toCssString() {
 		return "rgb(" + r + "," + g + "," + b + ")";
+	}
+	
+	public CssColor toCssColor() {
+		return CssColor.make(toCssString());
 	}
 }

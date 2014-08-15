@@ -2,7 +2,6 @@ package com.mcdraftingtable.bannerbuilder.client.ui;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -29,7 +28,7 @@ public class ColorChooser extends PopupPanel {
 		canvas.getCanvasElement().setHeight(SIZE_PX);
 
 		Context2d context2d = canvas.getContext2d();
-		context2d.setFillStyle(CssColor.make(rgb.toCssString()));
+		context2d.setFillStyle(rgb.toCssColor());
 		context2d.fillRect(0, 0, SIZE_PX, SIZE_PX);
 		
 		canvas.addClickHandler(new ColorClickHandler(rgb));
