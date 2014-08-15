@@ -85,35 +85,26 @@ public class BannerDisplay extends Composite {
 		displayCanvas.setWidth(poleData.getWidth());
 		displayCanvas.setHeight(poleData.getHeight());
 		
-		Context2d context2d = displayCanvas.getContext2d();
-		context2d.clearRect(0, 0, displayCanvas.getWidth(), displayCanvas.getHeight());
-		context2d.drawImage(poleData, 0, 0);
+		Context2d ctx = displayCanvas.getContext2d();
+		ctx.clearRect(0, 0, displayCanvas.getWidth(), displayCanvas.getHeight());
+		ctx.drawImage(poleData, 0, 0);
 		
-		CanvasElement coloredFlagData = createColoredFlagData(baseColor);
-		context2d.drawImage(coloredFlagData, 0, 0);
+		// Draw the base color for the flag
+		ctx.setFillStyle(baseColor.rgb.toCssColor());
+		ctx.fillRect(0, 0, flagTextureData.getWidth(), flagTextureData.getHeight());
 		
+		// Now draw the layer colors
 		if (BannerPattern.isAllPatternDataLoaded()) {
 			for (LayerDefinition layerDef : layerDefinitions) {
 				CanvasElement layerData = createLayerOverlay(layerDef);
-				context2d.drawImage(layerData, 0, 0);
+				ctx.drawImage(layerData, 0, 0);
 			}
 		}
-	}
-	
-	private CanvasElement createColoredFlagData(DyeColor color) {
-		CanvasElement canvas = Document.get().createCanvasElement();
-		canvas.setWidth(flagTextureData.getWidth());
-		canvas.setHeight(flagTextureData.getHeight());
 		
-		Context2d ctx = canvas.getContext2d();
-		
-		ctx.setFillStyle(color.rgb.toCssColor());
-		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		// Last step is to draw the flag texture on top of everything
 		ctx.setGlobalCompositeOperation(Context2d.Composite.SOURCE_ATOP);
 		ctx.setGlobalAlpha(1.0);
 		ctx.drawImage(flagTextureData, 0, 0);
-		
-		return canvas;
 	}
 	
 	private CanvasElement createLayerOverlay(LayerDefinition layerDef) {
