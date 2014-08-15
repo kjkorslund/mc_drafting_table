@@ -1,16 +1,17 @@
 package com.mcdraftingtable.bannerbuilder.client.ui;
 
 import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.mcdraftingtable.bannerbuilder.client.pattern.BannerTestPattern;
+import com.mcdraftingtable.bannerbuilder.client.pattern.BannerPattern;
 
 public class PatternChooser extends PopupPanel {
 	private static final int SIZE_PX = 32;
 	
 	final AbstractChooser chooser = new AbstractChooser();
-	private BannerTestPattern chosenPattern = null;
+	private BannerPattern chosenPattern = null;
 	
 	public PatternChooser() {
 		super(true, true);
@@ -21,27 +22,36 @@ public class PatternChooser extends PopupPanel {
 		setWidget(chooser);
 	}
 	
-	public void addPattern(BannerTestPattern pattern) {
+	public void addPattern(BannerPattern pattern) {
 		Canvas canvas = Canvas.createIfSupported();
 		canvas.getCanvasElement().setWidth(SIZE_PX);
 		canvas.getCanvasElement().setHeight(SIZE_PX);
 		
-		pattern.drawOn(canvas.getCanvasElement());
+		drawPattern(canvas.getCanvasElement(), pattern);
 		
 		canvas.addClickHandler(new PatternClickHandler(pattern));
 		
 		chooser.addChoice(canvas);
 	}
 	
-	public BannerTestPattern getChosenPattern() {
+	private void drawPattern(CanvasElement destination, BannerPattern pattern) {
+		CanvasElement patternSwatchData = pattern.getPatternSwatchData();
+		if (patternSwatchData != null) {
+			destination.setWidth(patternSwatchData.getWidth());
+			destination.setHeight(patternSwatchData.getHeight());
+			destination.getContext2d().drawImage(patternSwatchData, 0, 0);
+		}
+	}
+	
+	public BannerPattern getChosenPattern() {
 		return chosenPattern;
 	}
 
 	private class PatternClickHandler implements ClickHandler {
 		
-		private final BannerTestPattern pattern;
+		private final BannerPattern pattern;
 
-		public PatternClickHandler(BannerTestPattern pattern) {
+		public PatternClickHandler(BannerPattern pattern) {
 			this.pattern = pattern;
 		}
 

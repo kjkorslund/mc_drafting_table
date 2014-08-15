@@ -1,5 +1,6 @@
 package com.mcdraftingtable.bannerbuilder.client.ui;
 
+import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,7 +14,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mcdraftingtable.bannerbuilder.client.pattern.BannerTestPattern;
+import com.mcdraftingtable.bannerbuilder.client.pattern.BannerPattern;
 
 public class PatternSwatch extends Composite {
 	private static final int SIZE_PX = 48;
@@ -31,7 +32,7 @@ public class PatternSwatch extends Composite {
 	@UiField FocusPanel swatchPanel;
 	@UiField CanvasElement swatch;
 
-	private BannerTestPattern pattern = null;
+	private BannerPattern pattern = null;
 
 	public PatternSwatch() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -40,20 +41,32 @@ public class PatternSwatch extends Composite {
 		swatch.setHeight(SIZE_PX);
 	}
 	
-	public BannerTestPattern getPattern() {
+	public BannerPattern getPattern() {
 		return pattern;
 	}
 
-	public void setPattern(BannerTestPattern pattern) {
+	public void setPattern(BannerPattern pattern) {
 		this.pattern = pattern;
-		pattern.drawOn(swatch);
+		drawPattern(swatch, pattern);
+	}
+	
+	private void drawPattern(CanvasElement destination, BannerPattern pattern) {
+		CanvasElement patternSwatchData = pattern.getPatternSwatchData();
+		if (patternSwatchData != null) {
+			destination.setWidth(patternSwatchData.getWidth());
+			destination.setHeight(patternSwatchData.getHeight());
+			
+			Context2d ctx = destination.getContext2d();
+			ctx.clearRect(0, 0, patternSwatchData.getWidth(), patternSwatchData.getHeight());
+			ctx.drawImage(patternSwatchData, 0, 0);
+		}
 	}
 	
 	private class SwatchClickHandler implements ClickHandler {
 		private final PatternChooser patternChooser = new PatternChooser();
 		
 		public SwatchClickHandler() {
-			for(BannerTestPattern pattern : BannerTestPattern.values()) {
+			for(BannerPattern pattern : BannerPattern.values()) {
 				patternChooser.addPattern(pattern);
 			}
 		}

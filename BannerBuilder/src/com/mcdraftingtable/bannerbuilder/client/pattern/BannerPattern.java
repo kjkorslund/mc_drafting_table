@@ -1,6 +1,9 @@
 package com.mcdraftingtable.bannerbuilder.client.pattern;
 
+import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.dom.client.CanvasElement;
+import com.google.gwt.dom.client.Document;
 import com.mcdraftingtable.bannerbuilder.client.image.ImageLoader;
 import com.mcdraftingtable.bannerbuilder.client.image.ImageLoader.ImageLoadHandler;
 
@@ -37,6 +40,27 @@ public enum BannerPattern {
 	
 	public CanvasElement getPatternData() {
 		return patternData;
+	}
+	
+	public CanvasElement getPatternSwatchData() {
+		if (isPatternDataLoaded()) {
+			int width = patternData.getWidth()/10;
+			int height = patternData.getHeight()/10;
+			
+			CanvasElement swatchData = Document.get().createCanvasElement();
+			swatchData.setWidth(width);
+			swatchData.setHeight(height);
+			
+			Context2d ctx = swatchData.getContext2d();
+			ctx.drawImage(patternData, 0, 0, width, height);
+			ctx.setGlobalCompositeOperation(Context2d.Composite.SOURCE_IN);
+			ctx.setFillStyle(CssColor.make("black"));
+			ctx.fillRect(0, 0, width, height);
+			
+			return swatchData;
+		}
+		
+		return null;
 	}
 	
 	public boolean isPatternDataLoaded() {
