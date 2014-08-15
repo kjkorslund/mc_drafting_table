@@ -39,6 +39,7 @@ public class BannerBuilder extends Composite implements EntryPoint {
 			@Override
 			public void onConfigurationUpdate(ConfigurationData configData) {
 				bannerDisplay.setBaseColor(configData.getBaseColor());
+				bannerDisplay.setLayerDefinitions(configData.getLayerDefinitions());
 			}
 		});
 	}

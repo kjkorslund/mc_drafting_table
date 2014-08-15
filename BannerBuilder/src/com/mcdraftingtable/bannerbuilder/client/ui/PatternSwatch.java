@@ -1,5 +1,7 @@
 package com.mcdraftingtable.bannerbuilder.client.ui;
 
+import java.util.HashSet;
+
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.CanvasElement;
@@ -32,6 +34,7 @@ public class PatternSwatch extends Composite {
 	@UiField FocusPanel swatchPanel;
 	@UiField CanvasElement swatch;
 
+	private final HashSet<PatternChangeListener> patternChangeListeners = new HashSet<>();
 	private BannerPattern pattern = null;
 
 	public PatternSwatch() {
@@ -41,6 +44,14 @@ public class PatternSwatch extends Composite {
 		swatch.setHeight(SIZE_PX);
 	}
 	
+	public void addPatternChangeListener(PatternChangeListener patternChangeListener) {
+		patternChangeListeners.add(patternChangeListener);
+	}
+
+	public void removePatternChangeListener(PatternChangeListener patternChangeListener) {
+		patternChangeListeners.remove(patternChangeListener);
+	}
+	
 	public BannerPattern getPattern() {
 		return pattern;
 	}
@@ -48,6 +59,9 @@ public class PatternSwatch extends Composite {
 	public void setPattern(BannerPattern pattern) {
 		this.pattern = pattern;
 		drawPattern(swatch, pattern);
+		for(PatternChangeListener patternChangeListener : patternChangeListeners) {
+			patternChangeListener.onPatternChange();
+		}
 	}
 	
 	private void drawPattern(CanvasElement destination, BannerPattern pattern) {
@@ -82,5 +96,9 @@ public class PatternSwatch extends Composite {
 				}
 			});
 		}
+	}
+	
+	public static interface PatternChangeListener {
+		public void onPatternChange();
 	}
 }

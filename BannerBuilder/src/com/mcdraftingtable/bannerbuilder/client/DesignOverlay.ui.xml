@@ -15,7 +15,7 @@
 	</ui:style>
 	
 	<g:VerticalPanel ui:field="mainPanel" horizontalAlignment="ALIGN_LEFT">
-		<g:Label text="Base Color:" addStyleNames="{style.border}"/>
+		<g:Label text="Base Color:"/>
 		<clientui:ColorSwatch ui:field="baseColorSwatch" />
 		<g:Label text="Layers:"/>
 		

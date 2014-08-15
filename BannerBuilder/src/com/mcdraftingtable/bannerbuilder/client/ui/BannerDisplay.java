@@ -55,7 +55,7 @@ public class BannerDisplay extends Composite {
 		});
 		
 		// FIXME [kjk] test code
-		layerDefinitions.add(new LayerDefinition(BannerPattern.BRICKS, DyeColor.LIME));
+//		layerDefinitions.add(new LayerDefinition(BannerPattern.BRICKS, DyeColor.LIME));
 	}
 	
 	public DyeColor getBaseColor() {
@@ -73,6 +73,7 @@ public class BannerDisplay extends Composite {
 
 	public void setLayerDefinitions(Collection<LayerDefinition> layerDefinitions) {
 		this.layerDefinitions = new ArrayList<>(layerDefinitions);
+		updateDisplayCanvas();
 	}
 
 	private void updateDisplayCanvas() {

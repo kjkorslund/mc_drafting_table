@@ -1,7 +1,9 @@
 package com.mcdraftingtable.bannerbuilder.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,6 +16,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mcdraftingtable.bannerbuilder.client.color.DyeColor;
+import com.mcdraftingtable.bannerbuilder.client.pattern.LayerDefinition;
 import com.mcdraftingtable.bannerbuilder.client.ui.ColorSwatch;
 
 public class DesignOverlay extends Composite {
@@ -41,6 +44,7 @@ public class DesignOverlay extends Composite {
 		addLayerButton.addClickHandler(new AddLayerClickHandler());
 		startIndex = mainPanel.getWidgetIndex(addLayerRow);
 		
+		baseColorSwatch.setColor(DyeColor.WHITE);
 		baseColorSwatch.addColorChangeListener(new ColorSwatch.ColorChangeListener() {
 			@Override
 			public void onColorChange() {
@@ -71,6 +75,9 @@ public class DesignOverlay extends Composite {
 	private ConfigurationData createConfigurationData() {
 		ConfigurationDataImpl result = new ConfigurationDataImpl();
 		result.baseColor = baseColorSwatch.getColor();
+		for(LayerConfiguration layerConfig : layerConfigurations) {
+			result.layerDefinitions.add(layerConfig.getLayerDefinition());
+		}
 		return result;
 	}
 
@@ -81,6 +88,12 @@ public class DesignOverlay extends Composite {
 
 			LayerConfiguration newLayerConfig = new LayerConfiguration();
 			new LayerHandlers(newLayerConfig);
+			newLayerConfig.addChangeListener(new LayerConfiguration.LayerConfigurationChangeListener() {
+				@Override
+				public void onConfigurationChange() {
+					doConfigurationUpdate();
+				}
+			});
 
 			layerConfigurations.add(newLayerConfig);
 			updateLayerConfigurationAt(layerConfigurations.size() - 1);
@@ -179,15 +192,22 @@ public class DesignOverlay extends Composite {
 	
 	public static interface ConfigurationData {
 		public DyeColor getBaseColor();
+		public List<LayerDefinition> getLayerDefinitions();
 	}
 	
 	private static class ConfigurationDataImpl implements ConfigurationData {
 		
 		DyeColor baseColor;
+		final ArrayList<LayerDefinition> layerDefinitions = new ArrayList<>();
 
 		@Override
 		public DyeColor getBaseColor() {
 			return baseColor;
+		}
+
+		@Override
+		public List<LayerDefinition> getLayerDefinitions() {
+			return Collections.unmodifiableList(layerDefinitions);
 		}
 		
 	}
