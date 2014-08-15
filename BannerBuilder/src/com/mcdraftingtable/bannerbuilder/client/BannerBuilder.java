@@ -8,6 +8,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mcdraftingtable.bannerbuilder.client.DesignOverlay.ConfigurationData;
+import com.mcdraftingtable.bannerbuilder.client.ui.BannerDisplay;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -27,10 +29,18 @@ public class BannerBuilder extends Composite implements EntryPoint {
 	
 	@UiField InstructionsOverlay instructionsOverlay;
 	@UiField DesignOverlay designOverlay;
+	@UiField BannerDisplay bannerDisplay;
 	@UiField BannerBuilderStyle style;
 	
 	public BannerBuilder() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		designOverlay.addUpdateListener(new DesignOverlay.ConfigurationUpdateListener() {
+			@Override
+			public void onConfigurationUpdate(ConfigurationData configData) {
+				bannerDisplay.setBaseColor(configData.getBaseColor());
+			}
+		});
 	}
 	
 	/**

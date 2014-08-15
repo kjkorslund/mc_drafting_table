@@ -11,6 +11,9 @@ public class ColorChooser extends PopupPanel {
 	private static final int SIZE_PX = 32;
 	
 	final AbstractChooser chooser = new AbstractChooser();
+	private int nextIndex = 0;
+	
+	private int chosenIndex = -1;
 	private RGB chosenColor = null;
 	
 	public ColorChooser() {
@@ -31,7 +34,7 @@ public class ColorChooser extends PopupPanel {
 		context2d.setFillStyle(rgb.toCssColor());
 		context2d.fillRect(0, 0, SIZE_PX, SIZE_PX);
 		
-		canvas.addClickHandler(new ColorClickHandler(rgb));
+		canvas.addClickHandler(new ColorClickHandler(rgb,nextIndex++));
 		
 		chooser.addChoice(canvas);
 	}
@@ -40,16 +43,23 @@ public class ColorChooser extends PopupPanel {
 		return chosenColor;
 	}
 
+	public int getChosenIndex() {
+		return chosenIndex;
+	}
+
 	private class ColorClickHandler implements ClickHandler {
 		
 		private final RGB rgb;
+		private final int index;
 
-		public ColorClickHandler(RGB rgb) {
+		public ColorClickHandler(RGB rgb, int index) {
 			this.rgb = rgb;
+			this.index = index;
 		}
 
 		@Override
 		public void onClick(ClickEvent event) {
+			ColorChooser.this.chosenIndex = this.index;
 			ColorChooser.this.chosenColor = this.rgb;
 			ColorChooser.this.hide();
 		}

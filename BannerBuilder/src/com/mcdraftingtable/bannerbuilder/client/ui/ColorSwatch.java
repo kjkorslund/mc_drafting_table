@@ -1,5 +1,7 @@
 package com.mcdraftingtable.bannerbuilder.client.ui;
 
+import java.util.HashSet;
+
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.CanvasElement;
@@ -15,7 +17,6 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mcdraftingtable.bannerbuilder.client.color.DyeColor;
-import com.mcdraftingtable.bannerbuilder.client.color.RGB;
 
 public class ColorSwatch extends Composite {
 	private static final int SIZE_PX = 48;
@@ -33,7 +34,8 @@ public class ColorSwatch extends Composite {
 	@UiField FocusPanel swatchPanel;
 	@UiField CanvasElement swatch;
 
-	private RGB color = null;
+	private final HashSet<ColorChangeListener> colorChangeListeners = new HashSet<>();
+	private DyeColor color = null;
 
 	public ColorSwatch() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -42,16 +44,28 @@ public class ColorSwatch extends Composite {
 		swatch.setHeight(SIZE_PX);
 	}
 	
-	public RGB getColor() {
+	public void addColorChangeListener(ColorChangeListener colorChangeListener) {
+		colorChangeListeners.add(colorChangeListener);
+	}
+
+	public void removeColorChangeListener(ColorChangeListener colorChangeListener) {
+		colorChangeListeners.remove(colorChangeListener);
+	}
+	
+	public DyeColor getColor() {
 		return color;
 	}
 
-	public void setColor(RGB color) {
+	public void setColor(DyeColor color) {
 		this.color = color;
 		
 		Context2d context2d = swatch.getContext2d();
-		context2d.setFillStyle(color.toCssColor());
+		context2d.setFillStyle(color.rgb.toCssColor());
 		context2d.fillRect(0, 0, SIZE_PX, SIZE_PX);
+		
+		for(ColorChangeListener colorChangeListener : colorChangeListeners) {
+			colorChangeListener.onColorChange();
+		}
 	}
 	
 	private class ColorClickHandler implements ClickHandler {
@@ -70,9 +84,14 @@ public class ColorSwatch extends Composite {
 			colorChooser.addCloseHandler(new CloseHandler<PopupPanel>() {
 				@Override
 				public void onClose(CloseEvent<PopupPanel> event) {
-					setColor(colorChooser.getChosenColor());
+					int index = colorChooser.getChosenIndex();
+					setColor(DyeColor.values()[index]);
 				}
 			});
 		}
+	}
+	
+	public static interface ColorChangeListener {
+		public void onColorChange();
 	}
 }

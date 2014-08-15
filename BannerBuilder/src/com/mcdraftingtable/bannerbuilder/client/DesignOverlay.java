@@ -1,6 +1,7 @@
 package com.mcdraftingtable.bannerbuilder.client;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -12,6 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mcdraftingtable.bannerbuilder.client.color.DyeColor;
 import com.mcdraftingtable.bannerbuilder.client.ui.ColorSwatch;
 
 public class DesignOverlay extends Composite {
@@ -30,6 +32,7 @@ public class DesignOverlay extends Composite {
 	@UiField HorizontalPanel addLayerRow;
 	@UiField Button addLayerButton;
 
+	private final HashSet<ConfigurationUpdateListener> updateListeners = new HashSet<>();
 	private final ArrayList<LayerConfiguration> layerConfigurations = new ArrayList<>(MAX_LAYERS);
 	private final int startIndex;
 
@@ -37,12 +40,40 @@ public class DesignOverlay extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		addLayerButton.addClickHandler(new AddLayerClickHandler());
 		startIndex = mainPanel.getWidgetIndex(addLayerRow);
+		
+		baseColorSwatch.addColorChangeListener(new ColorSwatch.ColorChangeListener() {
+			@Override
+			public void onColorChange() {
+				doConfigurationUpdate();
+			}
+		});
 	}
 
 	public LayerConfiguration getLayerAt(int index) {
 		return (LayerConfiguration) mainPanel.getWidget(startIndex + index);
 	}
 	
+	public void addUpdateListener(ConfigurationUpdateListener updateListener) {
+		updateListeners.add(updateListener);
+	}
+	
+	public void removeUpdateListener(ConfigurationUpdateListener updateListener) {
+		updateListeners.remove(updateListener);
+	}
+	
+	private void doConfigurationUpdate() {
+		ConfigurationData configData = createConfigurationData();
+		for (ConfigurationUpdateListener updateListener : updateListeners) {
+			updateListener.onConfigurationUpdate(configData);
+		}
+	}
+	
+	private ConfigurationData createConfigurationData() {
+		ConfigurationDataImpl result = new ConfigurationDataImpl();
+		result.baseColor = baseColorSwatch.getColor();
+		return result;
+	}
+
 	private class AddLayerClickHandler implements ClickHandler {
 		@Override
 		public void onClick(ClickEvent event) {
@@ -140,6 +171,25 @@ public class DesignOverlay extends Composite {
 			updateLayerConfigurationAt(newIndex);
 		}
 
+	}
+	
+	public static interface ConfigurationUpdateListener {
+		public void onConfigurationUpdate(ConfigurationData configData);
+	}
+	
+	public static interface ConfigurationData {
+		public DyeColor getBaseColor();
+	}
+	
+	private static class ConfigurationDataImpl implements ConfigurationData {
+		
+		DyeColor baseColor;
+
+		@Override
+		public DyeColor getBaseColor() {
+			return baseColor;
+		}
+		
 	}
 
 }
