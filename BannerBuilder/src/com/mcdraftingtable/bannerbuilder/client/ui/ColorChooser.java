@@ -46,6 +46,10 @@ public class ColorChooser extends PopupPanel {
 	public int getChosenIndex() {
 		return chosenIndex;
 	}
+	
+	public boolean hasChosenColor() {
+		return chosenColor != null;
+	}
 
 	private class ColorClickHandler implements ClickHandler {
 		

@@ -84,8 +84,10 @@ public class ColorSwatch extends Composite {
 			colorChooser.addCloseHandler(new CloseHandler<PopupPanel>() {
 				@Override
 				public void onClose(CloseEvent<PopupPanel> event) {
-					int index = colorChooser.getChosenIndex();
-					setColor(DyeColor.values()[index]);
+					if (colorChooser.hasChosenColor()) {
+						int index = colorChooser.getChosenIndex();
+						setColor(DyeColor.values()[index]);
+					}
 				}
 			});
 		}
