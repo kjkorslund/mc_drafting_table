@@ -8,7 +8,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.mcdraftingtable.bannerbuilder.client.pattern.BannerPattern;
 
 public class PatternChooser extends PopupPanel {
-	private static final int SIZE_PX = 32;
+	private static final int WIDTH_PX = 20;
+	private static final int HEIGHT_PX = 40;
 	
 	final AbstractChooser chooser = new AbstractChooser();
 	private BannerPattern chosenPattern = null;
@@ -17,15 +18,16 @@ public class PatternChooser extends PopupPanel {
 		super(true, true);
 		getElement().getStyle().setBorderColor("gray");
 		
-		int chooserWidth = (SIZE_PX+6)*4;
+		int chooserWidth = (WIDTH_PX+6)*8;
 		chooser.setWidth(chooserWidth + "px");
 		setWidget(chooser);
 	}
 	
 	public void addPattern(BannerPattern pattern) {
 		Canvas canvas = Canvas.createIfSupported();
-		canvas.getCanvasElement().setWidth(SIZE_PX);
-		canvas.getCanvasElement().setHeight(SIZE_PX);
+		canvas.getCanvasElement().setWidth(WIDTH_PX);
+		canvas.getCanvasElement().setHeight(HEIGHT_PX);
+		canvas.setTitle(pattern.name());
 		
 		drawPattern(canvas.getCanvasElement(), pattern);
 		
