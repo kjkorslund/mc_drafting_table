@@ -12,12 +12,19 @@
 		.layerRow {
 			/*border-top: solid 1px gray;*/
 		}
+		
+		.header {
+			font-weight: bold;
+			font-size: larger;
+			margin-top: 1em;
+			margin-bottom: 0.5em;
+		}
 	</ui:style>
 	
 	<g:VerticalPanel ui:field="mainPanel" horizontalAlignment="ALIGN_LEFT">
-		<g:Label text="Base Color:"/>
+		<g:Label text="Base Color" addStyleNames="{style.header}" />
 		<clientui:ColorSwatch ui:field="baseColorSwatch" />
-		<g:Label text="Layers:"/>
+		<g:Label text="Layers" addStyleNames="{style.header}"/>
 		
 		<!-- TODO: figure out a way to get the layer configuration widgets to line up vertically -->
 		
