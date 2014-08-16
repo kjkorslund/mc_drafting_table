@@ -76,7 +76,10 @@ public class DesignOverlay extends Composite {
 		ConfigurationDataImpl result = new ConfigurationDataImpl();
 		result.baseColor = baseColorSwatch.getColor();
 		for(LayerConfiguration layerConfig : layerConfigurations) {
-			result.layerDefinitions.add(layerConfig.getLayerDefinition());
+			LayerDefinition layerDefinition = layerConfig.getLayerDefinition();
+			if (layerDefinition.pattern != null && layerDefinition.color != null) {
+				result.layerDefinitions.add(layerDefinition);
+			}
 		}
 		return result;
 	}
