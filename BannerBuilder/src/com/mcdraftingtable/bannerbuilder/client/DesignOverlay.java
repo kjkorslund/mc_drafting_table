@@ -162,6 +162,7 @@ public class DesignOverlay extends Composite {
 			for(int i = index; i<layerConfigurations.size(); i++) {
 				updateLayerConfigurationAt(i);
 			}
+			doConfigurationUpdate();
 		}
 
 		private void moveLayerUp() {
@@ -185,6 +186,7 @@ public class DesignOverlay extends Composite {
 			
 			updateLayerConfigurationAt(index);
 			updateLayerConfigurationAt(newIndex);
+			doConfigurationUpdate();
 		}
 
 	}
