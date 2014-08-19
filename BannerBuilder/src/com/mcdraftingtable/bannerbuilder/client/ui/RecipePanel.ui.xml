@@ -1,0 +1,52 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:clientui="urn:import:com.mcdraftingtable.bannerbuilder.client.ui">
+	<ui:style>
+		.grid {
+			/* border: solid 1px black; */
+			/* width: calc((16px+2px)*3); */
+			width: 97px;
+			height: 97px;
+		}
+		
+		.gridcell {
+			border: solid 2px silver;
+			background-color: #F5F5F5;
+			width: 32px;
+			height: 32px;
+		}
+	</ui:style>
+	
+	<g:AbsolutePanel addStyleNames="{style.grid}">
+		<g:at left='0' top='0'>
+			<clientui:IngredientSlot ui:field="northWest" addStyleNames="{style.gridcell}" />
+		</g:at>
+		<g:at left='32' top='0'>
+			<clientui:IngredientSlot ui:field="north" addStyleNames="{style.gridcell}" />
+		</g:at>
+		<g:at left='64' top='0'>
+			<clientui:IngredientSlot ui:field="northEast" addStyleNames="{style.gridcell}" />
+		</g:at>
+		
+		<g:at left='0' top='32'>
+			<clientui:IngredientSlot ui:field="west" addStyleNames="{style.gridcell}" />
+		</g:at>
+		<g:at left='32' top='32'>
+			<clientui:IngredientSlot ui:field="center" addStyleNames="{style.gridcell}" />
+		</g:at>
+		<g:at left='64' top='32'>
+			<clientui:IngredientSlot ui:field="east" addStyleNames="{style.gridcell}" />
+		</g:at>
+		
+		<g:at left='0' top='64'>
+			<clientui:IngredientSlot ui:field="southWest" addStyleNames="{style.gridcell}" />
+		</g:at>
+		<g:at left='32' top='64'>
+			<clientui:IngredientSlot ui:field="south" addStyleNames="{style.gridcell}" />
+		</g:at>
+		<g:at left='64' top='64'>
+			<clientui:IngredientSlot ui:field="southEast" addStyleNames="{style.gridcell}" />
+		</g:at>
+	</g:AbsolutePanel>
+</ui:UiBinder> 
