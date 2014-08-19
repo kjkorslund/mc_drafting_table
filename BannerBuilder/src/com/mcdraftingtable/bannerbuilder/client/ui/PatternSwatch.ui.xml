@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:gCanvas="urn:import:com.google.gwt.canvas.client">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style type='com.mcdraftingtable.bannerbuilder.client.ui.ColorSwatch.SwatchStyle'>
 		.swatch {
 			border: solid 1px silver;
@@ -9,14 +9,6 @@
 		}
 	</ui:style>
 	
-	<!--
-	<gCanvas:Canvas ui:field="swatch" addStyleNames="{style.swatch}" />
-	
-	<g:SimpleLayoutPanel ui:field="swatchParent">
-		<gCanvas:Canvas ui:field="swatch" addStyleNames="{style.swatch}" />
-	</g:SimpleLayoutPanel>
-	 -->
-	 
 	<g:FocusPanel ui:field="swatchPanel" addStyleNames="{style.swatch}">
 		<g:HTMLPanel>
 			<canvas ui:field="swatch" />
