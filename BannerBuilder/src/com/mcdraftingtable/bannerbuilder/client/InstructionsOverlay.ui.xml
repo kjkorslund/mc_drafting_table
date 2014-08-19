@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:clientui="urn:import:com.mcdraftingtable.bannerbuilder.client.ui">
 	<ui:style>
 	
 	</ui:style>
@@ -14,9 +15,10 @@
 		</g:DisclosurePanel>
 		<g:DisclosurePanel open="true" width="100%">
 			<g:header>Instructions</g:header>
-			<g:HTMLPanel>
-				Mock content
-			</g:HTMLPanel>
+			<g:VerticalPanel>
+				<clientui:RecipePanel ui:field="recipePanel"/>
+			</g:VerticalPanel>
 		</g:DisclosurePanel>
+		
 	</g:FlowPanel>
 </ui:UiBinder> 
