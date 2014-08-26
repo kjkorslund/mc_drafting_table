@@ -65,7 +65,7 @@ public class PatternSwatch extends Composite {
 	}
 	
 	private void drawPattern(CanvasElement destination, BannerPattern pattern) {
-		CanvasElement patternSwatchData = pattern.getPatternSwatchData();
+		CanvasElement patternSwatchData = pattern.getPatternSwatchData().getImageData();
 		if (patternSwatchData != null) {
 			destination.setWidth(patternSwatchData.getWidth());
 			destination.setHeight(patternSwatchData.getHeight());

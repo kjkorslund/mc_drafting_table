@@ -4,8 +4,8 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.dom.client.CanvasElement;
 import com.google.gwt.dom.client.Document;
-import com.mcdraftingtable.bannerbuilder.client.image.ImageLoader;
-import com.mcdraftingtable.bannerbuilder.client.image.ImageLoader.ImageLoadHandler;
+import com.mcdraftingtable.bannerbuilder.client.image.ImageBuffer;
+import com.mcdraftingtable.bannerbuilder.client.image.ImageBuffer.ImageJob;
 
 public enum BannerPattern {
 	// [kjk] This class may need to be refactored at some point, if I decide to
@@ -70,44 +70,42 @@ public enum BannerPattern {
 		return true;
 	}
 	
-	private CanvasElement patternData = null;
+	private ImageBuffer patternData = new ImageBuffer();
+	private ImageBuffer patternSwatchData = new ImageBuffer();
 	
-	public CanvasElement getPatternData() {
+	public ImageBuffer getPatternData() {
 		return patternData;
 	}
 	
-	public CanvasElement getPatternSwatchData() {
-		if (isPatternDataLoaded()) {
-			int width = patternData.getWidth()/10;
-			int height = patternData.getHeight()/10;
-			
-			CanvasElement swatchData = Document.get().createCanvasElement();
-			swatchData.setWidth(width);
-			swatchData.setHeight(height);
-			
-			Context2d ctx = swatchData.getContext2d();
-			ctx.drawImage(patternData, 0, 0, width, height);
-			ctx.setGlobalCompositeOperation(Context2d.Composite.SOURCE_IN);
-			ctx.setFillStyle(CssColor.make("black"));
-			ctx.fillRect(0, 0, width, height);
-			
-			return swatchData;
-		}
-		
-		return null;
+	public ImageBuffer getPatternSwatchData() {
+		return patternSwatchData;
 	}
 	
 	public boolean isPatternDataLoaded() {
-		return patternData != null;
+		return patternData.getImageData() != null;
 	}
 
 	private void loadPatternData() {
 		if (!isPatternDataLoaded()) {
 			String uri = "res/image/pattern/" + name().toLowerCase() + ".png";
-			ImageLoader.load(uri, new ImageLoadHandler() {
+			patternData.loadFromImgSrc(uri);
+			patternData.runOrScheduleJob(new ImageJob() {
 				@Override
-				public void onLoad(String imgSrc, CanvasElement imageData) {
-					patternData = imageData;
+				public void run(CanvasElement imageData) {
+					int width = imageData.getWidth()/10;
+					int height = imageData.getHeight()/10;
+					
+					CanvasElement swatchData = Document.get().createCanvasElement();
+					swatchData.setWidth(width);
+					swatchData.setHeight(height);
+					
+					Context2d ctx = swatchData.getContext2d();
+					ctx.drawImage(imageData, 0, 0, width, height);
+					ctx.setGlobalCompositeOperation(Context2d.Composite.SOURCE_IN);
+					ctx.setFillStyle(CssColor.make("black"));
+					ctx.fillRect(0, 0, width, height);
+					
+					patternSwatchData.loadFromCanvas(swatchData);
 				}
 			});
 		}

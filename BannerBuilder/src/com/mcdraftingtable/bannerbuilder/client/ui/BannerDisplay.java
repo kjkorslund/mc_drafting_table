@@ -118,7 +118,7 @@ public class BannerDisplay extends Composite {
 		ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		ctx.setGlobalCompositeOperation(Context2d.Composite.DESTINATION_IN);
 		ctx.setGlobalAlpha(1.0);
-		ctx.drawImage(layerDef.pattern.getPatternData(), 0, 0);
+		ctx.drawImage(layerDef.pattern.getPatternData().getImageData(), 0, 0);
 		
 		return canvas;
 	}

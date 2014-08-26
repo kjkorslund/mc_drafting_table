@@ -14,6 +14,10 @@ public class ImageBuffer {
 	private final LinkedList<ImageJob> jobQueue = new LinkedList<>();
 	private CanvasElement imageData = null;
 	
+	public CanvasElement getImageData() {
+		return imageData;
+	}
+
 	public void loadFromImgSrc(String imgSrc) {
 		imageData = null;
 		
@@ -38,6 +42,14 @@ public class ImageBuffer {
 		});
 		
 		image.setUrl(imgSrc);
+	}
+	
+	public void loadFromCanvas(CanvasElement canvas) {
+		imageData = Document.get().createCanvasElement();
+		imageData.setWidth(canvas.getWidth());
+		imageData.setHeight(canvas.getHeight());
+		imageData.getContext2d().drawImage(canvas, 0, 0);
+		processJobQueue();
 	}
 	
 	public void runOrScheduleJob(ImageJob job) {
