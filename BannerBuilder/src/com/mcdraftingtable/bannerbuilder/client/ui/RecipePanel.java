@@ -27,6 +27,21 @@ public class RecipePanel extends Composite {
 
 	public RecipePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		initSlot(northWest);
+		initSlot(north);
+		initSlot(northEast);
+		initSlot(west);
+		initSlot(center);
+		initSlot(east);
+		initSlot(southWest);
+		initSlot(south);
+		initSlot(southEast);
+	}
+	
+	private void initSlot(IngredientSlot slot) {
+		slot.canvas.setWidth(32);
+		slot.canvas.setHeight(32);
 	}
 	
 	public void showRecipe(IRecipe recipe) {

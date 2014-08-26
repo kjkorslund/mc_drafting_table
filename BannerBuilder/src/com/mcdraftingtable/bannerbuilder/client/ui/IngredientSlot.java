@@ -40,19 +40,19 @@ public class IngredientSlot extends Composite {
 			ingredient.getImageBuffer().runOrScheduleJob(new ImageBuffer.ImageJob() {
 				@Override
 				public void run(CanvasElement imageData) {
-					int width = imageData.getWidth();
-					int height = imageData.getHeight();
-					canvas.setWidth(width);
-					canvas.setHeight(height);
+					int width = canvas.getWidth();
+					int height = canvas.getHeight();
 					
 					Context2d ctx = canvas.getContext2d();
 					ctx.clearRect(0, 0, width, height);
-					ctx.drawImage(imageData, 0, 0);
+					ctx.drawImage(imageData, 0, 0, width, height);
 				}
 			});
+			canvas.setTitle(ingredient.getName());
 		} else {
 			Context2d ctx = canvas.getContext2d();
 			ctx.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+			canvas.setTitle(null);
 		}
 	}
 	
