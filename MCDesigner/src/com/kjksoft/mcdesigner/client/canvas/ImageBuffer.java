@@ -27,9 +27,7 @@ public class ImageBuffer {
 		return canvas;
 	}
 	
-	public void loadFromImageBuffer(ImageBuffer source) {
-		CanvasElement sourceCanvas = source.getCanvas();
-		
+	public void loadFromCanvas(CanvasElement sourceCanvas) {
 		canvas.setWidth(sourceCanvas.getWidth());
 		canvas.setHeight(sourceCanvas.getHeight());
 		Context2d ctx = canvas.getContext2d();
