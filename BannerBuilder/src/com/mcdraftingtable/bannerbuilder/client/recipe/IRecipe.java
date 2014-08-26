@@ -10,6 +10,7 @@ public interface IRecipe {
 	public static final int SOUTHWEST	= 6;
 	public static final int SOUTH		= 7;
 	public static final int SOUTHEAST	= 8;
+	public static final int SLOT_COUNT	= 9;
 	
 	public IIngredient getIngredient(int slot);
 }
