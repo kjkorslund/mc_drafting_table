@@ -1,26 +1,29 @@
 package com.mcdraftingtable.bannerbuilder.client.pattern;
 
-import com.mcdraftingtable.bannerbuilder.client.image.ImageBuffer;
-import com.mcdraftingtable.bannerbuilder.client.recipe.IIngredient;
 
-public class PatternIngredient implements IIngredient {
-
-	private final String ingredientName;
-	private final ImageBuffer imageBuffer = new ImageBuffer();
+public abstract class PatternIngredient {
 	
-	public PatternIngredient(String ingredientName) {
-		this.ingredientName = ingredientName;
-		imageBuffer.loadFromImgSrc("res/image/items/" + ingredientName + ".png");
+	public static final class FixedIngredient extends PatternIngredient {
+		private final String name;
+
+		public FixedIngredient(String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
 	}
 	
-	@Override
-	public String getName() {
-		return ingredientName;
+	public static final class DyeIngredient extends PatternIngredient {
+		public static final DyeIngredient INSTANCE = new DyeIngredient();
+		
+		private DyeIngredient() { }
 	}
-
-	@Override
-	public ImageBuffer getImageBuffer() {
-		return imageBuffer;
+	
+	public static final class DyedWoolIngredient extends PatternIngredient {
+		public static final DyedWoolIngredient INSTANCE = new DyedWoolIngredient();
+		
+		private DyedWoolIngredient() { }
 	}
-
 }

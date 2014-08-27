@@ -5,7 +5,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.mcdraftingtable.bannerbuilder.client.color.DyeColor;
 import com.mcdraftingtable.bannerbuilder.client.pattern.BannerPattern;
+import com.mcdraftingtable.bannerbuilder.client.pattern.PatternRecipes;
 import com.mcdraftingtable.bannerbuilder.client.ui.RecipePanel;
 
 public class InstructionsOverlay extends Composite {
@@ -22,7 +24,7 @@ public class InstructionsOverlay extends Composite {
 	public InstructionsOverlay() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		recipePanel.showRecipe(BannerPattern.BORDER.getRecipe());
+//		recipePanel.showRecipe(PatternRecipes.BANNER_BASE.toRecipe(DyeColor.LIME));
+		recipePanel.showRecipe(PatternRecipes.forPattern(BannerPattern.BORDER).toRecipe(DyeColor.PINK));
 	}
-
 }

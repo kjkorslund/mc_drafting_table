@@ -51,10 +51,6 @@ public enum BannerPattern {
 	TRIANGLES_TOP
 	;
 	
-	static {
-		BORDER.recipe = PatternRecipes.BORDER;
-	}
-	
 	public static void loadAllPatternData() {
 		for(BannerPattern pattern : values()) {
 			pattern.loadPatternData();
@@ -76,7 +72,6 @@ public enum BannerPattern {
 	
 	private ImageBuffer patternData = new ImageBuffer();
 	private ImageBuffer patternSwatchData = new ImageBuffer();
-	private PatternRecipe recipe;
 	
 	public ImageBuffer getPatternData() {
 		return patternData;
@@ -84,10 +79,6 @@ public enum BannerPattern {
 	
 	public ImageBuffer getPatternSwatchData() {
 		return patternSwatchData;
-	}
-	
-	public PatternRecipe getRecipe() {
-		return recipe;
 	}
 	
 	public boolean isPatternDataLoaded() {

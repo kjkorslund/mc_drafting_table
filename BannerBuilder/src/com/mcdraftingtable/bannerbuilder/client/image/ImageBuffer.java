@@ -17,6 +17,10 @@ public class ImageBuffer {
 	public CanvasElement getImageData() {
 		return imageData;
 	}
+	
+	public void clear() {
+		imageData = null;
+	}
 
 	public void loadFromImgSrc(String imgSrc) {
 		imageData = null;
