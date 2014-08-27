@@ -155,7 +155,7 @@ public class TextureStore {
 		
 		private ImageBuffer createFadedTexture() {
 			ImageBuffer result = new ImageBuffer();
-			result.loadFromImageBuffer(source);
+			result.loadFromCanvas(source.getCanvas());
 			
 			FadeTransformer fader = new FadeTransformer();
 			fader.setStrength(strength);
