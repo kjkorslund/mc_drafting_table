@@ -1,14 +1,16 @@
 package com.mcdraftingtable.bannerbuilder.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.mcdraftingtable.bannerbuilder.client.color.DyeColor;
-import com.mcdraftingtable.bannerbuilder.client.pattern.BannerPattern;
-import com.mcdraftingtable.bannerbuilder.client.pattern.PatternRecipes;
-import com.mcdraftingtable.bannerbuilder.client.ui.RecipePanel;
+import com.mcdraftingtable.bannerbuilder.client.recipe.IRecipe;
+import com.mcdraftingtable.bannerbuilder.client.ui.RecipeStep;
 
 public class InstructionsOverlay extends Composite {
 
@@ -19,12 +21,37 @@ public class InstructionsOverlay extends Composite {
 			UiBinder<Widget, InstructionsOverlay> {
 	}
 	
-	@UiField RecipePanel recipePanel;
+	@UiField VerticalPanel stepsPanel;
+	
+	private final ArrayList<RecipeStep> recipeSteps = new ArrayList<>();
 
 	public InstructionsOverlay() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
-//		recipePanel.showRecipe(PatternRecipes.BANNER_BASE.toRecipe(DyeColor.LIME));
-		recipePanel.showRecipe(PatternRecipes.forPattern(BannerPattern.BORDER).toRecipe(DyeColor.PINK));
+//		setRecipeStepCount(1);
+//		recipeSteps.get(0).getRecipePanel().showRecipe(
+//			PatternRecipes.forPattern(BannerPattern.BORDER).toRecipe(DyeColor.GREEN)
+//		);
 	}
+	
+	public void setRecipeSteps(List<IRecipe> recipes) {
+		setRecipeStepCount(recipes.size());
+		for(int i=0; i < recipes.size(); i++) {
+			recipeSteps.get(i).getRecipePanel().showRecipe(recipes.get(i));
+		}
+	}
+	
+	private void setRecipeStepCount(int count) {
+		while(recipeSteps.size() < count) {
+			RecipeStep newStep = new RecipeStep();
+			newStep.setStepNum(recipeSteps.size() + 1);
+			recipeSteps.add(newStep);
+			stepsPanel.add(newStep);
+		}
+		while(recipeSteps.size() > count) {
+			RecipeStep step = recipeSteps.remove(recipeSteps.size() - 1);
+			stepsPanel.remove(step);
+		}
+	}
+	
 }

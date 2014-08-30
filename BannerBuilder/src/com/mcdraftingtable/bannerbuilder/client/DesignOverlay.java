@@ -59,6 +59,7 @@ public class DesignOverlay extends Composite {
 	
 	public void addUpdateListener(ConfigurationUpdateListener updateListener) {
 		updateListeners.add(updateListener);
+		doConfigurationUpdate();
 	}
 	
 	public void removeUpdateListener(ConfigurationUpdateListener updateListener) {

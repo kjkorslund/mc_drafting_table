@@ -3,7 +3,9 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:clientui="urn:import:com.mcdraftingtable.bannerbuilder.client.ui">
 	<ui:style>
-	
+		.border {
+			border: solid 1px red;
+		}
 	</ui:style>
 	
 	<g:FlowPanel>
@@ -15,9 +17,7 @@
 		</g:DisclosurePanel>
 		<g:DisclosurePanel open="true" width="100%">
 			<g:header>Instructions</g:header>
-			<g:VerticalPanel>
-				<clientui:RecipePanel ui:field="recipePanel"/>
-			</g:VerticalPanel>
+			<g:VerticalPanel ui:field="stepsPanel" />
 		</g:DisclosurePanel>
 		
 	</g:FlowPanel>
