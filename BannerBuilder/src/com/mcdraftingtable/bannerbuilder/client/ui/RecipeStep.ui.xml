@@ -10,7 +10,7 @@
 		}
 	</ui:style>
 
-	<g:HorizontalPanel>
+	<g:HorizontalPanel spacing="6">
 		<g:Label ui:field="stepLabel" text="#" addStyleNames="{style.stepLabel}" />
 		<clientui:RecipePanel ui:field="recipePanel" />
 	</g:HorizontalPanel>
