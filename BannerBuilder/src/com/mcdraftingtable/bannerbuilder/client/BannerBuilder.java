@@ -12,8 +12,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mcdraftingtable.bannerbuilder.client.DesignOverlay.ConfigurationData;
+import com.mcdraftingtable.bannerbuilder.client.pattern.IPatternRecipe;
 import com.mcdraftingtable.bannerbuilder.client.pattern.LayerDefinition;
-import com.mcdraftingtable.bannerbuilder.client.pattern.PatternRecipe;
 import com.mcdraftingtable.bannerbuilder.client.pattern.PatternRecipes;
 import com.mcdraftingtable.bannerbuilder.client.recipe.IRecipe;
 import com.mcdraftingtable.bannerbuilder.client.ui.BannerDisplay;
@@ -67,7 +67,7 @@ public class BannerBuilder extends Composite implements EntryPoint {
 	}
 	
 	private IRecipe getRecipe(LayerDefinition layerDefinition) {
-		PatternRecipe patternRecipe = PatternRecipes.forPattern(layerDefinition.pattern);
+		IPatternRecipe patternRecipe = PatternRecipes.forPattern(layerDefinition.pattern);
 		return patternRecipe == null ? null : patternRecipe.toRecipe(layerDefinition.color);
 	}
 	

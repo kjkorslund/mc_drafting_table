@@ -1,14 +1,12 @@
 package com.mcdraftingtable.bannerbuilder.client.pattern;
 
 import com.mcdraftingtable.bannerbuilder.client.color.DyeColor;
-import com.mcdraftingtable.bannerbuilder.client.pattern.PatternIngredient.DyeIngredient;
-import com.mcdraftingtable.bannerbuilder.client.pattern.PatternIngredient.DyedWoolIngredient;
 import com.mcdraftingtable.bannerbuilder.client.pattern.PatternIngredient.FixedIngredient;
 import com.mcdraftingtable.bannerbuilder.client.recipe.IRecipe;
 import com.mcdraftingtable.bannerbuilder.client.recipe.Ingredient;
 import com.mcdraftingtable.bannerbuilder.client.recipe.Recipe;
 
-public class PatternRecipe {
+public class PatternRecipe implements IPatternRecipe {
 	
 	private final PatternIngredient[] patternIngredients = new PatternIngredient[IRecipe.SLOT_COUNT];
 	
@@ -25,21 +23,22 @@ public class PatternRecipe {
 		}
 	}
 	
+	@Override
 	public Recipe toRecipe(DyeColor dyeColor) {
 		Recipe recipe = new Recipe();
 		for(int i=0; i<patternIngredients.length; i++) {
 			PatternIngredient patternIngredient = patternIngredients[i];
 			String ingredientName = null;
-			if (patternIngredient instanceof DyeIngredient) {
+			if (patternIngredient == PatternIngredient.DYE) {
 				ingredientName = getDyeName(dyeColor);
 			}
-			else if (patternIngredient instanceof DyedWoolIngredient) {
+			else if (patternIngredient == PatternIngredient.DYED_WOOL) {
 				ingredientName = getDyedWoolName(dyeColor);
 			}
 			else if (patternIngredient instanceof FixedIngredient){
 				ingredientName = ((FixedIngredient)patternIngredient).getName();
 			}
-			recipe.setIngredient(new Ingredient(ingredientName), i);
+			recipe.setIngredient(ingredientName == null ? null : new Ingredient(ingredientName), i);
 		}
 		return recipe;
 	}
