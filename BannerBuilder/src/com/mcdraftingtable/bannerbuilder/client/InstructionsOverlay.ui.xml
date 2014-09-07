@@ -11,9 +11,7 @@
 	<g:FlowPanel>
 		<g:DisclosurePanel open="true" width="100%">
 			<g:header>Required Materials</g:header>
-			<g:HTMLPanel>
-				Mock content
-			</g:HTMLPanel>
+			<clientui:MaterialsPanel />
 		</g:DisclosurePanel>
 		<g:DisclosurePanel open="true" width="100%">
 			<g:header>Instructions</g:header>
