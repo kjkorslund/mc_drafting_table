@@ -5,5 +5,5 @@
 	
 	</ui:style>
 	
-	<g:FlowPanel ui:field="materialsList" />
+	<g:Grid ui:field="materialsList"/>
 </ui:UiBinder> 
