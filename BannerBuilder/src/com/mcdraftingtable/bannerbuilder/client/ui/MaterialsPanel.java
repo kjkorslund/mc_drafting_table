@@ -28,7 +28,7 @@ public class MaterialsPanel extends Composite {
 
 		ArrayList<MaterialCount> testMaterialCounts = new ArrayList<>();
 		for(int i=0; i<12; i++) {
-			MaterialCount materialCount = createTestMaterialCount(i+5);
+			MaterialCount materialCount = createTestMaterialCount(i+100);
 			testMaterialCounts.add(materialCount);
 		}
 		setMaterialsListContents(testMaterialCounts);

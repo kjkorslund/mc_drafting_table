@@ -20,7 +20,7 @@
 	</ui:style>
 
 	<g:DockLayoutPanel unit="EM" addStyleNames="{style.bannerBackground}">
-		<g:west size="28.0">
+		<g:west size="26.0">
 			<g:ScrollPanel addStyleNames="{style.overlayPanel}">
 				<client:DesignOverlay ui:field="designOverlay" width="100%" />
 			</g:ScrollPanel>
@@ -28,7 +28,7 @@
 		<g:center>
 			<clientui:BannerDisplay ui:field="bannerDisplay" />
 		</g:center>
-		<g:east size="32.0">
+		<g:east size="26.0">
 			<g:ScrollPanel addStyleNames="{style.overlayPanel}">
 				<client:InstructionsOverlay ui:field="instructionsOverlay" width="100%" />
 			</g:ScrollPanel>
