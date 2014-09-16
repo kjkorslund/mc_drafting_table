@@ -2,15 +2,16 @@ package com.mcdraftingtable.bannerbuilder.client.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Widget;
 import com.mcdraftingtable.bannerbuilder.client.image.ImageBuffer;
+import com.mcdraftingtable.bannerbuilder.client.recipe.IIngredient;
 
 public class MaterialsPanel extends Composite {
 	private static final int MATERIALS_LIST_NCOLS = 5;
@@ -26,15 +27,27 @@ public class MaterialsPanel extends Composite {
 	public MaterialsPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		ArrayList<MaterialCount> testMaterialCounts = new ArrayList<>();
+		HashMap<IIngredient, Integer> testIngredientCounts = new HashMap<>();
 		for(int i=0; i<12; i++) {
-			MaterialCount materialCount = createTestMaterialCount(i+100);
-			testMaterialCounts.add(materialCount);
+			testIngredientCounts.put(createTestIngredient(), i+100);
 		}
-		setMaterialsListContents(testMaterialCounts);
+		setIngredientCounts(testIngredientCounts);
 	}
 	
-	public void setMaterialsListContents(Collection<MaterialCount> materialCounts) {
+	public void setIngredientCounts(HashMap<IIngredient, Integer> ingredientCounts) {
+		ArrayList<MaterialCount> materialCounts = new ArrayList<>();
+		for(IIngredient ingredient : ingredientCounts.keySet()) {
+			ImageBuffer ingredientIcon = ingredient.getImageBuffer();
+			int count = ingredientCounts.get(ingredient);
+			
+			MaterialCount materialCount = new MaterialCount();
+			materialCount.setMaterialCount(ingredientIcon, count);
+			materialCounts.add(materialCount);
+		}
+		setMaterialsListContents(materialCounts);
+	}
+	
+	private void setMaterialsListContents(Collection<MaterialCount> materialCounts) {
 		resizeMaterialsList(materialCounts.size());
 		int row = 0;
 		int col = 0;
@@ -53,17 +66,22 @@ public class MaterialsPanel extends Composite {
 		materialsList.resize(nRows, MATERIALS_LIST_NCOLS);
 	}
 	
-	private static MaterialCount createTestMaterialCount(int count) {
-		MaterialCount materialCount = new MaterialCount();
-		
-		ImageBuffer testIcon = new ImageBuffer();
+	private static IIngredient createTestIngredient() {
+		final ImageBuffer testIcon = new ImageBuffer();
 		String uri = "res/image/items/barrier.png";
 		testIcon.loadFromImgSrc(uri);
-		materialCount.setMaterialCount(testIcon, count);
-		materialCount.getElement().getStyle().setMarginRight(8.0, Unit.PX);
-		materialCount.getElement().getStyle().setMarginBottom(2.0, Unit.PX);
 		
-		return materialCount;
+		return new IIngredient() {
+			@Override
+			public String getName() {
+				return "Test ingredient";
+			}
+			
+			@Override
+			public ImageBuffer getImageBuffer() {
+				return testIcon;
+			}
+		};
 	}
 
 }

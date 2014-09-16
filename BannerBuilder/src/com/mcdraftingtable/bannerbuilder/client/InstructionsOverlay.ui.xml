@@ -11,7 +11,7 @@
 	<g:FlowPanel>
 		<g:DisclosurePanel open="true" width="100%">
 			<g:header>Required Materials</g:header>
-			<clientui:MaterialsPanel />
+			<clientui:MaterialsPanel ui:field="materialsPanel" />
 		</g:DisclosurePanel>
 		<g:DisclosurePanel open="true" width="100%">
 			<g:header>Instructions</g:header>

@@ -47,10 +47,15 @@ public class BannerBuilder extends Composite implements EntryPoint {
 			public void onConfigurationUpdate(ConfigurationData configData) {
 				bannerDisplay.setBaseColor(configData.getBaseColor());
 				bannerDisplay.setLayerDefinitions(configData.getLayerDefinitions());
+//				instructionsOverlay.setIngredientCounts(getIngredientCounts(configData));
 				instructionsOverlay.setRecipeSteps(getRecipes(configData));
 			}
 		});
 	}
+	
+//	private HashMap<IIngredient, Integer> getIngredientCounts(ConfigurationData configData) {
+//		
+//	}
 	
 	private List<IRecipe> getRecipes(ConfigurationData configData) {
 		ArrayList<IRecipe> recipes = new ArrayList<>();
