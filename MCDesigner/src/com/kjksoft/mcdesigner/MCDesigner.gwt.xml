@@ -30,10 +30,5 @@
   
   <!-- Specify the public path for external javascript, CSS -->
   <public path="pub"/>
-  
-  <script src="zipjs/zip.js"/>
-  <script src="zipjs/zip-ext.js"/>
-  <script src="zipjs/deflate.js"/>
-  <script src="zipjs/inflate.js"/>
 
 </module>
